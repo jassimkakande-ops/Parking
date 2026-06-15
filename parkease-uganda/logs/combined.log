@@ -1,0 +1,388 @@
+{"timestamp":"2026-06-10T13:18:03.496Z","level":"error","message":"Failed to connect to the database","module":"db","stack":"Error: getaddrinfo ENOTFOUND db.mgmaocpxgqhunalfkyzd.supabase.co\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async testConnection (D:\\Parking\\parkease-uganda\\server\\config\\db.js:18:20)\n    at async startServer (D:\\Parking\\parkease-uganda\\server\\index.js:10:3)","error":"getaddrinfo ENOTFOUND db.mgmaocpxgqhunalfkyzd.supabase.co"}
+{"timestamp":"2026-06-10T13:23:52.193Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-10T13:23:52.203Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-10T13:37:12.758Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-10T13:37:12.770Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-10T13:37:35.128Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-10T13:37:35.136Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-12T19:38:36.348Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-12T19:38:36.365Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T05:47:16.732Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T05:47:16.746Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T05:47:50.156Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T05:47:50.168Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T05:48:46.368Z","level":"error","message":"null value in column \"password_hash\" of relation \"users\" violates not-null constraint","module":"errorHandler","stack":"error: null value in column \"password_hash\" of relation \"users\" violates not-null constraint\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.createUserProfile (D:\\Parking\\parkease-uganda\\server\\modules\\users\\users.repository.js:36:20)\n    at async exports.registerUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:36:23)\n    at async exports.register (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:9:20)","path":"/api/v1/auth/register","method":"POST"}
+{"timestamp":"2026-06-13T05:50:13.580Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T05:50:13.650Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T05:52:46.062Z","level":"info","message":"Client connected: YVD4QP5I3T26m4ibAAAC","module":"socket"}
+{"timestamp":"2026-06-13T05:52:46.276Z","level":"info","message":"Client connected: no1DfTCHQlA5-MGGAAAE","module":"socket"}
+{"timestamp":"2026-06-13T05:52:46.450Z","level":"info","message":"Client connected: BFB_JfDalVE91bwZAAAG","module":"socket"}
+{"timestamp":"2026-06-13T05:52:59.557Z","level":"info","message":"Client disconnected: YVD4QP5I3T26m4ibAAAC","module":"socket"}
+{"timestamp":"2026-06-13T05:53:47.326Z","level":"error","message":"A user with this email or phone number already exists.","module":"errorHandler","stack":"Error: A user with this email or phone number already exists.\n    at exports.registerUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:13:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.register (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:9:20)","path":"/api/v1/auth/register","method":"POST"}
+{"timestamp":"2026-06-13T05:54:04.243Z","level":"error","message":"Registration failed: email rate limit exceeded","module":"errorHandler","stack":"Error: Registration failed: email rate limit exceeded\n    at exports.registerUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:27:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.register (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:9:20)","path":"/api/v1/auth/register","method":"POST"}
+{"timestamp":"2026-06-13T06:03:10.183Z","level":"error","message":"Registration failed: fetch failed","module":"errorHandler","stack":"Error: Registration failed: fetch failed\n    at exports.registerUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:27:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.register (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:9:20)","path":"/api/v1/auth/register","method":"POST"}
+{"timestamp":"2026-06-13T06:09:02.277Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T06:09:02.304Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T06:09:03.920Z","level":"info","message":"Client connected: QSJrBoR6MFCThT-KAAAC","module":"socket"}
+{"timestamp":"2026-06-13T06:09:03.928Z","level":"info","message":"Client connected: AJmZwNwv1i5XoqXYAAAD","module":"socket"}
+{"timestamp":"2026-06-13T06:09:11.585Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T06:09:11.596Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T06:09:12.185Z","level":"info","message":"Client connected: tFQDwV2CMK-8VommAAAB","module":"socket"}
+{"timestamp":"2026-06-13T06:09:12.494Z","level":"info","message":"Client connected: 7mVDjNA2pLjSXCIUAAAD","module":"socket"}
+{"timestamp":"2026-06-13T06:09:20.021Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T06:09:20.031Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T06:09:20.077Z","level":"info","message":"Client connected: CrF2dt6soVxTdUk5AAAC","module":"socket"}
+{"timestamp":"2026-06-13T06:09:20.085Z","level":"info","message":"Client connected: PzbGTa-FXmJdzofCAAAD","module":"socket"}
+{"timestamp":"2026-06-13T06:09:32.430Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T06:09:32.439Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T06:09:32.482Z","level":"info","message":"Client connected: mWkGlYe3Ah47g9vWAAAC","module":"socket"}
+{"timestamp":"2026-06-13T06:09:32.493Z","level":"info","message":"Client connected: EYUp-FS_6hWaIXjJAAAD","module":"socket"}
+{"timestamp":"2026-06-13T06:09:43.444Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T06:09:43.453Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T06:09:43.494Z","level":"info","message":"Client connected: 8-2Val0vriVuEAJRAAAC","module":"socket"}
+{"timestamp":"2026-06-13T06:09:43.498Z","level":"info","message":"Client connected: VxlIOCh9jxf43PrxAAAD","module":"socket"}
+{"timestamp":"2026-06-13T06:10:01.740Z","level":"error","message":"invalid input syntax for type uuid: \"my\"","module":"errorHandler","stack":"error: invalid input syntax for type uuid: \"my\"\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.findFacilityById (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.repository.js:121:20)\n    at async exports.getFacilityDetails (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.service.js:27:20)\n    at async exports.getFacilityDetails (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.controller.js:44:21)","path":"/api/v1/facilities/my","method":"GET"}
+{"timestamp":"2026-06-13T06:10:02.686Z","level":"error","message":"invalid input syntax for type uuid: \"my\"","module":"errorHandler","stack":"error: invalid input syntax for type uuid: \"my\"\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.findFacilityById (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.repository.js:121:20)\n    at async exports.getFacilityDetails (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.service.js:27:20)\n    at async exports.getFacilityDetails (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.controller.js:44:21)","path":"/api/v1/facilities/my","method":"GET"}
+{"timestamp":"2026-06-13T06:11:17.750Z","level":"info","message":"Client disconnected: 8-2Val0vriVuEAJRAAAC","module":"socket"}
+{"timestamp":"2026-06-13T06:11:17.761Z","level":"info","message":"Client disconnected: VxlIOCh9jxf43PrxAAAD","module":"socket"}
+{"timestamp":"2026-06-13T06:11:20.153Z","level":"error","message":"invalid input syntax for type uuid: \"my\"","module":"errorHandler","stack":"error: invalid input syntax for type uuid: \"my\"\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.findFacilityById (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.repository.js:121:20)\n    at async exports.getFacilityDetails (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.service.js:27:20)\n    at async exports.getFacilityDetails (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.controller.js:44:21)","path":"/api/v1/facilities/my","method":"GET"}
+{"timestamp":"2026-06-13T06:11:21.022Z","level":"error","message":"invalid input syntax for type uuid: \"my\"","module":"errorHandler","stack":"error: invalid input syntax for type uuid: \"my\"\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.findFacilityById (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.repository.js:121:20)\n    at async exports.getFacilityDetails (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.service.js:27:20)\n    at async exports.getFacilityDetails (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.controller.js:44:21)","path":"/api/v1/facilities/my","method":"GET"}
+{"timestamp":"2026-06-13T06:13:19.447Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T06:13:19.461Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T06:14:08.304Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token is malformed: token contains an invalid number of segments"}
+{"timestamp":"2026-06-13T06:14:08.519Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token is malformed: token contains an invalid number of segments"}
+{"timestamp":"2026-06-13T06:14:27.109Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token is malformed: token contains an invalid number of segments"}
+{"timestamp":"2026-06-13T06:14:27.332Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token is malformed: token contains an invalid number of segments"}
+{"timestamp":"2026-06-13T06:28:44.521Z","level":"error","message":"Invalid email or password.","module":"errorHandler","stack":"Error: Invalid email or password.\n    at exports.loginUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:66:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.login (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:21:20)","path":"/api/v1/auth/login","method":"POST"}
+{"timestamp":"2026-06-13T06:29:01.973Z","level":"error","message":"Invalid email or password.","module":"errorHandler","stack":"Error: Invalid email or password.\n    at exports.loginUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:66:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.login (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:21:20)","path":"/api/v1/auth/login","method":"POST"}
+{"timestamp":"2026-06-13T06:29:48.294Z","level":"error","message":"Invalid email or password.","module":"errorHandler","stack":"Error: Invalid email or password.\n    at exports.loginUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:66:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.login (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:21:20)","path":"/api/v1/auth/login","method":"POST"}
+{"timestamp":"2026-06-13T07:08:23.726Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T07:08:23.756Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T07:08:35.009Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T07:08:35.019Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T08:22:14.836Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T08:22:14.851Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T08:22:31.720Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T08:22:31.730Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T08:50:47.275Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-13T08:50:47.285Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-13T08:51:16.490Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-13T08:51:17.444Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-13T08:51:18.001Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-14T06:42:07.527Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T06:42:07.552Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T06:43:00.487Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-14T06:43:01.138Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-14T06:50:56.253Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T06:50:56.267Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T06:51:59.483Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T06:51:59.501Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T06:53:17.468Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T06:53:17.483Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T06:53:56.436Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T06:53:56.475Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T08:25:29.810Z","level":"error","message":"Invalid email or password.","module":"errorHandler","stack":"Error: Invalid email or password.\n    at exports.loginUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:66:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.login (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:21:20)","path":"/api/v1/auth/login","method":"POST"}
+{"timestamp":"2026-06-14T08:25:54.397Z","level":"error","message":"A user with this email or phone number already exists.","module":"errorHandler","stack":"Error: A user with this email or phone number already exists.\n    at exports.registerUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:13:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.register (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:9:20)","path":"/api/v1/auth/register","method":"POST"}
+{"timestamp":"2026-06-14T08:26:03.148Z","level":"error","message":"A user with this email or phone number already exists.","module":"errorHandler","stack":"Error: A user with this email or phone number already exists.\n    at exports.registerUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:13:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.register (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:9:20)","path":"/api/v1/auth/register","method":"POST"}
+{"timestamp":"2026-06-14T09:24:05.656Z","level":"info","message":"Client connected: tw0GXETSTdpGPrk0AAAB","module":"socket"}
+{"timestamp":"2026-06-14T09:24:05.923Z","level":"info","message":"Client connected: SU6JJKP2rioEe-fUAAAD","module":"socket"}
+{"timestamp":"2026-06-14T09:24:05.977Z","level":"info","message":"Socket SU6JJKP2rioEe-fUAAAD joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T09:24:31.730Z","level":"error","message":"null value in column \"driver_id\" of relation \"bookings\" violates not-null constraint","module":"errorHandler","userId":"4bae0d78-0e3f-4832-94c1-f0ac25bb3b06","stack":"error: null value in column \"driver_id\" of relation \"bookings\" violates not-null constraint\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg\\lib\\client.js:646:17\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.createBooking (D:\\Parking\\parkease-uganda\\server\\modules\\booking\\booking.repository.js:66:35)\n    at async exports.createBooking (D:\\Parking\\parkease-uganda\\server\\modules\\booking\\booking.service.js:38:20)\n    at async exports.createBooking (D:\\Parking\\parkease-uganda\\server\\modules\\booking\\booking.controller.js:8:20)","path":"/api/v1/bookings","method":"POST"}
+{"timestamp":"2026-06-14T09:38:58.834Z","level":"error","message":"getaddrinfo ENOTFOUND aws-0-eu-west-1.pooler.supabase.com","module":"errorHandler","stack":"Error: getaddrinfo ENOTFOUND aws-0-eu-west-1.pooler.supabase.com\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.findFacilityById (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.repository.js:121:20)\n    at async exports.getFacilityDetails (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.service.js:27:20)\n    at async exports.getFacilityDetails (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.controller.js:44:21)","path":"/api/v1/facilities/7c117aae-016c-412b-8d24-fb025800d0f0","method":"GET"}
+{"timestamp":"2026-06-14T09:40:58.745Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T09:40:58.817Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T09:40:59.045Z","level":"info","message":"Client connected: lQUxjjoCn7vCqMVIAAAC","module":"socket"}
+{"timestamp":"2026-06-14T09:40:59.077Z","level":"info","message":"Client connected: 54oV_6VHXTq9vSDTAAAD","module":"socket"}
+{"timestamp":"2026-06-14T10:03:58.706Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T10:03:58.744Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T10:04:00.971Z","level":"info","message":"Client connected: 0uXGAvYbNfBhpprYAAAB","module":"socket"}
+{"timestamp":"2026-06-14T10:04:03.956Z","level":"info","message":"Client connected: s8S2fTDOsz6NhLH-AAAD","module":"socket"}
+{"timestamp":"2026-06-14T10:04:44.235Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T10:04:44.256Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T10:04:45.007Z","level":"info","message":"Client connected: jWgrYyqsF0TQ_N8XAAAC","module":"socket"}
+{"timestamp":"2026-06-14T10:04:45.060Z","level":"info","message":"Client connected: JHiVQXfbkmTUZWUrAAAD","module":"socket"}
+{"timestamp":"2026-06-14T10:06:41.831Z","level":"error","message":"Failed to connect to the database","module":"db","stack":"error: (EAUTHTIMEOUT) timeout while waiting for message\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async testConnection (D:\\Parking\\parkease-uganda\\server\\config\\db.js:18:20)\n    at async startServer (D:\\Parking\\parkease-uganda\\server\\index.js:12:3)","error":"(EAUTHTIMEOUT) timeout while waiting for message"}
+{"timestamp":"2026-06-14T10:36:29.653Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T10:36:29.709Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T10:36:33.033Z","level":"info","message":"Client connected: MuvP2NnHOnL2oeMkAAAC","module":"socket"}
+{"timestamp":"2026-06-14T10:36:33.054Z","level":"info","message":"Client connected: jD48qIy4gZcKAVnGAAAD","module":"socket"}
+{"timestamp":"2026-06-14T10:43:15.852Z","level":"info","message":"Client disconnected: jD48qIy4gZcKAVnGAAAD","module":"socket"}
+{"timestamp":"2026-06-14T10:43:15.863Z","level":"info","message":"Client disconnected: MuvP2NnHOnL2oeMkAAAC","module":"socket"}
+{"timestamp":"2026-06-14T10:57:38.798Z","level":"info","message":"Client connected: ZcieBcY35mCvDfwKAAAF","module":"socket"}
+{"timestamp":"2026-06-14T10:57:42.225Z","level":"info","message":"Client connected: MV8FoZ3igIB9-RqlAAAH","module":"socket"}
+{"timestamp":"2026-06-14T11:11:41.897Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:11:41.981Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:13:03.888Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-14T11:13:44.065Z","level":"info","message":"Client connected: o6V2Q95Zv9HfRUnyAAAB","module":"socket"}
+{"timestamp":"2026-06-14T11:13:44.097Z","level":"info","message":"Socket o6V2Q95Zv9HfRUnyAAAB joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T11:13:56.060Z","level":"info","message":"Client disconnected: o6V2Q95Zv9HfRUnyAAAB","module":"socket"}
+{"timestamp":"2026-06-14T11:15:07.272Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:15:07.288Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:17:09.067Z","level":"info","message":"Client connected: bNwt-ZdBD_8p8JNnAAAB","module":"socket"}
+{"timestamp":"2026-06-14T11:17:09.095Z","level":"info","message":"Socket bNwt-ZdBD_8p8JNnAAAB joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T11:17:26.118Z","level":"info","message":"Client disconnected: bNwt-ZdBD_8p8JNnAAAB","module":"socket"}
+{"timestamp":"2026-06-14T11:17:35.754Z","level":"info","message":"Client connected: xBhOgJSMFiDZ5DkxAAAD","module":"socket"}
+{"timestamp":"2026-06-14T11:17:35.770Z","level":"info","message":"Socket xBhOgJSMFiDZ5DkxAAAD joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T11:17:36.711Z","level":"info","message":"Client disconnected: xBhOgJSMFiDZ5DkxAAAD","module":"socket"}
+{"timestamp":"2026-06-14T11:18:18.984Z","level":"info","message":"Client connected: pFomfOIVvprfIbhwAAAF","module":"socket"}
+{"timestamp":"2026-06-14T11:18:19.006Z","level":"info","message":"Socket pFomfOIVvprfIbhwAAAF joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T11:18:20.147Z","level":"info","message":"Client disconnected: pFomfOIVvprfIbhwAAAF","module":"socket"}
+{"timestamp":"2026-06-14T11:19:01.199Z","level":"info","message":"Client connected: _Wh_D2EEXHRsKpCCAAAH","module":"socket"}
+{"timestamp":"2026-06-14T11:19:01.208Z","level":"info","message":"Socket _Wh_D2EEXHRsKpCCAAAH joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T11:19:02.520Z","level":"info","message":"Client disconnected: _Wh_D2EEXHRsKpCCAAAH","module":"socket"}
+{"timestamp":"2026-06-14T11:19:04.245Z","level":"info","message":"Client connected: XasVv89-MLz6fhtBAAAJ","module":"socket"}
+{"timestamp":"2026-06-14T11:19:04.253Z","level":"info","message":"Socket XasVv89-MLz6fhtBAAAJ joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T11:19:05.075Z","level":"info","message":"Client disconnected: XasVv89-MLz6fhtBAAAJ","module":"socket"}
+{"timestamp":"2026-06-14T11:19:07.517Z","level":"info","message":"Client connected: WEtZboKaZRY0ClbdAAAL","module":"socket"}
+{"timestamp":"2026-06-14T11:19:07.533Z","level":"info","message":"Socket WEtZboKaZRY0ClbdAAAL joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T11:19:50.041Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:19:50.052Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:19:51.960Z","level":"info","message":"Client connected: 5FLpwCOTsoCQQNzWAAAB","module":"socket"}
+{"timestamp":"2026-06-14T11:20:25.344Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:20:25.354Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:20:28.964Z","level":"info","message":"Client connected: Vji9E2lk-mKqLRG5AAAB","module":"socket"}
+{"timestamp":"2026-06-14T11:20:41.897Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:20:41.910Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:20:44.960Z","level":"info","message":"Client connected: 3edCplLYHVQ_Pt40AAAB","module":"socket"}
+{"timestamp":"2026-06-14T11:21:07.109Z","level":"info","message":"Client disconnected: 3edCplLYHVQ_Pt40AAAB","module":"socket"}
+{"timestamp":"2026-06-14T11:21:15.300Z","level":"info","message":"Client connected: IVW6AhoLyi8psGSHAAAD","module":"socket"}
+{"timestamp":"2026-06-14T11:21:15.339Z","level":"info","message":"Socket IVW6AhoLyi8psGSHAAAD joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T11:21:34.211Z","level":"info","message":"Client disconnected: IVW6AhoLyi8psGSHAAAD","module":"socket"}
+{"timestamp":"2026-06-14T11:22:18.193Z","level":"info","message":"Client connected: YDG9bzCgiyxxcNRiAAAF","module":"socket"}
+{"timestamp":"2026-06-14T11:22:18.200Z","level":"info","message":"Socket YDG9bzCgiyxxcNRiAAAF joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T11:22:19.581Z","level":"info","message":"Client disconnected: YDG9bzCgiyxxcNRiAAAF","module":"socket"}
+{"timestamp":"2026-06-14T11:23:31.915Z","level":"info","message":"Client connected: d0ycDozX0tjGjl0BAAAH","module":"socket"}
+{"timestamp":"2026-06-14T11:23:32.992Z","level":"info","message":"Client connected: sBkaNu_YbYo21ovyAAAJ","module":"socket"}
+{"timestamp":"2026-06-14T11:23:33.014Z","level":"info","message":"Socket sBkaNu_YbYo21ovyAAAJ joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T11:23:42.912Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-14T11:23:45.120Z","level":"info","message":"Client disconnected: d0ycDozX0tjGjl0BAAAH","module":"socket"}
+{"timestamp":"2026-06-14T11:23:45.123Z","level":"info","message":"Client disconnected: sBkaNu_YbYo21ovyAAAJ","module":"socket"}
+{"timestamp":"2026-06-14T11:24:05.592Z","level":"error","message":"Invalid email or password.","module":"errorHandler","stack":"Error: Invalid email or password.\n    at exports.loginUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:66:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.login (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:21:20)","path":"/api/v1/auth/login","method":"POST"}
+{"timestamp":"2026-06-14T11:24:15.939Z","level":"info","message":"Client connected: kVAqMEL4PjqqjNXgAAAL","module":"socket"}
+{"timestamp":"2026-06-14T11:24:16.125Z","level":"info","message":"Client connected: 5plMVHFsOEInWKfoAAAN","module":"socket"}
+{"timestamp":"2026-06-14T11:24:16.139Z","level":"info","message":"Socket 5plMVHFsOEInWKfoAAAN joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T11:44:01.338Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:44:01.352Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:44:01.522Z","level":"info","message":"Client connected: bwffFsryyUvEwJeyAAAC","module":"socket"}
+{"timestamp":"2026-06-14T11:44:01.529Z","level":"info","message":"Client connected: NNQ4DATxCRN6Ek0iAAAD","module":"socket"}
+{"timestamp":"2026-06-14T11:48:03.916Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:48:03.936Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:48:10.161Z","level":"info","message":"Client connected: rCeEDk1TYCKRtZOaAAAC","module":"socket"}
+{"timestamp":"2026-06-14T11:48:10.344Z","level":"info","message":"Client connected: NKERL7djPnYgNRjVAAAD","module":"socket"}
+{"timestamp":"2026-06-14T11:48:32.524Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:48:32.545Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:48:47.080Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:48:47.110Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:51:22.085Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:51:22.148Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:51:31.291Z","level":"info","message":"Client connected: C-cRupvn-EDNGG-pAAAB","module":"socket"}
+{"timestamp":"2026-06-14T11:52:10.193Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:52:10.215Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:53:14.180Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:53:14.222Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:53:58.284Z","level":"info","message":"Client connected: dDYbgHfu3Bz578qMAAAC","module":"socket"}
+{"timestamp":"2026-06-14T11:53:58.294Z","level":"info","message":"Client connected: BD38ZNmRIXc1nYbAAAAD","module":"socket"}
+{"timestamp":"2026-06-14T11:58:00.793Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:58:00.847Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T11:58:14.213Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T11:58:14.232Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T12:03:33.059Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T12:03:33.187Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T12:03:48.897Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T12:03:48.910Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T12:03:56.784Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T12:03:56.799Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T12:04:03.583Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T12:04:03.598Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T12:06:47.582Z","level":"info","message":"Client connected: tXOkmwhAk2FmGVMtAAAB","module":"socket"}
+{"timestamp":"2026-06-14T12:06:51.016Z","level":"info","message":"Client connected: Px6o6G2lklvYuiEvAAAD","module":"socket"}
+{"timestamp":"2026-06-14T12:06:52.025Z","level":"info","message":"Client disconnected: Px6o6G2lklvYuiEvAAAD","module":"socket"}
+{"timestamp":"2026-06-14T12:06:52.063Z","level":"info","message":"Client connected: JAXgBAlm-FYwBgIsAAAF","module":"socket"}
+{"timestamp":"2026-06-14T12:06:53.045Z","level":"info","message":"Client connected: WQRmSwpYD8pMHWobAAAH","module":"socket"}
+{"timestamp":"2026-06-14T12:06:53.119Z","level":"info","message":"Socket WQRmSwpYD8pMHWobAAAH joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T12:09:08.815Z","level":"error","message":"column \"is_phone_verified\" does not exist","module":"errorHandler","stack":"error: column \"is_phone_verified\" does not exist\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.findById (D:\\Parking\\parkease-uganda\\server\\modules\\users\\users.repository.js:14:20)\n    at async authenticate (D:\\Parking\\parkease-uganda\\server\\middleware\\authenticate.js:27:20)","path":"/api/v1/bookings","method":"GET"}
+{"timestamp":"2026-06-14T12:09:18.098Z","level":"error","message":"column \"is_phone_verified\" does not exist","module":"errorHandler","stack":"error: column \"is_phone_verified\" does not exist\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.findById (D:\\Parking\\parkease-uganda\\server\\modules\\users\\users.repository.js:14:20)\n    at async authenticate (D:\\Parking\\parkease-uganda\\server\\middleware\\authenticate.js:27:20)","path":"/api/v1/payments/me","method":"GET"}
+{"timestamp":"2026-06-14T12:09:25.734Z","level":"error","message":"column \"is_phone_verified\" does not exist","module":"errorHandler","stack":"error: column \"is_phone_verified\" does not exist\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.findById (D:\\Parking\\parkease-uganda\\server\\modules\\users\\users.repository.js:14:20)\n    at async authenticate (D:\\Parking\\parkease-uganda\\server\\middleware\\authenticate.js:27:20)","path":"/api/v1/users/verify-phone","method":"POST"}
+{"timestamp":"2026-06-14T12:09:36.134Z","level":"error","message":"column \"is_phone_verified\" does not exist","module":"errorHandler","stack":"error: column \"is_phone_verified\" does not exist\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.findById (D:\\Parking\\parkease-uganda\\server\\modules\\users\\users.repository.js:14:20)\n    at async authenticate (D:\\Parking\\parkease-uganda\\server\\middleware\\authenticate.js:27:20)","path":"/api/v1/bookings","method":"GET"}
+{"timestamp":"2026-06-14T12:10:51.028Z","level":"info","message":"Client connected: aLaeNTNr0r3s0Z7LAAAJ","module":"socket"}
+{"timestamp":"2026-06-14T12:10:51.109Z","level":"info","message":"Socket aLaeNTNr0r3s0Z7LAAAJ joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T12:11:27.169Z","level":"error","message":"column \"is_phone_verified\" does not exist","module":"errorHandler","stack":"error: column \"is_phone_verified\" does not exist\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.findById (D:\\Parking\\parkease-uganda\\server\\modules\\users\\users.repository.js:14:20)\n    at async authenticate (D:\\Parking\\parkease-uganda\\server\\middleware\\authenticate.js:27:20)","path":"/api/v1/bookings","method":"POST"}
+{"timestamp":"2026-06-14T12:11:53.421Z","level":"info","message":"Client disconnected: aLaeNTNr0r3s0Z7LAAAJ","module":"socket"}
+{"timestamp":"2026-06-14T12:13:43.537Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-14T12:13:43.570Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-14T12:13:47.988Z","level":"info","message":"Client connected: gRwMoSh-3qxEf_4IAAAD","module":"socket"}
+{"timestamp":"2026-06-14T12:13:48.013Z","level":"info","message":"Client connected: DRuFDbkptWVOtxd7AAAE","module":"socket"}
+{"timestamp":"2026-06-14T12:13:48.021Z","level":"info","message":"Client connected: gFQSrZEqN3Irx7SVAAAF","module":"socket"}
+{"timestamp":"2026-06-14T12:16:35.695Z","level":"info","message":"Client disconnected: gFQSrZEqN3Irx7SVAAAF","module":"socket"}
+{"timestamp":"2026-06-14T12:16:35.805Z","level":"info","message":"Client connected: tlMmWx3Rpz-Chf6HAAAH","module":"socket"}
+{"timestamp":"2026-06-14T12:16:39.534Z","level":"info","message":"Client connected: A80ZRc82GtuKv9pYAAAJ","module":"socket"}
+{"timestamp":"2026-06-14T12:16:39.543Z","level":"info","message":"Socket A80ZRc82GtuKv9pYAAAJ joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T12:16:52.429Z","level":"info","message":"Client connected: NBcIsbm7RGVn-wAPAAAL","module":"socket"}
+{"timestamp":"2026-06-14T12:16:52.473Z","level":"info","message":"Socket NBcIsbm7RGVn-wAPAAAL joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-14T12:17:25.180Z","level":"info","message":"Mocking MakyPay API call","reference":"6e896f2b-bdd7-484c-9817-6b9d57c14528","amount":"12000.00"}
+{"timestamp":"2026-06-14T12:18:12.567Z","level":"info","message":"Client disconnected: NBcIsbm7RGVn-wAPAAAL","module":"socket"}
+{"timestamp":"2026-06-14T12:18:46.026Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"fetch failed"}
+{"timestamp":"2026-06-14T12:18:46.625Z","level":"info","message":"Client disconnected: gRwMoSh-3qxEf_4IAAAD","module":"socket"}
+{"timestamp":"2026-06-14T12:18:46.656Z","level":"info","message":"Client disconnected: DRuFDbkptWVOtxd7AAAE","module":"socket"}
+{"timestamp":"2026-06-14T12:18:46.673Z","level":"info","message":"Client disconnected: tlMmWx3Rpz-Chf6HAAAH","module":"socket"}
+{"timestamp":"2026-06-14T12:18:46.679Z","level":"info","message":"Client disconnected: A80ZRc82GtuKv9pYAAAJ","module":"socket"}
+{"timestamp":"2026-06-15T06:45:18.071Z","level":"error","message":"Failed to connect to the database","module":"db","stack":"Error: getaddrinfo ENOTFOUND aws-0-eu-west-1.pooler.supabase.com\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async testConnection (D:\\Parking\\parkease-uganda\\server\\config\\db.js:18:20)\n    at async startServer (D:\\Parking\\parkease-uganda\\server\\index.js:12:3)","error":"getaddrinfo ENOTFOUND aws-0-eu-west-1.pooler.supabase.com"}
+{"timestamp":"2026-06-15T06:47:57.597Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T06:47:57.616Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T06:49:10.660Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T06:49:10.677Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T06:49:59.069Z","level":"error","message":"Invalid email or password.","module":"errorHandler","stack":"Error: Invalid email or password.\n    at exports.loginUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:66:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.login (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:21:20)","path":"/api/v1/auth/login","method":"POST"}
+{"timestamp":"2026-06-15T06:50:31.348Z","level":"error","message":"Invalid email or password.","module":"errorHandler","stack":"Error: Invalid email or password.\n    at exports.loginUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:66:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.login (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:21:20)","path":"/api/v1/auth/login","method":"POST"}
+{"timestamp":"2026-06-15T08:23:20.364Z","level":"error","message":"Failed to connect to the database","module":"db","stack":"Error: getaddrinfo ENOTFOUND aws-0-eu-west-1.pooler.supabase.com\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async testConnection (D:\\Parking\\parkease-uganda\\server\\config\\db.js:18:20)\n    at async startServer (D:\\Parking\\parkease-uganda\\server\\index.js:12:3)","error":"getaddrinfo ENOTFOUND aws-0-eu-west-1.pooler.supabase.com"}
+{"timestamp":"2026-06-15T08:55:52.002Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T08:55:52.015Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T09:13:44.311Z","level":"info","message":"Client connected: gBJbQN_8I7yh4VrCAAAB","module":"socket"}
+{"timestamp":"2026-06-15T09:13:44.348Z","level":"info","message":"Socket gBJbQN_8I7yh4VrCAAAB joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T09:17:07.090Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T09:17:07.401Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T09:17:07.596Z","level":"info","message":"Client connected: WR6kNH9Rg9pdbmKgAAAB","module":"socket"}
+{"timestamp":"2026-06-15T09:17:32.622Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T09:17:32.848Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T09:17:34.037Z","level":"info","message":"Client connected: xa2g2Z2bSKS08EMXAAAB","module":"socket"}
+{"timestamp":"2026-06-15T09:17:35.011Z","level":"info","message":"Client disconnected: xa2g2Z2bSKS08EMXAAAB","module":"socket"}
+{"timestamp":"2026-06-15T09:17:35.090Z","level":"info","message":"Client connected: Alr_cqaq8OmtY5XOAAAD","module":"socket"}
+{"timestamp":"2026-06-15T09:17:35.119Z","level":"info","message":"Client disconnected: Alr_cqaq8OmtY5XOAAAD","module":"socket"}
+{"timestamp":"2026-06-15T09:17:36.905Z","level":"info","message":"Client connected: RbVeigaJMQcHycpXAAAF","module":"socket"}
+{"timestamp":"2026-06-15T09:17:36.919Z","level":"info","message":"Socket RbVeigaJMQcHycpXAAAF joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T09:17:59.860Z","level":"info","message":"Client disconnected: RbVeigaJMQcHycpXAAAF","module":"socket"}
+{"timestamp":"2026-06-15T09:17:59.944Z","level":"info","message":"Client connected: QofpK_h1DQEIBNuzAAAH","module":"socket"}
+{"timestamp":"2026-06-15T09:17:59.966Z","level":"info","message":"Socket QofpK_h1DQEIBNuzAAAH joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T09:21:48.255Z","level":"info","message":"Client disconnected: QofpK_h1DQEIBNuzAAAH","module":"socket"}
+{"timestamp":"2026-06-15T09:21:51.518Z","level":"info","message":"Client connected: 6nTyKTWLonChmzzzAAAJ","module":"socket"}
+{"timestamp":"2026-06-15T09:21:51.617Z","level":"info","message":"Socket 6nTyKTWLonChmzzzAAAJ joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T09:26:33.646Z","level":"info","message":"Client disconnected: 6nTyKTWLonChmzzzAAAJ","module":"socket"}
+{"timestamp":"2026-06-15T09:26:35.850Z","level":"info","message":"Client connected: zZHhe8o7DI_M2-3FAAAL","module":"socket"}
+{"timestamp":"2026-06-15T09:26:35.878Z","level":"info","message":"Socket zZHhe8o7DI_M2-3FAAAL joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T09:30:34.541Z","level":"info","message":"Client disconnected: zZHhe8o7DI_M2-3FAAAL","module":"socket"}
+{"timestamp":"2026-06-15T09:30:34.623Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"fetch failed"}
+{"timestamp":"2026-06-15T09:36:14.617Z","level":"info","message":"Client connected: 9RCGGxzC5V-oV9UcAAAN","module":"socket"}
+{"timestamp":"2026-06-15T09:36:14.644Z","level":"info","message":"Socket 9RCGGxzC5V-oV9UcAAAN joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T09:39:42.832Z","level":"info","message":"Client connected: eglcoVYdCbNH6eyZAAAP","module":"socket"}
+{"timestamp":"2026-06-15T09:39:44.414Z","level":"info","message":"Client connected: eM4h_dz70-XOw-xbAAAR","module":"socket"}
+{"timestamp":"2026-06-15T09:39:44.431Z","level":"info","message":"Socket eM4h_dz70-XOw-xbAAAR joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T09:39:51.010Z","level":"info","message":"Client connected: 8aXNCuZLFzv-y3qTAAAT","module":"socket"}
+{"timestamp":"2026-06-15T09:39:51.054Z","level":"info","message":"Socket 8aXNCuZLFzv-y3qTAAAT joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T09:40:19.351Z","level":"info","message":"Mocking MakyPay API call","reference":"ded9718b-aa73-4bb7-a556-9e0ba1d26117","amount":"1000.00"}
+{"timestamp":"2026-06-15T09:40:38.381Z","level":"info","message":"Client disconnected: eglcoVYdCbNH6eyZAAAP","module":"socket"}
+{"timestamp":"2026-06-15T09:40:38.534Z","level":"info","message":"Client disconnected: 8aXNCuZLFzv-y3qTAAAT","module":"socket"}
+{"timestamp":"2026-06-15T09:40:38.613Z","level":"info","message":"Client disconnected: eM4h_dz70-XOw-xbAAAR","module":"socket"}
+{"timestamp":"2026-06-15T09:40:39.242Z","level":"info","message":"Client connected: -DTtRXxilI6K3ZU-AAAV","module":"socket"}
+{"timestamp":"2026-06-15T09:40:40.503Z","level":"info","message":"Client connected: DInm2aF44Q_ZIWZRAAAX","module":"socket"}
+{"timestamp":"2026-06-15T09:40:40.561Z","level":"info","message":"Socket DInm2aF44Q_ZIWZRAAAX joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T09:46:51.374Z","level":"info","message":"Client connected: ci8NV_KVe33hSR-IAAAZ","module":"socket"}
+{"timestamp":"2026-06-15T09:46:51.403Z","level":"info","message":"Socket ci8NV_KVe33hSR-IAAAZ joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T09:46:58.011Z","level":"info","message":"Client disconnected: ci8NV_KVe33hSR-IAAAZ","module":"socket"}
+{"timestamp":"2026-06-15T09:54:27.960Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T09:54:28.211Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T09:54:28.828Z","level":"info","message":"Client connected: A3la5byzU3DebYd_AAAB","module":"socket"}
+{"timestamp":"2026-06-15T09:54:29.170Z","level":"info","message":"Client connected: se-nsGujsf3RiGAtAAAD","module":"socket"}
+{"timestamp":"2026-06-15T09:55:41.291Z","level":"info","message":"Client disconnected: A3la5byzU3DebYd_AAAB","module":"socket"}
+{"timestamp":"2026-06-15T09:57:43.950Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T09:57:43.989Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T09:58:22.655Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T09:58:22.838Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T09:58:41.285Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T09:58:41.307Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T09:59:17.230Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T09:59:17.423Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T09:59:28.800Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T09:59:28.827Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T10:01:26.551Z","level":"info","message":"Client connected: 5fa28Zo-UY3hwUvkAAAC","module":"socket"}
+{"timestamp":"2026-06-15T10:01:26.579Z","level":"info","message":"Socket 5fa28Zo-UY3hwUvkAAAC joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T10:03:16.665Z","level":"info","message":"Client connected: Apqi0hPjUUc-_2opAAAE","module":"socket"}
+{"timestamp":"2026-06-15T10:03:17.924Z","level":"info","message":"Client connected: kWHHl0F5eIGjkHjBAAAG","module":"socket"}
+{"timestamp":"2026-06-15T10:03:17.945Z","level":"info","message":"Socket kWHHl0F5eIGjkHjBAAAG joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T10:29:56.236Z","level":"info","message":"Client disconnected: kWHHl0F5eIGjkHjBAAAG","module":"socket"}
+{"timestamp":"2026-06-15T10:29:56.512Z","level":"info","message":"Client disconnected: 5fa28Zo-UY3hwUvkAAAC","module":"socket"}
+{"timestamp":"2026-06-15T10:29:56.533Z","level":"info","message":"Client disconnected: Apqi0hPjUUc-_2opAAAE","module":"socket"}
+{"timestamp":"2026-06-15T10:47:52.968Z","level":"info","message":"Client connected: RJEIsBipZO_-reXNAAAI","module":"socket"}
+{"timestamp":"2026-06-15T10:47:53.132Z","level":"info","message":"Client connected: b47b5AQnbPVrIJ17AAAK","module":"socket"}
+{"timestamp":"2026-06-15T10:50:47.697Z","level":"info","message":"Client connected: WnihoiW7hHYQMZcJAAAM","module":"socket"}
+{"timestamp":"2026-06-15T10:53:43.586Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-15T10:53:43.589Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-15T10:53:43.591Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-15T10:53:43.594Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-15T11:37:39.754Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T11:37:39.768Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T11:37:39.830Z","level":"info","message":"Client connected: NmnOifkTzUFreyF6AAAC","module":"socket"}
+{"timestamp":"2026-06-15T11:37:39.839Z","level":"info","message":"Client connected: NEdaObsRSbrtsSs1AAAD","module":"socket"}
+{"timestamp":"2026-06-15T11:37:44.981Z","level":"info","message":"Client connected: 6wFElaomGL6w2wF6AAAF","module":"socket"}
+{"timestamp":"2026-06-15T11:37:49.962Z","level":"error","message":"Invalid email or password.","module":"errorHandler","stack":"Error: Invalid email or password.\n    at exports.loginUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:66:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.login (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:21:20)","path":"/api/v1/auth/login","method":"POST"}
+{"timestamp":"2026-06-15T11:38:13.403Z","level":"info","message":"Client disconnected: NmnOifkTzUFreyF6AAAC","module":"socket"}
+{"timestamp":"2026-06-15T11:38:13.421Z","level":"info","message":"Client disconnected: NEdaObsRSbrtsSs1AAAD","module":"socket"}
+{"timestamp":"2026-06-15T11:38:13.885Z","level":"info","message":"Client connected: lHSgO6AdOmLsBHOpAAAH","module":"socket"}
+{"timestamp":"2026-06-15T11:38:14.866Z","level":"info","message":"Client connected: MSb0QQg85MHNMermAAAJ","module":"socket"}
+{"timestamp":"2026-06-15T11:38:14.885Z","level":"info","message":"Socket MSb0QQg85MHNMermAAAJ joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T11:38:17.637Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-15T11:38:17.703Z","level":"info","message":"Client disconnected: MSb0QQg85MHNMermAAAJ","module":"socket"}
+{"timestamp":"2026-06-15T11:38:17.710Z","level":"info","message":"Client disconnected: lHSgO6AdOmLsBHOpAAAH","module":"socket"}
+{"timestamp":"2026-06-15T11:38:41.325Z","level":"info","message":"Client connected: 1j-Wl8vBOld3ATo0AAAL","module":"socket"}
+{"timestamp":"2026-06-15T11:38:41.498Z","level":"info","message":"Client connected: QW1h0Z48Yx8odQN2AAAN","module":"socket"}
+{"timestamp":"2026-06-15T11:38:41.531Z","level":"info","message":"Socket QW1h0Z48Yx8odQN2AAAN joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T11:39:08.502Z","level":"info","message":"Mocking MakyPay API call","reference":"40da0e50-5e36-4f7a-b578-f66a995f1c67","amount":"12000.00"}
+{"timestamp":"2026-06-15T11:39:26.840Z","level":"info","message":"Client disconnected: 6wFElaomGL6w2wF6AAAF","module":"socket"}
+{"timestamp":"2026-06-15T11:39:29.153Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-15T11:45:56.685Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T11:45:56.706Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T11:45:56.815Z","level":"info","message":"Client connected: 4flBAzcgpU_wFzDhAAAC","module":"socket"}
+{"timestamp":"2026-06-15T11:45:56.846Z","level":"info","message":"Client connected: 3WkNsq4zkSKK3kZWAAAD","module":"socket"}
+{"timestamp":"2026-06-15T11:52:46.410Z","level":"error","message":"MakyPay initiateCollection error","error":"Payment initiation failed"}
+{"timestamp":"2026-06-15T11:52:46.413Z","level":"error","message":"Payment initiation failed","module":"errorHandler","userId":"4bae0d78-0e3f-4832-94c1-f0ac25bb3b06","stack":"Error: Payment initiation failed\n    at exports.initiateCollection (D:\\Parking\\parkease-uganda\\server\\modules\\payments\\makypay.service.js:56:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.processPayment (D:\\Parking\\parkease-uganda\\server\\modules\\payments\\payment.service.js:41:27)\n    at async exports.initiatePayment (D:\\Parking\\parkease-uganda\\server\\modules\\payments\\payment.controller.js:10:20)","path":"/api/v1/payments/initiate","method":"POST"}
+{"timestamp":"2026-06-15T11:54:10.258Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T11:54:10.302Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T11:54:11.598Z","level":"info","message":"Client connected: 11eCoxPZ07B0OcdOAAAC","module":"socket"}
+{"timestamp":"2026-06-15T11:54:11.715Z","level":"info","message":"Client connected: w-f_hrdHHLBRV5cTAAAD","module":"socket"}
+{"timestamp":"2026-06-15T12:05:15.087Z","level":"info","message":"Client disconnected: 11eCoxPZ07B0OcdOAAAC","module":"socket"}
+{"timestamp":"2026-06-15T12:05:15.099Z","level":"info","message":"Client disconnected: w-f_hrdHHLBRV5cTAAAD","module":"socket"}
+{"timestamp":"2026-06-15T12:05:15.613Z","level":"info","message":"Client connected: NuxmaAgYmdyNHyPDAAAF","module":"socket"}
+{"timestamp":"2026-06-15T12:05:16.560Z","level":"info","message":"Client connected: 8uq4vfMDBcthvSElAAAH","module":"socket"}
+{"timestamp":"2026-06-15T12:05:16.580Z","level":"info","message":"Socket 8uq4vfMDBcthvSElAAAH joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T12:06:11.124Z","level":"error","message":"MakyPay collection failed details","status":429,"data":{"detail":{"status":"error","message":"A payment prompt was recently sent to this phone. Please check the phone for the prompt, or wait a few minutes before retrying.","error_code":"TOO_MANY_ATTEMPTS","existing_reference":"60dc87e0-d4e0-4fb1-b3a9-a7371f29ec6a","existing_transaction_id":"a4bf4716-69d5-4123-9aeb-9aded0ca6133"}}}
+{"timestamp":"2026-06-15T12:06:11.126Z","level":"error","message":"MakyPay initiateCollection error","error":"Payment initiation failed"}
+{"timestamp":"2026-06-15T12:06:11.128Z","level":"error","message":"Payment initiation failed","module":"errorHandler","userId":"4bae0d78-0e3f-4832-94c1-f0ac25bb3b06","stack":"Error: Payment initiation failed\n    at exports.initiateCollection (D:\\Parking\\parkease-uganda\\server\\modules\\payments\\makypay.service.js:57:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.processPayment (D:\\Parking\\parkease-uganda\\server\\modules\\payments\\payment.service.js:41:27)\n    at async exports.initiatePayment (D:\\Parking\\parkease-uganda\\server\\modules\\payments\\payment.controller.js:10:20)","path":"/api/v1/payments/initiate","method":"POST"}
+{"timestamp":"2026-06-15T12:10:23.113Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T12:10:23.149Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T12:10:27.022Z","level":"info","message":"Client connected: V1-blRK-HxOckZH-AAAB","module":"socket"}
+{"timestamp":"2026-06-15T12:10:32.027Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T12:10:32.040Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T12:10:32.178Z","level":"info","message":"Client connected: kUkPgjHq6x-wI31fAAAB","module":"socket"}
+{"timestamp":"2026-06-15T12:10:35.977Z","level":"info","message":"Client connected: 1V9Wwx_VYLRm07onAAAD","module":"socket"}
+{"timestamp":"2026-06-15T12:10:42.677Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T12:10:42.695Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T12:10:43.997Z","level":"info","message":"Client connected: _SOThzMPMx_M-DqxAAAB","module":"socket"}
+{"timestamp":"2026-06-15T12:10:45.989Z","level":"info","message":"Client connected: GRaYcwAgINAy7L7bAAAD","module":"socket"}
+{"timestamp":"2026-06-15T12:16:05.589Z","level":"info","message":"Client disconnected: _SOThzMPMx_M-DqxAAAB","module":"socket"}
+{"timestamp":"2026-06-15T12:16:05.599Z","level":"info","message":"Client disconnected: GRaYcwAgINAy7L7bAAAD","module":"socket"}
+{"timestamp":"2026-06-15T12:16:06.136Z","level":"info","message":"Client connected: rP8OUCkofEoe5QvFAAAF","module":"socket"}
+{"timestamp":"2026-06-15T12:16:07.340Z","level":"info","message":"Client connected: Txdaj8LAZQ3E2KLwAAAH","module":"socket"}
+{"timestamp":"2026-06-15T12:16:07.357Z","level":"info","message":"Socket Txdaj8LAZQ3E2KLwAAAH joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T12:16:09.080Z","level":"info","message":"Client connected: wZWtdBSg_ftkjB3IAAAJ","module":"socket"}
+{"timestamp":"2026-06-15T12:16:09.106Z","level":"info","message":"Socket wZWtdBSg_ftkjB3IAAAJ joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T12:16:13.321Z","level":"info","message":"Client disconnected: wZWtdBSg_ftkjB3IAAAJ","module":"socket"}
+{"timestamp":"2026-06-15T12:26:33.471Z","level":"info","message":"Client disconnected: rP8OUCkofEoe5QvFAAAF","module":"socket"}
+{"timestamp":"2026-06-15T12:26:33.485Z","level":"info","message":"Client disconnected: Txdaj8LAZQ3E2KLwAAAH","module":"socket"}
+{"timestamp":"2026-06-15T12:26:33.927Z","level":"info","message":"Client connected: Pe3f3kOim_UkXrl1AAAL","module":"socket"}
+{"timestamp":"2026-06-15T12:26:34.971Z","level":"info","message":"Client connected: ScCH8e-Uw6fGhs-fAAAN","module":"socket"}
+{"timestamp":"2026-06-15T12:26:34.988Z","level":"info","message":"Socket ScCH8e-Uw6fGhs-fAAAN joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T12:34:11.886Z","level":"info","message":"Client connected: pNznqaNml5gBfwNIAAAP","module":"socket"}
+{"timestamp":"2026-06-15T12:34:11.923Z","level":"info","message":"Socket pNznqaNml5gBfwNIAAAP joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T12:34:15.352Z","level":"info","message":"Client disconnected: pNznqaNml5gBfwNIAAAP","module":"socket"}
+{"timestamp":"2026-06-15T12:39:30.723Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-15T12:39:31.043Z","level":"info","message":"Client disconnected: Pe3f3kOim_UkXrl1AAAL","module":"socket"}
+{"timestamp":"2026-06-15T12:39:31.048Z","level":"info","message":"Client disconnected: ScCH8e-Uw6fGhs-fAAAN","module":"socket"}
+{"timestamp":"2026-06-15T12:39:34.855Z","level":"info","message":"Client connected: zABUM5EM0dNdwzaNAAAR","module":"socket"}
+{"timestamp":"2026-06-15T12:39:35.044Z","level":"info","message":"Client connected: sqbcmr_pLT6oaKhBAAAT","module":"socket"}
+{"timestamp":"2026-06-15T12:39:35.056Z","level":"info","message":"Socket sqbcmr_pLT6oaKhBAAAT joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T12:50:43.428Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T12:50:43.449Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T12:50:47.626Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T12:50:47.639Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T12:51:12.100Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T12:51:12.112Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T12:57:05.667Z","level":"info","message":"Client connected: 4HuX0DVSICaDUhM-AAAB","module":"socket"}
+{"timestamp":"2026-06-15T12:57:06.313Z","level":"info","message":"Client connected: G5i6Ji-WNyLGYtVOAAAD","module":"socket"}

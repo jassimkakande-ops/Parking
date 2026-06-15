@@ -1,0 +1,265 @@
+const db = require('../../config/db');
+
+/**
+ * Creates a new facility and automatically generates its slots inside a transaction.
+ */
+exports.createFacility = async (ownerId, data) => {
+  const { name, description, address, district, plot_number, latitude, longitude, total_slots, hourly_rate } = data;
+
+  const client = await db.pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // 1. Insert facility<find why $>
+    const facilityQuery = `
+      INSERT INTO parking_facilities (owner_id, name, description, address, district, plot_number, latitude, longitude, total_slots, available_slots, hourly_rate)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      RETURNING *
+    `;
+    const facilityValues = [ownerId, name, description, address, district, plot_number, latitude, longitude, total_slots, total_slots, hourly_rate];
+    const { rows: facilityRows } = await client.query(facilityQuery, facilityValues);
+    const facility = facilityRows[0];
+
+    // 2. Auto-generate slots
+    if (total_slots > 0) {
+      const slotValues = [];
+      const placeholders = [];
+      let paramIndex = 1;
+
+      for (let i = 1; i <= total_slots; i++) {
+        const slotNumber = `Slot ${i}`;
+        placeholders.push(`($${paramIndex}, $${paramIndex + 1})`);
+        slotValues.push(facility.id, slotNumber);
+        paramIndex += 2;
+      }
+
+      const slotQuery = `
+        INSERT INTO parking_slots (facility_id, slot_number)
+        VALUES ${placeholders.join(', ')}
+      `;
+      await client.query(slotQuery, slotValues);
+    }
+
+    await client.query('COMMIT');
+    return facility;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
+/**
+ * Updates an existing facility.
+ */
+exports.updateFacility = async (facilityId, ownerId, data) => {
+  const fields = [];
+  const values = [];
+  let paramIndex = 1;
+
+  for (const [key, value] of Object.entries(data)) {
+    if (value !== undefined) {
+      fields.push(`${key} = $${paramIndex}`);
+      values.push(value);
+      paramIndex++;
+    }
+  }
+
+  if (fields.length === 0) return null;
+
+  values.push(facilityId, ownerId);
+
+  const query = `
+    UPDATE parking_facilities 
+    SET ${fields.join(', ')}
+    WHERE id = $${paramIndex - 2} AND owner_id = $${paramIndex - 1}
+    RETURNING *
+  `;
+
+  const { rows } = await db.query(query, values);
+  return rows[0] || null;
+};
+
+/**
+ * Finds all active facilities, optionally filtering by those with available slots.
+ */
+exports.findFacilities = async (requireAvailable = false) => {
+  let query = `
+    SELECT id, name, address, district, plot_number, latitude, longitude, total_slots, available_slots, hourly_rate 
+    FROM parking_facilities 
+    WHERE is_active = true
+  `;
+
+  if (requireAvailable) {
+    query += ` AND available_slots > 0`;
+  }
+
+  const { rows } = await db.query(query);
+  return rows;
+};
+
+/**
+ * Finds all facilities for a specific owner.
+ */
+exports.findFacilitiesByOwnerId = async (ownerId) => {
+  const query = `
+    SELECT id, name, address, district, plot_number, latitude, longitude, total_slots, available_slots, hourly_rate, is_active 
+    FROM parking_facilities 
+    WHERE owner_id = $1
+    ORDER BY created_at DESC
+  `;
+  const { rows } = await db.query(query, [ownerId]);
+  return rows;
+};
+
+/**
+ * Finds a facility by ID.
+ */
+exports.findFacilityById = async (facilityId) => {
+  const query = `SELECT * FROM parking_facilities WHERE id = $1`;
+  const { rows } = await db.query(query, [facilityId]);
+  return rows[0] || null;
+};
+
+/**
+ * Gets all slots for a specific facility.
+ */
+exports.getFacilitySlots = async (facilityId) => {
+  const query = `
+    SELECT id, slot_number, is_occupied, vehicle_plate, occupied_since 
+    FROM parking_slots 
+    WHERE facility_id = $1 
+    ORDER BY slot_number
+  `;
+  const { rows } = await db.query(query, [facilityId]);
+  return rows;
+};
+
+/**
+ * Gets a specific slot by ID.
+ */
+exports.findSlotById = async (slotId) => {
+  const query = `SELECT * FROM parking_slots WHERE id = $1`;
+  const { rows } = await db.query(query, [slotId]);
+  return rows[0] || null;
+};
+
+/**
+ * Updates a slot status and adjusts the facility's available_slots count atomically.
+ */
+exports.updateSlotStatus = async (slotId, facilityId, isOccupied, vehiclePlate) => {
+  const client = await db.pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // 1. Get current slot state to see if it's actually changing
+    const checkQuery = `SELECT is_occupied FROM parking_slots WHERE id = $1 FOR UPDATE`;
+    const checkRes = await client.query(checkQuery, [slotId]);
+    if (checkRes.rowCount === 0) throw new Error('Slot not found');
+
+    const wasOccupied = checkRes.rows[0].is_occupied;
+
+    if (wasOccupied !== isOccupied) {
+      // 2. Update the slot
+      const updateSlotQuery = `
+        UPDATE parking_slots 
+        SET is_occupied = $1, 
+            vehicle_plate = $2, 
+            occupied_since = $3 
+        WHERE id = $4
+        RETURNING *
+      `;
+      const occupiedSince = isOccupied ? new Date() : null;
+      const slotRes = await client.query(updateSlotQuery, [isOccupied, isOccupied ? vehiclePlate : null, occupiedSince, slotId]);
+
+      // 3. Update the facility's available_slots count
+      const modifier = isOccupied ? -1 : 1;
+      const updateFacilityQuery = `
+        UPDATE parking_facilities 
+        SET available_slots = available_slots + $1 
+        WHERE id = $2
+      `;
+      await client.query(updateFacilityQuery, [modifier, facilityId]);
+
+      await client.query('COMMIT');
+
+      // Emit real-time events
+      try {
+        const io = require('../../utils/socket').getIO();
+        io.to(`facility_${facilityId}`).emit('slot_updated', slotRes.rows[0]);
+        // We can optionally fetch the new available_slots count to emit, or just let clients know a change happened.
+        io.to(`facility_${facilityId}`).emit('facility_updated', { facilityId, modifier });
+      } catch (err) {
+        // Socket might not be initialized yet during tests
+      }
+
+      return slotRes.rows[0];
+    } else {
+      // No change in status, just update plate if provided
+      const updateSlotQuery = `
+        UPDATE parking_slots 
+        SET vehicle_plate = COALESCE($1, vehicle_plate)
+        WHERE id = $2
+        RETURNING *
+      `;
+      const slotRes = await client.query(updateSlotQuery, [vehiclePlate, slotId]);
+      await client.query('COMMIT');
+      return slotRes.rows[0];
+    }
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
+/**
+ * Adds an extra slot to an existing facility.
+ */
+exports.addExtraSlot = async (facilityId, type = 'car') => {
+  const client = await db.pool.connect();
+  try {
+    await client.query('BEGIN');
+    
+    // Increment total_slots and available_slots
+    const updateFacilityQuery = `
+      UPDATE parking_facilities 
+      SET total_slots = total_slots + 1,
+          available_slots = available_slots + 1
+      WHERE id = $1
+      RETURNING total_slots
+    `;
+    const facilityRes = await client.query(updateFacilityQuery, [facilityId]);
+    const newTotalSlots = facilityRes.rows[0].total_slots;
+    
+    // Insert new slot
+    const prefix = type === 'bike' ? 'Bike' : 'Slot';
+    const slotNumber = `${prefix} ${newTotalSlots}`;
+    const insertSlotQuery = `
+      INSERT INTO parking_slots (facility_id, slot_number)
+      VALUES ($1, $2)
+      RETURNING *
+    `;
+    const slotRes = await client.query(insertSlotQuery, [facilityId, slotNumber]);
+    
+    await client.query('COMMIT');
+
+    // Emit facility_updated and slot_added
+    try {
+      const io = require('../../utils/socket').getIO();
+      io.to(`facility_${facilityId}`).emit('facility_updated', { facilityId, modifier: 1 });
+      io.to(`facility_${facilityId}`).emit('slot_added', slotRes.rows[0]);
+    } catch (err) {
+      // Socket might not be initialized
+    }
+
+    return slotRes.rows[0];
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+};
