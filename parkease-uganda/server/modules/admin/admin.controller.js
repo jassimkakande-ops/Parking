@@ -14,9 +14,9 @@ exports.updateUserStatus = async (req, res, next) => {
   try {
     const userId = req.params.id;
     const { is_active } = req.body;
-    
+
     const user = await adminService.toggleUserStatus(userId, is_active);
-    
+
     res.status(200).json(successResponse(user, `User status updated to ${is_active ? 'active' : 'inactive'}`));
   } catch (error) {
     next(error);

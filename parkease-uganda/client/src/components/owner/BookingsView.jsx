@@ -27,7 +27,7 @@ const BookingsView = ({ facility }) => {
     try {
       setProcessingId(bookingId);
       const res = await api.post(`/bookings/${bookingId}/checkout`, { force_cash: forceCash });
-      
+
       if (res.data.data.overstayFee > 0 && !forceCash) {
         const confirmCash = window.confirm(`This booking has an overstay fee of ${res.data.data.overstayFee} UGX.\n\nDid you collect this payment in cash? Click OK to force checkout.`);
         if (confirmCash) {
@@ -50,8 +50,8 @@ const BookingsView = ({ facility }) => {
 
   return (
     <div className="animate-fade-in" style={{ padding: '24px', background: 'var(--surface-color)', borderRadius: '16px', border: '1px solid var(--border-color)', minHeight: '400px' }}>
-      <h2 style={{ marginBottom: '24px', fontSize: '1.5rem' }}>Allotment Report (Bookings)</h2>
-      
+      <h2 style={{ marginBottom: '24px', fontSize: '1.5rem' }}>Arrangement Report (Bookings)</h2>
+
       {bookings.length === 0 ? (
         <p style={{ color: 'var(--text-muted)' }}>No bookings found for this facility.</p>
       ) : (
@@ -72,12 +72,12 @@ const BookingsView = ({ facility }) => {
             <tbody>
               {bookings.map(booking => {
                 const isOngoing = booking.status === 'active' || booking.status === 'confirmed';
-                
+
                 // Calculate overstay
                 let overstayText = 'None';
                 const endTime = new Date(booking.end_time);
                 const compareTime = booking.actual_departure_time ? new Date(booking.actual_departure_time) : (isOngoing ? new Date() : null);
-                
+
                 if (compareTime && compareTime > endTime) {
                   const overstayMs = compareTime.getTime() - endTime.getTime();
                   const hours = Math.floor(overstayMs / (1000 * 60 * 60));
@@ -86,57 +86,58 @@ const BookingsView = ({ facility }) => {
                 }
 
                 return (
-                <tr key={booking.id} style={{ borderBottom: '1px solid var(--border-color)', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background='var(--bg-color)'} onMouseLeave={e => e.currentTarget.style.background='transparent'}>
-                  <td style={{ padding: '12px 16px' }}>{booking.driver_name} <br/><small style={{ color: 'var(--text-muted)' }}>{booking.phone_number}</small></td>
-                  <td style={{ padding: '12px 16px' }}>{booking.slot_number || 'Auto'}</td>
-                  <td style={{ padding: '12px 16px' }}>
-                    {new Date(booking.start_time).toLocaleDateString()} <br/>
-                    {new Date(booking.start_time).toLocaleTimeString()}
-                  </td>
-                  <td style={{ padding: '12px 16px' }}>
-                    {booking.end_time ? (
-                      <>
-                        {new Date(booking.end_time).toLocaleDateString()} <br/>
-                        {new Date(booking.end_time).toLocaleTimeString()}
-                      </>
-                    ) : (
-                      <span style={{ color: 'var(--text-muted)' }}>N/A</span>
-                    )}
-                  </td>
-                  <td style={{ padding: '12px 16px' }}>
-                    {booking.actual_departure_time ? (
-                      <>
-                        {new Date(booking.actual_departure_time).toLocaleDateString()} <br/>
-                        {new Date(booking.actual_departure_time).toLocaleTimeString()}
-                      </>
-                    ) : (
-                      <span style={{ color: 'var(--text-muted)' }}>-</span>
-                    )}
-                  </td>
-                  <td style={{ padding: '12px 16px' }}>
-                    <span style={{ color: overstayText !== 'None' ? 'var(--danger)' : 'inherit' }}>
-                      {overstayText}
-                    </span>
-                  </td>
-                  <td style={{ padding: '12px 16px' }}>
-                    <span className={`badge ${isOngoing ? 'badge-success' : booking.status === 'pending' ? 'badge-warning' : 'badge-danger'}`}>
-                      {booking.status}
-                    </span>
-                  </td>
-                  <td style={{ padding: '12px 16px' }}>
-                    {booking.status === 'active' && (
-                      <button 
-                        className="btn-primary" 
-                        style={{ padding: '6px 12px', fontSize: '0.85rem' }}
-                        onClick={() => handleCheckout(booking.id)}
-                        disabled={processingId === booking.id}
-                      >
-                        {processingId === booking.id ? 'Processing...' : 'Check Out'}
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              )})}
+                  <tr key={booking.id} style={{ borderBottom: '1px solid var(--border-color)', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-color)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                    <td style={{ padding: '12px 16px' }}>{booking.driver_name} <br /><small style={{ color: 'var(--text-muted)' }}>{booking.phone_number}</small></td>
+                    <td style={{ padding: '12px 16px' }}>{booking.slot_number || 'Auto'}</td>
+                    <td style={{ padding: '12px 16px' }}>
+                      {new Date(booking.start_time).toLocaleDateString()} <br />
+                      {new Date(booking.start_time).toLocaleTimeString()}
+                    </td>
+                    <td style={{ padding: '12px 16px' }}>
+                      {booking.end_time ? (
+                        <>
+                          {new Date(booking.end_time).toLocaleDateString()} <br />
+                          {new Date(booking.end_time).toLocaleTimeString()}
+                        </>
+                      ) : (
+                        <span style={{ color: 'var(--text-muted)' }}>N/A</span>
+                      )}
+                    </td>
+                    <td style={{ padding: '12px 16px' }}>
+                      {booking.actual_departure_time ? (
+                        <>
+                          {new Date(booking.actual_departure_time).toLocaleDateString()} <br />
+                          {new Date(booking.actual_departure_time).toLocaleTimeString()}
+                        </>
+                      ) : (
+                        <span style={{ color: 'var(--text-muted)' }}>-</span>
+                      )}
+                    </td>
+                    <td style={{ padding: '12px 16px' }}>
+                      <span style={{ color: overstayText !== 'None' ? 'var(--danger)' : 'inherit' }}>
+                        {overstayText}
+                      </span>
+                    </td>
+                    <td style={{ padding: '12px 16px' }}>
+                      <span className={`badge ${isOngoing ? 'badge-success' : booking.status === 'pending' ? 'badge-warning' : 'badge-danger'}`}>
+                        {booking.status}
+                      </span>
+                    </td>
+                    <td style={{ padding: '12px 16px' }}>
+                      {booking.status === 'active' && (
+                        <button
+                          className="btn-primary"
+                          style={{ padding: '6px 12px', fontSize: '0.85rem' }}
+                          onClick={() => handleCheckout(booking.id)}
+                          disabled={processingId === booking.id}
+                        >
+                          {processingId === booking.id ? 'Processing...' : 'Check Out'}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>

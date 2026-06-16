@@ -20,3 +20,4 @@ const ProtectedRoute = ({ allowedRoles }) => {
 };
 
 export default ProtectedRoute;
+//This specificies which user accesses which dashboard.

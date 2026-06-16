@@ -26,36 +26,36 @@ router.get('/facilities/:id', parkingController.getFacilityDetails);
 
 // POST /api/v1/facilities
 router.post(
-  '/facilities', 
-  authenticate, 
-  authorize('owner', 'admin'), 
-  validate(createFacilityValidation), 
+  '/facilities',
+  authenticate,
+  authorize('owner', 'admin'),
+  validate(createFacilityValidation),
   parkingController.createFacility
 );
 
 // PATCH /api/v1/facilities/:id
 router.patch(
-  '/facilities/:id', 
-  authenticate, 
-  authorize('owner', 'admin'), 
-  validate(updateFacilityValidation), 
+  '/facilities/:id',
+  authenticate,
+  authorize('owner', 'admin'),
+  validate(updateFacilityValidation),
   parkingController.updateFacility
 );
 
 // GET /api/v1/facilities/:id/slots
 router.get(
-  '/facilities/:id/slots', 
-  authenticate, 
-  authorize('owner', 'admin'), 
+  '/facilities/:id/slots',
+  authenticate,
+  authorize('owner', 'admin'),
   parkingController.getSlotsForOwner
 );
 
 // PATCH /api/v1/slots/:id
 router.patch(
-  '/slots/:id', 
-  authenticate, 
+  '/slots/:id',
+  authenticate,
   authorize('owner', 'admin'), // Also 'attendant' could be added here in the future
-  validate(updateSlotValidation), 
+  validate(updateSlotValidation),
   parkingController.updateSlotStatus
 );
 
@@ -68,3 +68,5 @@ router.post(
 );
 
 module.exports = router;
+
+//This file contains parking routes.

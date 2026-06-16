@@ -30,7 +30,7 @@ exports.toggleUserStatus = async (userId, isActive) => {
  */
 exports.getOccupancyReports = async () => {
   const stats = await adminRepository.getOccupancyStats();
-  
+
   // Calculate percentage
   let occupancyRate = 0;
   if (stats.total_slots_overall > 0) {
@@ -67,9 +67,9 @@ exports.getRevenueReports = async () => {
  */
 exports.getSystemActivity = async () => {
   const [bookings, payments, users] = await Promise.all([
-    adminRepository.getRecentBookings(20),
-    adminRepository.getRecentPayments(20),
-    adminRepository.getRecentUsers(20)
+    adminRepository.getRecentBookings(50),
+    adminRepository.getRecentPayments(50),
+    adminRepository.getRecentUsers(50)
   ]);
 
   // Transform and combine into a single feed

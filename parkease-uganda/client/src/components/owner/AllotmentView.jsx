@@ -48,7 +48,7 @@ const AllotmentView = ({ facility }) => {
         // Wait, does the API expose an endpoint for this?
         // In parking.routes.js: GET /api/v1/facilities/:id includes slots if populated, or we fetch them separately.
         const res = await api.get(`/facilities/${facility.id}`);
-        
+
         const dbSlots = res.data.data.slots || [];
         setSlots(dbSlots);
       } catch (err) {
@@ -85,7 +85,7 @@ const AllotmentView = ({ facility }) => {
   }, [facility]);
 
   if (!facility) return <div>Please select a facility</div>;
-  if (loading) return <div>Loading allotment map...</div>;
+  if (loading) return <div>Loading arrangement...</div>;
   if (error) return <div style={{ color: 'var(--danger)' }}>{error}</div>;
 
   const handleAddSlot = async () => {
@@ -112,26 +112,26 @@ const AllotmentView = ({ facility }) => {
     <div className="animate-fade-in" style={{ padding: '24px', background: 'var(--surface-color)', borderRadius: '16px', border: '1px solid var(--border-color)', minHeight: '400px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px' }}>
         <div style={{ display: 'flex', gap: '16px' }}>
-          <button 
+          <button
             onClick={() => setActiveTab('car')}
-            style={{ 
-              display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', 
-              background: activeTab === 'car' ? 'var(--primary)' : 'var(--bg-color)', 
-              color: activeTab === 'car' ? '#fff' : 'var(--text-muted)', 
-              borderRadius: '8px', 
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px',
+              background: activeTab === 'car' ? 'var(--primary)' : 'var(--bg-color)',
+              color: activeTab === 'car' ? '#fff' : 'var(--text-muted)',
+              borderRadius: '8px',
               fontWeight: 'bold',
               border: activeTab === 'car' ? 'none' : '1px solid var(--border-color)',
               cursor: 'pointer'
             }}>
             <AerialCarIcon size={18} isOccupied={activeTab === 'car'} /> CAR
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('bike')}
-            style={{ 
-              display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', 
-              background: activeTab === 'bike' ? 'var(--primary)' : 'var(--bg-color)', 
-              color: activeTab === 'bike' ? '#fff' : 'var(--text-muted)', 
-              borderRadius: '8px', 
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px',
+              background: activeTab === 'bike' ? 'var(--primary)' : 'var(--bg-color)',
+              color: activeTab === 'bike' ? '#fff' : 'var(--text-muted)',
+              borderRadius: '8px',
               fontWeight: 'bold',
               border: activeTab === 'bike' ? 'none' : '1px solid var(--border-color)',
               cursor: 'pointer'
@@ -139,9 +139,9 @@ const AllotmentView = ({ facility }) => {
             <AerialBikeIcon size={18} isOccupied={activeTab === 'bike'} /> BIKE
           </button>
         </div>
-        <button 
-          className="btn-primary" 
-          onClick={handleAddSlot} 
+        <button
+          className="btn-primary"
+          onClick={handleAddSlot}
           disabled={isAddingSlot}
           style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
         >
@@ -150,18 +150,18 @@ const AllotmentView = ({ facility }) => {
         </button>
       </div>
 
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', 
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
         gap: '24px',
         alignItems: 'start'
       }}>
         {displayedSlots.map((slot) => (
-          <div 
-            key={slot.id} 
-            style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
+          <div
+            key={slot.id}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
               justifyContent: 'space-between',
               padding: '24px 32px',
               border: slot.is_occupied ? '2px solid var(--primary)' : '2px dashed var(--border-color)',
@@ -171,10 +171,10 @@ const AllotmentView = ({ facility }) => {
               minHeight: '120px'
             }}
           >
-            <div style={{ 
-              background: slot.is_occupied ? 'var(--primary)' : 'var(--bg-color)', 
+            <div style={{
+              background: slot.is_occupied ? 'var(--primary)' : 'var(--bg-color)',
               color: slot.is_occupied ? '#fff' : 'var(--text-muted)',
-              padding: '8px 16px', 
+              padding: '8px 16px',
               borderRadius: '6px',
               fontSize: '1rem',
               fontWeight: 'bold',
@@ -182,7 +182,7 @@ const AllotmentView = ({ facility }) => {
             }}>
               {slot.is_occupied ? (slot.vehicle_plate || 'OCC') : slot.slot_number}
             </div>
-            
+
             <div style={{ color: slot.is_occupied ? 'var(--primary)' : 'var(--border-color)' }}>
               {activeTab === 'bike' ? (
                 <AerialBikeIcon size={56} isOccupied={slot.is_occupied} />

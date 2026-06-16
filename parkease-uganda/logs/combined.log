@@ -386,3 +386,24 @@
 {"timestamp":"2026-06-15T12:51:12.112Z","level":"info","message":"Server is running on port 5000","module":"index"}
 {"timestamp":"2026-06-15T12:57:05.667Z","level":"info","message":"Client connected: 4HuX0DVSICaDUhM-AAAB","module":"socket"}
 {"timestamp":"2026-06-15T12:57:06.313Z","level":"info","message":"Client connected: G5i6Ji-WNyLGYtVOAAAD","module":"socket"}
+{"timestamp":"2026-06-15T17:37:07.202Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T17:37:07.231Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T17:37:34.412Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-15T17:37:34.451Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-15T17:37:39.092Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-15T17:38:47.639Z","level":"info","message":"Client connected: udjgVl7Tf0MCo7jSAAAB","module":"socket"}
+{"timestamp":"2026-06-15T17:38:47.706Z","level":"info","message":"Socket udjgVl7Tf0MCo7jSAAAB joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T17:39:17.124Z","level":"info","message":"Client disconnected: udjgVl7Tf0MCo7jSAAAB","module":"socket"}
+{"timestamp":"2026-06-15T17:41:05.652Z","level":"info","message":"Client connected: xxrjcOv5qDCkwSy2AAAD","module":"socket"}
+{"timestamp":"2026-06-15T17:41:05.680Z","level":"info","message":"Socket xxrjcOv5qDCkwSy2AAAD joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T17:41:14.842Z","level":"info","message":"Client disconnected: xxrjcOv5qDCkwSy2AAAD","module":"socket"}
+{"timestamp":"2026-06-15T17:41:30.760Z","level":"error","message":"Invalid email or password.","module":"errorHandler","stack":"Error: Invalid email or password.\n    at exports.loginUser (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.service.js:66:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.login (D:\\Parking\\parkease-uganda\\server\\modules\\auth\\auth.controller.js:21:20)","path":"/api/v1/auth/login","method":"POST"}
+{"timestamp":"2026-06-15T17:42:02.464Z","level":"info","message":"Client connected: vPySQGwB-MI6NPbmAAAF","module":"socket"}
+{"timestamp":"2026-06-15T17:42:02.760Z","level":"info","message":"Client connected: aXrXOzqYMfBLrQwQAAAH","module":"socket"}
+{"timestamp":"2026-06-15T17:42:02.781Z","level":"info","message":"Socket aXrXOzqYMfBLrQwQAAAH joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-15T17:43:04.998Z","level":"info","message":"Client disconnected: vPySQGwB-MI6NPbmAAAF","module":"socket"}
+{"timestamp":"2026-06-15T17:43:47.089Z","level":"info","message":"Client connected: 8Zw1-5NV81TEKxG6AAAJ","module":"socket"}
+{"timestamp":"2026-06-15T17:43:47.117Z","level":"info","message":"Socket 8Zw1-5NV81TEKxG6AAAJ joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-16T07:21:09.100Z","level":"error","message":"Failed to connect to the database","module":"db","stack":"Error: getaddrinfo ENOTFOUND aws-0-eu-west-1.pooler.supabase.com\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async testConnection (D:\\Parking\\parkease-uganda\\server\\config\\db.js:18:20)\n    at async startServer (D:\\Parking\\parkease-uganda\\server\\index.js:12:3)","error":"getaddrinfo ENOTFOUND aws-0-eu-west-1.pooler.supabase.com"}
+{"timestamp":"2026-06-16T08:23:47.066Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-16T08:23:47.084Z","level":"info","message":"Server is running on port 5000","module":"index"}

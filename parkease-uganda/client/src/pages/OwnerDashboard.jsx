@@ -13,7 +13,7 @@ const OwnerDashboard = () => {
   const [selectedFacilityId, setSelectedFacilityId] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  
+
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isAddFacilityOpen, setIsAddFacilityOpen] = useState(false);
 
@@ -109,7 +109,7 @@ const OwnerDashboard = () => {
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
-    { id: 'allotment', label: 'Allotment', icon: <Grip size={20} /> },
+    { id: 'allotment', label: 'Arrangement', icon: <Grip size={20} /> },
     { id: 'users', label: 'Users', icon: <Users size={20} /> },
     { id: 'payments', label: 'Payments', icon: <CreditCard size={20} /> },
     { id: 'report', label: 'Report', icon: <FileText size={20} /> },
@@ -118,12 +118,12 @@ const OwnerDashboard = () => {
   return (
     <div style={{ display: 'flex', height: 'calc(100vh - 74px)', width: '100vw', overflow: 'hidden', background: 'var(--bg-color)' }}>
       {/* Sidebar */}
-      <div style={{ 
-        width: '260px', 
-        background: 'var(--surface-color)', 
+      <div style={{
+        width: '260px',
+        background: 'var(--surface-color)',
         color: 'var(--text-main)',
         borderRight: '1px solid var(--border-color)',
-        display: 'flex', 
+        display: 'flex',
         flexDirection: 'column',
         padding: '24px 0',
         flexShrink: 0,
@@ -197,9 +197,9 @@ const OwnerDashboard = () => {
       {/* Main Content Area */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         {/* Top Header */}
-        <header style={{ 
-          height: '80px', 
-          borderBottom: '1px solid var(--border-color)', 
+        <header style={{
+          height: '80px',
+          borderBottom: '1px solid var(--border-color)',
           background: 'var(--surface-color)',
           display: 'flex',
           alignItems: 'center',
@@ -211,8 +211,8 @@ const OwnerDashboard = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <MapPin size={20} color="var(--primary)" />
             {facilities.length > 0 ? (
-              <select 
-                value={selectedFacilityId} 
+              <select
+                value={selectedFacilityId}
                 onChange={(e) => setSelectedFacilityId(e.target.value)}
                 style={{
                   padding: '8px 32px 8px 12px',
@@ -239,8 +239,8 @@ const OwnerDashboard = () => {
 
           {/* Right: Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <button 
-              className="btn-primary" 
+            <button
+              className="btn-primary"
               style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
               onClick={() => setIsAddFacilityOpen(true)}
             >
@@ -256,15 +256,15 @@ const OwnerDashboard = () => {
               {error}
             </div>
           )}
-          
+
           {renderContent()}
         </main>
       </div>
 
       {/* Slide-out Panel Modal for Adding Facility */}
-      <AddFacilityModal 
-        isOpen={isAddFacilityOpen} 
-        onClose={() => setIsAddFacilityOpen(false)} 
+      <AddFacilityModal
+        isOpen={isAddFacilityOpen}
+        onClose={() => setIsAddFacilityOpen(false)}
         onFacilityCreated={fetchFacilities}
       />
     </div>

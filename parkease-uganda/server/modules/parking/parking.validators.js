@@ -27,3 +27,4 @@ exports.updateSlotValidation = [
   body('is_occupied').isBoolean().withMessage('is_occupied must be a boolean.'),
   body('vehicle_plate').optional({ nullable: true }).trim().isLength({ max: 50 })
 ];
+//Validator for parking form input.

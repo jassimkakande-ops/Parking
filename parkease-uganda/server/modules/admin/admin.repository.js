@@ -63,7 +63,7 @@ exports.getPaymentRecords = async () => {
 /**
  * Retrieves recent bookings for system activity
  */
-exports.getRecentBookings = async (limit = 20) => {
+exports.getRecentBookings = async (limit = 1000) => {
   const query = `
     SELECT b.id, b.status, b.total_amount, b.created_at, b.start_time, b.end_time,
            u.full_name as driver_name, f.name as facility_name
@@ -80,7 +80,7 @@ exports.getRecentBookings = async (limit = 20) => {
 /**
  * Retrieves recent payments for system activity
  */
-exports.getRecentPayments = async (limit = 20) => {
+exports.getRecentPayments = async (limit = 1000) => {
   const query = `
     SELECT p.id, p.amount, p.status, p.payment_method, p.initiated_at, p.completed_at,
            u.full_name as driver_name
@@ -96,7 +96,7 @@ exports.getRecentPayments = async (limit = 20) => {
 /**
  * Retrieves recent user registrations for system activity
  */
-exports.getRecentUsers = async (limit = 20) => {
+exports.getRecentUsers = async (limit = 1000) => {
   const query = `
     SELECT id, full_name, email, role, created_at
     FROM users
