@@ -34,9 +34,10 @@ router.patch(
   adminController.updateUserRole
 );
 
-// Reports
-router.get('/reports/occupancy', adminController.getOccupancyReport);
-router.get('/reports/revenue', adminController.getRevenueReport);
+// System Reports & Analytics
+router.get('/reports/occupancy', adminController.getOccupancyReports);
+router.get('/reports/revenue', adminController.getRevenueReports);
+router.get('/reports/analytics', adminController.getAnalyticsTrend);
 
 // System Activity
 router.get('/activity', adminController.getSystemActivity);

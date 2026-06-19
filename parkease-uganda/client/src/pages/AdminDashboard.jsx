@@ -40,6 +40,7 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [activity, setActivity] = useState([]);
   const [facilities, setFacilities] = useState([]);
+  const [analytics, setAnalytics] = useState(null);
   const [selectedFacility, setSelectedFacility] = useState(null);
   
   const [loading, setLoading] = useState(true);
@@ -49,17 +50,19 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [occRes, revRes, usersRes, actRes, facRes] = await Promise.all([
+      const [occRes, revRes, usersRes, actRes, facRes, analyticsRes] = await Promise.all([
         api.get('/admin/reports/occupancy'),
         api.get('/admin/reports/revenue'),
         api.get('/admin/users'),
         api.get('/admin/activity'),
-        api.get('/facilities')
+        api.get('/facilities'),
+        api.get('/admin/reports/analytics')
       ]);
       setOccupancy(occRes.data.data);
       setRevenue(revRes.data.data);
       setUsers(usersRes.data.data);
       setActivity(actRes.data.data);
+      setAnalytics(analyticsRes.data.data);
       
       const facData = facRes.data.data;
       setFacilities(facData);
@@ -146,8 +149,107 @@ const AdminDashboard = () => {
                 <h3 style={{ fontSize: '2rem' }}>{users.length}</h3>
               </div>
             </div>
+
+            {/* --- ANALYTICS GRAPHS --- */}
+            {analytics && (
+              <div style={{ marginTop: '32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '24px' }}>
+                
+                {/* 1. 7-Day Revenue Trend (Bar Chart) */}
+                <div style={{ padding: '24px', background: 'var(--bg-color)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                  <h3 style={{ marginBottom: '24px', fontSize: '1.1rem', color: 'var(--text-muted)' }}>7-Day Revenue Trend (UGX)</h3>
+                  <div style={{ height: '200px', display: 'flex', alignItems: 'flex-end', gap: '12px', paddingTop: '20px' }}>
+                    {analytics.trend.map((day, idx) => {
+                      const maxRev = Math.max(...analytics.trend.map(d => Number(d.revenue))) || 1;
+                      const heightPct = (Number(day.revenue) / maxRev) * 100;
+                      return (
+                        <div key={idx} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} title={Number(day.revenue).toLocaleString()}>{day.revenue > 0 ? (day.revenue / 1000).toFixed(0) + 'k' : ''}</div>
+                          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'flex-end', minHeight: '150px' }}>
+                            <div style={{ width: '100%', height: `${Math.max(heightPct, 2)}%`, background: 'var(--primary)', borderRadius: '4px 4px 0 0', transition: 'height 0.5s ease' }}></div>
+                          </div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{day.label.split(' ')[0]}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 2. User Roles Breakdown */}
+                <div style={{ padding: '24px', background: 'var(--bg-color)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                  <h3 style={{ marginBottom: '24px', fontSize: '1.1rem', color: 'var(--text-muted)' }}>User Distribution</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', justifyContent: 'center', height: '200px' }}>
+                    {analytics.roles.map(r => {
+                      const totalUsers = users.length || 1;
+                      const pct = (Number(r.count) / totalUsers) * 100;
+                      return (
+                        <div key={r.role}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.9rem' }}>
+                            <span style={{ textTransform: 'capitalize' }}>{r.role}s</span>
+                            <span>{r.count} ({pct.toFixed(1)}%)</span>
+                          </div>
+                          <div style={{ width: '100%', height: '8px', background: 'var(--surface-color)', borderRadius: '4px', overflow: 'hidden' }}>
+                            <div style={{ width: `${pct}%`, height: '100%', background: 'var(--warning)' }}></div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 3. Booking Status Split */}
+                <div style={{ padding: '24px', background: 'var(--bg-color)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                  <h3 style={{ marginBottom: '24px', fontSize: '1.1rem', color: 'var(--text-muted)' }}>Booking Status Distribution</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', justifyContent: 'center', height: '200px' }}>
+                    {analytics.bookingStatuses.map(s => {
+                      const totalBookings = analytics.bookingStatuses.reduce((acc, curr) => acc + Number(curr.count), 0) || 1;
+                      const pct = (Number(s.count) / totalBookings) * 100;
+                      let color = 'var(--primary)';
+                      if (s.status === 'completed') color = 'var(--success)';
+                      if (s.status === 'pending') color = 'var(--warning)';
+                      if (s.status === 'cancelled') color = 'var(--danger)';
+                      return (
+                        <div key={s.status}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.9rem' }}>
+                            <span style={{ textTransform: 'capitalize' }}>{s.status}</span>
+                            <span>{s.count}</span>
+                          </div>
+                          <div style={{ width: '100%', height: '8px', background: 'var(--surface-color)', borderRadius: '4px', overflow: 'hidden' }}>
+                            <div style={{ width: `${pct}%`, height: '100%', background: color }}></div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 4. Payment Methods */}
+                <div style={{ padding: '24px', background: 'var(--bg-color)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                  <h3 style={{ marginBottom: '24px', fontSize: '1.1rem', color: 'var(--text-muted)' }}>Payment Methods (Completed)</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', justifyContent: 'center', height: '200px' }}>
+                    {analytics.paymentMethods.length === 0 ? <p style={{ color: 'var(--text-muted)' }}>No completed payments yet.</p> : null}
+                    {analytics.paymentMethods.map(pm => {
+                      const totalPayments = analytics.paymentMethods.reduce((acc, curr) => acc + Number(curr.count), 0) || 1;
+                      const pct = (Number(pm.count) / totalPayments) * 100;
+                      return (
+                        <div key={pm.payment_method}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.9rem' }}>
+                            <span style={{ textTransform: 'capitalize' }}>{pm.payment_method.replace('_', ' ')}</span>
+                            <span>{pm.count} txns (UGX {Number(pm.total).toLocaleString()})</span>
+                          </div>
+                          <div style={{ width: '100%', height: '8px', background: 'var(--surface-color)', borderRadius: '4px', overflow: 'hidden' }}>
+                            <div style={{ width: `${pct}%`, height: '100%', background: 'var(--success)' }}></div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+              </div>
+            )}
           </div>
         );
+
       case 'users':
         return (
           <div className="animate-fade-in">

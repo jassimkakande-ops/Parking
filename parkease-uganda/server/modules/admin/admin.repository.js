@@ -106,3 +106,71 @@ exports.getRecentUsers = async (limit = 1000) => {
   const { rows } = await db.query(query, [limit]);
   return rows;
 };
+
+/**
+ * Returns last 7 days of daily bookings + revenue for trend charts.
+ * Also returns user role breakdown, booking status counts, and top facilities.
+ */
+exports.getAnalyticsTrend = async () => {
+  const [trendRows, roleRows, statusRows, facilityRows, paymentMethodRows] = await Promise.all([
+    // 7-day trend
+    db.query(`
+      SELECT
+        TO_CHAR(day, 'DD Mon') AS label,
+        COALESCE(b.bookings, 0) AS bookings,
+        COALESCE(p.revenue, 0) AS revenue
+      FROM generate_series(
+        CURRENT_DATE - INTERVAL '6 days', CURRENT_DATE, '1 day'
+      ) AS day
+      LEFT JOIN (
+        SELECT DATE(created_at) AS d, COUNT(*) AS bookings
+        FROM bookings
+        GROUP BY d
+      ) b ON b.d = day
+      LEFT JOIN (
+        SELECT DATE(completed_at) AS d, SUM(amount) AS revenue
+        FROM payments WHERE status = 'completed'
+        GROUP BY d
+      ) p ON p.d = day
+      ORDER BY day ASC
+    `),
+    // Role breakdown
+    db.query(`
+      SELECT role, COUNT(*) as count
+      FROM users
+      GROUP BY role
+      ORDER BY count DESC
+    `),
+    // Booking status breakdown
+    db.query(`
+      SELECT status, COUNT(*) as count
+      FROM bookings
+      GROUP BY status
+      ORDER BY count DESC
+    `),
+    // Top 5 facilities by booking count
+    db.query(`
+      SELECT f.name, COUNT(b.id) as bookings, f.available_slots, f.total_slots
+      FROM parking_facilities f
+      LEFT JOIN bookings b ON b.facility_id = f.id
+      GROUP BY f.id
+      ORDER BY bookings DESC
+      LIMIT 5
+    `),
+    // Payment method breakdown
+    db.query(`
+      SELECT payment_method, COUNT(*) as count, SUM(amount) as total
+      FROM payments
+      WHERE status = 'completed'
+      GROUP BY payment_method
+    `),
+  ]);
+
+  return {
+    trend: trendRows.rows,
+    roles: roleRows.rows,
+    bookingStatuses: statusRows.rows,
+    topFacilities: facilityRows.rows,
+    paymentMethods: paymentMethodRows.rows,
+  };
+};

@@ -66,6 +66,10 @@ exports.updateUserRole = async (userId, role) => {
   return updatedUser;
 };
 
+exports.getAnalyticsTrend = async () => {
+  return await adminRepository.getAnalyticsTrend();
+};
+
 /**
  * Generates occupancy reports
  */

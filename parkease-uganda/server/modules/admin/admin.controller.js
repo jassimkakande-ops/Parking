@@ -44,7 +44,7 @@ exports.updateUserRole = async (req, res, next) => {
   }
 };
 
-exports.getOccupancyReport = async (req, res, next) => {
+exports.getOccupancyReports = async (req, res, next) => {
   try {
     const report = await adminService.getOccupancyReports();
     res.status(200).json(successResponse(report));
@@ -53,10 +53,19 @@ exports.getOccupancyReport = async (req, res, next) => {
   }
 };
 
-exports.getRevenueReport = async (req, res, next) => {
+exports.getRevenueReports = async (req, res, next) => {
   try {
     const report = await adminService.getRevenueReports();
     res.status(200).json(successResponse(report));
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getAnalyticsTrend = async (req, res, next) => {
+  try {
+    const data = await adminService.getAnalyticsTrend();
+    res.status(200).json(successResponse(data));
   } catch (error) {
     next(error);
   }
