@@ -37,6 +37,17 @@ exports.getFacilityDetails = async (facilityId) => {
   return { ...facility, slots };
 };
 
+exports.getFacilityAvailability = async (facilityId, startTime, endTime) => {
+  const facility = await parkingRepository.findFacilityById(facilityId);
+  if (!facility || !facility.is_active) {
+    const err = new Error('Facility not found or inactive.');
+    err.statusCode = 404;
+    err.isOperational = true;
+    throw err;
+  }
+  return await parkingRepository.getFacilityAvailability(facilityId, startTime, endTime);
+};
+
 exports.getSlotsForOwner = async (facilityId, ownerId) => {
   const facility = await parkingRepository.findFacilityById(facilityId);
   if (!facility || facility.owner_id !== ownerId) {

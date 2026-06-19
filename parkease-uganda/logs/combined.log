@@ -407,3 +407,49 @@
 {"timestamp":"2026-06-16T07:21:09.100Z","level":"error","message":"Failed to connect to the database","module":"db","stack":"Error: getaddrinfo ENOTFOUND aws-0-eu-west-1.pooler.supabase.com\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async testConnection (D:\\Parking\\parkease-uganda\\server\\config\\db.js:18:20)\n    at async startServer (D:\\Parking\\parkease-uganda\\server\\index.js:12:3)","error":"getaddrinfo ENOTFOUND aws-0-eu-west-1.pooler.supabase.com"}
 {"timestamp":"2026-06-16T08:23:47.066Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
 {"timestamp":"2026-06-16T08:23:47.084Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-16T11:29:51.732Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-16T11:29:51.753Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-16T11:30:28.358Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-16T11:30:28.375Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-16T11:30:48.913Z","level":"warn","message":"Failed JWT verification","module":"authenticate","error":"invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"}
+{"timestamp":"2026-06-16T11:31:28.666Z","level":"info","message":"Client connected: ZoPGznYnpk6hQXoJAAAB","module":"socket"}
+{"timestamp":"2026-06-16T11:31:28.703Z","level":"info","message":"Socket ZoPGznYnpk6hQXoJAAAB joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-16T11:32:09.810Z","level":"info","message":"Client disconnected: ZoPGznYnpk6hQXoJAAAB","module":"socket"}
+{"timestamp":"2026-06-16T11:34:08.632Z","level":"info","message":"Client connected: QZuvmX5EZmrBK-LYAAAD","module":"socket"}
+{"timestamp":"2026-06-16T11:34:08.845Z","level":"info","message":"Client connected: 4QF8Sw2gHwPdePR9AAAF","module":"socket"}
+{"timestamp":"2026-06-16T11:34:08.872Z","level":"info","message":"Socket 4QF8Sw2gHwPdePR9AAAF joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-16T11:42:18.835Z","level":"info","message":"Client connected: gUPZBruXvIQVJhvVAAAH","module":"socket"}
+{"timestamp":"2026-06-16T11:42:18.904Z","level":"info","message":"Socket gUPZBruXvIQVJhvVAAAH joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-16T11:42:35.403Z","level":"info","message":"Client disconnected: gUPZBruXvIQVJhvVAAAH","module":"socket"}
+{"timestamp":"2026-06-16T11:46:17.686Z","level":"info","message":"Client connected: u4sBl-CGtPi5SJF2AAAJ","module":"socket"}
+{"timestamp":"2026-06-16T11:46:17.809Z","level":"info","message":"Socket u4sBl-CGtPi5SJF2AAAJ joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-16T11:47:30.213Z","level":"info","message":"Client disconnected: u4sBl-CGtPi5SJF2AAAJ","module":"socket"}
+{"timestamp":"2026-06-16T11:48:13.358Z","level":"info","message":"Client connected: bdOPmnDIoslB2Vc5AAAL","module":"socket"}
+{"timestamp":"2026-06-16T11:48:13.416Z","level":"info","message":"Socket bdOPmnDIoslB2Vc5AAAL joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-16T11:49:31.938Z","level":"info","message":"Client disconnected: bdOPmnDIoslB2Vc5AAAL","module":"socket"}
+{"timestamp":"2026-06-16T11:49:35.543Z","level":"info","message":"Client disconnected: QZuvmX5EZmrBK-LYAAAD","module":"socket"}
+{"timestamp":"2026-06-16T11:50:21.048Z","level":"info","message":"Client connected: DFeTjbNI1J98s8wbAAAN","module":"socket"}
+{"timestamp":"2026-06-16T11:50:22.220Z","level":"info","message":"Client connected: OrCQ6zuII-ZJ4aFHAAAP","module":"socket"}
+{"timestamp":"2026-06-16T11:50:22.238Z","level":"info","message":"Socket OrCQ6zuII-ZJ4aFHAAAP joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-16T11:50:26.295Z","level":"info","message":"Client disconnected: DFeTjbNI1J98s8wbAAAN","module":"socket"}
+{"timestamp":"2026-06-16T11:52:05.511Z","level":"info","message":"Client connected: NPo5Dc3npGSnZvxCAAAR","module":"socket"}
+{"timestamp":"2026-06-16T11:52:05.526Z","level":"info","message":"Socket NPo5Dc3npGSnZvxCAAAR joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-16T11:53:08.229Z","level":"info","message":"Client disconnected: NPo5Dc3npGSnZvxCAAAR","module":"socket"}
+{"timestamp":"2026-06-16T12:35:07.344Z","level":"info","message":"Client disconnected: 4QF8Sw2gHwPdePR9AAAF","module":"socket"}
+{"timestamp":"2026-06-19T08:57:04.565Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-19T08:57:04.585Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-19T08:57:29.757Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-19T08:57:29.789Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-19T09:02:06.475Z","level":"info","message":"Client connected: XX0ka5YwQgxi32CfAAAB","module":"socket"}
+{"timestamp":"2026-06-19T09:02:06.733Z","level":"info","message":"Client connected: ca_boOP9jAzGrWf1AAAD","module":"socket"}
+{"timestamp":"2026-06-19T09:02:06.785Z","level":"info","message":"Socket ca_boOP9jAzGrWf1AAAD joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-19T09:02:13.198Z","level":"info","message":"Client connected: PJHfk2n5XpY9ZND-AAAF","module":"socket"}
+{"timestamp":"2026-06-19T09:02:13.703Z","level":"info","message":"Socket PJHfk2n5XpY9ZND-AAAF joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-19T09:03:01.931Z","level":"error","message":"column b.intended_arrival_time does not exist","module":"errorHandler","stack":"error: column b.intended_arrival_time does not exist\n    at D:\\Parking\\parkease-uganda\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.getFacilityAvailability (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.repository.js:164:20)\n    at async exports.getFacilityAvailability (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.service.js:48:10)\n    at async exports.getFacilityAvailability (D:\\Parking\\parkease-uganda\\server\\modules\\parking\\parking.controller.js:57:26)","path":"/api/v1/facilities/7c117aae-016c-412b-8d24-fb025800d0f0/availability?start=2026-06-20T08:00:00.000Z&end=2026-06-20T10:00:00.000Z","method":"GET"}
+{"timestamp":"2026-06-19T09:09:45.837Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-19T09:09:45.898Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-19T09:09:46.053Z","level":"info","message":"Client connected: qfIiptkKSJqpa6AmAAAD","module":"socket"}
+{"timestamp":"2026-06-19T09:09:46.075Z","level":"info","message":"Client connected: K8gkAqVcDDL1rXJwAAAE","module":"socket"}
+{"timestamp":"2026-06-19T09:09:46.083Z","level":"info","message":"Client connected: jE4GnPYJ3vWc8UnaAAAF","module":"socket"}
+{"timestamp":"2026-06-19T09:11:23.288Z","level":"info","message":"Client disconnected: jE4GnPYJ3vWc8UnaAAAF","module":"socket"}
+{"timestamp":"2026-06-19T09:16:05.890Z","level":"info","message":"Client disconnected: K8gkAqVcDDL1rXJwAAAE","module":"socket"}

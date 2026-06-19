@@ -99,7 +99,7 @@ exports.handleWebhook = async (payload) => {
   // 3. If completed, update booking status based on payment_type
   if (status === 'completed' && eventType === 'collection.completed') {
     if (payment.payment_type === 'initial') {
-      await bookingRepository.updateBookingStatus(payment.booking_id, 'active');
+      await bookingRepository.updateBookingStatus(payment.booking_id, 'confirmed');
     } else if (payment.payment_type === 'overstay') {
       const booking = await bookingRepository.findBookingById(payment.booking_id);
       if (booking && booking.status === 'active') {

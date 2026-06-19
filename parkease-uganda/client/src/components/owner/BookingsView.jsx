@@ -23,13 +23,26 @@ const BookingsView = ({ facility }) => {
     if (facility) fetchBookings();
   }, [facility]);
 
+  const handleCheckIn = async (bookingId) => {
+    try {
+      setProcessingId(bookingId);
+      const res = await api.post(`/bookings/${bookingId}/checkin`);
+      alert(res.data.message || 'Driver checked in successfully.');
+      fetchBookings();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to check in driver.');
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
   const handleCheckout = async (bookingId, forceCash = false) => {
     try {
       setProcessingId(bookingId);
       const res = await api.post(`/bookings/${bookingId}/checkout`, { force_cash: forceCash });
 
-      if (res.data.data.overstayFee > 0 && !forceCash) {
-        const confirmCash = window.confirm(`This booking has an overstay fee of ${res.data.data.overstayFee} UGX.\n\nDid you collect this payment in cash? Click OK to force checkout.`);
+      if (res.data.data.totalFeeDue > 0 && !forceCash) {
+        const confirmCash = window.confirm(`This booking has an outstanding fee of ${res.data.data.totalFeeDue} UGX (Holding/Overstay).\n\nDid you collect this payment in cash? Click OK to force checkout.`);
         if (confirmCash) {
           return handleCheckout(bookingId, true);
         }
@@ -62,8 +75,11 @@ const BookingsView = ({ facility }) => {
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Driver</th>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Slot</th>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Arrival</th>
+                <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Check In</th>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Expected Departure</th>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Actual Departure</th>
+                <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Actual Duration</th>
+                <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Holding Fee</th>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Overstay</th>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Status</th>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Actions</th>
@@ -77,6 +93,13 @@ const BookingsView = ({ facility }) => {
                 let overstayText = 'None';
                 const endTime = new Date(booking.end_time);
                 const compareTime = booking.actual_departure_time ? new Date(booking.actual_departure_time) : (isOngoing ? new Date() : null);
+                let actualDuration = '-';
+                if (booking.checked_in_at && booking.actual_departure_time) {
+                  const durationMs = new Date(booking.actual_departure_time).getTime() - new Date(booking.checked_in_at).getTime();
+                  const hours = Math.floor(durationMs / (1000 * 60 * 60));
+                  const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+                  actualDuration = `${hours}h ${minutes}m`;
+                }
 
                 if (compareTime && compareTime > endTime) {
                   const overstayMs = compareTime.getTime() - endTime.getTime();
@@ -90,8 +113,18 @@ const BookingsView = ({ facility }) => {
                     <td style={{ padding: '12px 16px' }}>{booking.driver_name} <br /><small style={{ color: 'var(--text-muted)' }}>{booking.phone_number}</small></td>
                     <td style={{ padding: '12px 16px' }}>{booking.slot_number || 'Auto'}</td>
                     <td style={{ padding: '12px 16px' }}>
-                      {new Date(booking.start_time).toLocaleDateString()} <br />
-                      {new Date(booking.start_time).toLocaleTimeString()}
+                      {new Date(booking.intended_arrival_time || booking.start_time).toLocaleDateString()} <br />
+                      {new Date(booking.intended_arrival_time || booking.start_time).toLocaleTimeString()}
+                    </td>
+                    <td style={{ padding: '12px 16px' }}>
+                      {booking.checked_in_at ? (
+                        <>
+                          {new Date(booking.checked_in_at).toLocaleDateString()} <br />
+                          {new Date(booking.checked_in_at).toLocaleTimeString()}
+                        </>
+                      ) : (
+                        <span style={{ color: 'var(--text-muted)' }}>-</span>
+                      )}
                     </td>
                     <td style={{ padding: '12px 16px' }}>
                       {booking.end_time ? (
@@ -114,6 +147,12 @@ const BookingsView = ({ facility }) => {
                       )}
                     </td>
                     <td style={{ padding: '12px 16px' }}>
+                      {actualDuration}
+                    </td>
+                    <td style={{ padding: '12px 16px' }}>
+                      {Number(booking.holding_fee_amount || 0) > 0 ? `${booking.holding_fee_amount} UGX` : '-'}
+                    </td>
+                    <td style={{ padding: '12px 16px' }}>
                       <span style={{ color: overstayText !== 'None' ? 'var(--danger)' : 'inherit' }}>
                         {overstayText}
                       </span>
@@ -124,6 +163,16 @@ const BookingsView = ({ facility }) => {
                       </span>
                     </td>
                     <td style={{ padding: '12px 16px' }}>
+                      {booking.status === 'confirmed' && (
+                        <button
+                          className="btn-primary"
+                          style={{ padding: '6px 12px', fontSize: '0.85rem', marginRight: '8px' }}
+                          onClick={() => handleCheckIn(booking.id)}
+                          disabled={processingId === booking.id}
+                        >
+                          {processingId === booking.id ? 'Processing...' : 'Check In'}
+                        </button>
+                      )}
                       {booking.status === 'active' && (
                         <button
                           className="btn-primary"

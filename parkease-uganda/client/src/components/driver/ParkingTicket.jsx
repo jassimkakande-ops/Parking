@@ -57,12 +57,12 @@ const ParkingTicket = ({ booking, facility }) => {
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <span style={{ color: '#666', fontSize: '14px' }}>Slot Number</span>
-            <strong style={{ fontSize: '18px' }}>{booking.slot_id}</strong>
+            <strong style={{ fontSize: '18px' }}>{booking.slot_number || booking.slot_id}</strong>
           </div>
           <div style={{ borderTop: '1px dashed #ccc', margin: '8px 0' }} />
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ color: '#666', fontSize: '14px' }}>Start Time</span>
-            <strong style={{ fontSize: '14px' }}>{new Date(booking.start_time).toLocaleString()}</strong>
+            <span style={{ color: '#666', fontSize: '14px' }}>Arrival Time</span>
+            <strong style={{ fontSize: '14px' }}>{new Date(booking.intended_arrival_time || booking.start_time).toLocaleString()}</strong>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <span style={{ color: '#666', fontSize: '14px' }}>End Time</span>
@@ -71,7 +71,7 @@ const ParkingTicket = ({ booking, facility }) => {
           <div style={{ borderTop: '1px dashed #ccc', margin: '8px 0' }} />
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ color: '#666', fontSize: '14px' }}>Total Paid</span>
-            <strong style={{ fontSize: '20px', color: '#000' }}>{Number(booking.paid).toLocaleString()} UGX</strong>
+            <strong style={{ fontSize: '20px', color: '#000' }}>{Number(booking.paid || booking.total_amount || 0).toLocaleString()} UGX</strong>
           </div>
         </div>
 

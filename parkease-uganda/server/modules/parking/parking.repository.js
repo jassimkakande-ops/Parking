@@ -146,6 +146,26 @@ exports.findSlotById = async (slotId) => {
 };
 
 /**
+ * Gets slot availability for a facility within a specific time window.
+ */
+exports.getFacilityAvailability = async (facilityId, startTime, endTime) => {
+  const query = `
+    SELECT s.id, s.slot_number,
+           EXISTS (
+             SELECT 1 FROM bookings b
+             WHERE b.slot_id = s.id
+               AND b.status IN ('pending', 'confirmed', 'active')
+               AND tstzrange(b.intended_arrival_time, b.end_time, '[)') && tstzrange($2::timestamptz, $3::timestamptz, '[)')
+           ) as is_occupied
+    FROM parking_slots s
+    WHERE s.facility_id = $1
+    ORDER BY s.slot_number
+  `;
+  const { rows } = await db.query(query, [facilityId, startTime, endTime]);
+  return rows;
+};
+
+/**
  * Updates a slot status and adjusts the facility's available_slots count atomically.
  */
 exports.updateSlotStatus = async (slotId, facilityId, isOccupied, vehiclePlate) => {

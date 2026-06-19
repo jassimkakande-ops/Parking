@@ -45,10 +45,17 @@ router.patch(
   bookingController.cancelBooking
 );
 
+// POST /api/v1/bookings/:id/checkin - Owner checks in a driver and starts paid time
+router.post(
+  '/:id/checkin',
+  authorize('owner', 'admin'),
+  bookingController.checkInBooking
+);
+
 // POST /api/v1/bookings/:id/checkout - Checkout a booking and check for overstay
 router.post(
   '/:id/checkout', 
-  authorize('driver', 'owner', 'admin'),
+  authorize('owner', 'admin'),
   bookingController.checkoutBooking
 );
 

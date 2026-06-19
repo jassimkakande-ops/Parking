@@ -84,3 +84,49 @@ exports.loginUser = async (credentials) => {
     session: data.session
   };
 };
+
+exports.getPublicConfig = () => ({
+  supabaseUrl: process.env.SUPABASE_URL,
+  supabaseAnonKey: process.env.SUPABASE_ANON_KEY
+});
+
+exports.getOrCreateOAuthProfile = async (accessToken, role = 'driver') => {
+  const { data: { user }, error } = await supabaseAdmin.auth.getUser(accessToken);
+
+  if (error || !user) {
+    const err = new Error('Invalid OAuth session.');
+    err.statusCode = 401;
+    err.isOperational = true;
+    throw err;
+  }
+
+  let userProfile = await usersRepository.findById(user.id);
+  if (!userProfile && user.email) {
+    userProfile = await usersRepository.findByEmail(user.email);
+  }
+
+  if (!userProfile) {
+    const fullName =
+      user.user_metadata?.full_name ||
+      user.user_metadata?.name ||
+      user.email?.split('@')[0] ||
+      'ParkEase User';
+
+    userProfile = await usersRepository.createUserProfile({
+      id: user.id,
+      full_name: fullName,
+      email: user.email,
+      phone_number: user.phone || null,
+      role: role === 'owner' ? 'owner' : 'driver'
+    });
+  }
+
+  if (!userProfile.is_active) {
+    const err = new Error('Your account is deactivated or not found.');
+    err.statusCode = 403;
+    err.isOperational = true;
+    throw err;
+  }
+
+  return { user: userProfile };
+};

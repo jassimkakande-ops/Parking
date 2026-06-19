@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Loader2, Car, LogOut, Download } from 'lucide-react';
+import { Loader2, Car, Download, XCircle } from 'lucide-react';
 import api from '../../utils/api';
 import ParkingTicket from './ParkingTicket';
 
@@ -8,7 +8,7 @@ const DriverBookingsView = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [checkingOut, setCheckingOut] = useState(null);
+  const [cancelling, setCancelling] = useState(null);
   
   // Modal for Viewing Ticket
   const [ticketBooking, setTicketBooking] = useState(null);
@@ -40,26 +40,18 @@ const DriverBookingsView = () => {
     }
   };
 
-  const handleCheckout = async (bookingId) => {
+  const handleCancel = async (bookingId) => {
+    const confirmed = window.confirm('Funds paid for this booking will not be refunded. Do you still want to cancel?');
+    if (!confirmed) return;
+
     try {
-      setCheckingOut(bookingId);
-      const res = await api.post(`/bookings/${bookingId}/checkout`);
-      
-      if (res.data.data.overstayFee > 0) {
-        setPaymentModal({
-          open: true,
-          type: 'overstay',
-          booking: bookings.find(b => b.id === bookingId),
-          fee: res.data.data.overstayFee
-        });
-      } else {
-        alert('Checked out successfully!');
-        fetchBookings();
-      }
+      setCancelling(bookingId);
+      await api.patch(`/bookings/${bookingId}/cancel`);
+      fetchBookings();
     } catch (err) {
-      alert(err.response?.data?.message || err.response?.data?.error || 'Checkout failed');
+      alert(err.response?.data?.message || err.response?.data?.error || 'Cancellation failed');
     } finally {
-      setCheckingOut(null);
+      setCancelling(null);
     }
   };
 
@@ -121,10 +113,13 @@ const DriverBookingsView = () => {
                   <Car size={18} /> {booking.facility_name} (Slot: {booking.slot_number || booking.slot_id})
                 </h4>
                 <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                  <span><strong>Start:</strong> {new Date(booking.start_time).toLocaleString()}</span>
-                  <span><strong>End:</strong> {new Date(booking.end_time).toLocaleString()}</span>
+                  <span><strong>Arrival:</strong> {new Date(booking.intended_arrival_time || booking.start_time).toLocaleString()}</span>
+                  <span><strong>Paid Until:</strong> {new Date(booking.end_time).toLocaleString()}</span>
+                  <span><strong>Checked In:</strong> {booking.checked_in_at ? new Date(booking.checked_in_at).toLocaleString() : '-'}</span>
+                  <span><strong>Checked Out:</strong> {booking.actual_departure_time ? new Date(booking.actual_departure_time).toLocaleString() : '-'}</span>
                   <span><strong>Status:</strong> <span style={{ color: booking.status === 'active' ? 'var(--primary)' : 'inherit', textTransform: 'uppercase', fontWeight: 'bold' }}>{booking.status}</span></span>
                   <span><strong>Amount:</strong> {booking.total_amount} UGX</span>
+                  {Number(booking.holding_fee_amount) > 0 && <span><strong>Holding Fee:</strong> {booking.holding_fee_amount} UGX</span>}
                 </div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -144,15 +139,15 @@ const DriverBookingsView = () => {
                     Pay Now
                   </button>
                 )}
-                {booking.status === 'active' && (
+                {(booking.status === 'pending' || booking.status === 'confirmed') && (
                   <button 
-                    className="btn-primary" 
+                    className="btn-secondary" 
                     style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', padding: '6px 12px' }}
-                    onClick={() => handleCheckout(booking.id)}
-                    disabled={checkingOut === booking.id}
+                    onClick={() => handleCancel(booking.id)}
+                    disabled={cancelling === booking.id}
                   >
-                    {checkingOut === booking.id ? <Loader2 size={14} className="animate-spin" /> : <LogOut size={14} />} 
-                    Check Out
+                    {cancelling === booking.id ? <Loader2 size={14} className="animate-spin" /> : <XCircle size={14} />} 
+                    Cancel
                   </button>
                 )}
               </div>

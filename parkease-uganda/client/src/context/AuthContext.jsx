@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import api from '../utils/api';
+import { getSupabaseClient } from '../utils/supabaseClient';
 
 export const AuthContext = createContext();
 
@@ -56,6 +57,74 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const signInWithGoogle = async (role = 'driver') => {
+    try {
+      const supabase = await getSupabaseClient();
+      const redirectTo = `${window.location.origin}/auth/callback?role=${role}`;
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent'
+          }
+        }
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      throw error.message || 'Google sign in failed';
+    }
+  };
+
+  const completeOAuthLogin = async (role = 'driver') => {
+    try {
+      const supabase = await getSupabaseClient();
+      const { data, error } = await supabase.auth.getSession();
+      if (error || !data.session?.access_token) {
+        throw error || new Error('OAuth session was not found.');
+      }
+
+      const res = await api.post('/auth/oauth-profile', {
+        access_token: data.session.access_token,
+        role
+      });
+
+      const userData = res.data.data.user;
+      localStorage.setItem('token', data.session.access_token);
+      localStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
+      return userData;
+    } catch (error) {
+      throw error.response?.data?.message || error.message || 'Google sign in failed';
+    }
+  };
+
+  const resetPassword = async (email) => {
+    try {
+      const supabase = await getSupabaseClient();
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      throw error.message || 'Failed to send reset email';
+    }
+  };
+
+  const updatePassword = async (password) => {
+    try {
+      const supabase = await getSupabaseClient();
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) throw error;
+      await supabase.auth.signOut();
+    } catch (error) {
+      throw error.message || 'Failed to reset password';
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -71,7 +140,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, theme, toggleTheme }}>
+    <AuthContext.Provider value={{ user, login, register, logout, signInWithGoogle, completeOAuthLogin, resetPassword, updatePassword, theme, toggleTheme }}>
       {children}
     </AuthContext.Provider>
   );

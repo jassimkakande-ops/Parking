@@ -2,34 +2,26 @@ const db = require('../../config/db');
 
 /**
  * Creates a new booking in a transaction.
- * Also assigns a slot (if not specified), marks it as occupied,
- * and decrements available_slots in the facility.
+ * The slot is reserved for the requested time window, but it is not marked
+ * occupied until an owner checks the driver in.
  */
-exports.createBooking = async (driverId, facilityId, slotId, startTime, endTime, totalAmount, vehiclePlate) => {
+exports.createBooking = async (driverId, facilityId, slotId, intendedArrivalTime, endTime, totalAmount, vehiclePlate, paidDurationMinutes) => {
   const client = await db.pool.connect();
   try {
     await client.query('BEGIN');
 
-    // 1. Check if facility exists and has available slots
     const facilityQuery = `SELECT * FROM parking_facilities WHERE id = $1 FOR UPDATE`;
     const facilityRes = await client.query(facilityQuery, [facilityId]);
     if (facilityRes.rowCount === 0) throw new Error('Facility not found');
-    
-    const facility = facilityRes.rows[0];
-    if (facility.available_slots <= 0 && !slotId) {
-      throw new Error('No available slots in this facility');
-    }
 
     let targetSlotId = slotId;
 
-    // 2. Determine slot
     if (targetSlotId) {
       const slotQuery = `SELECT * FROM parking_slots WHERE id = $1 AND facility_id = $2 FOR UPDATE`;
       const slotRes = await client.query(slotQuery, [targetSlotId, facilityId]);
       if (slotRes.rowCount === 0) throw new Error('Slot not found in this facility');
       if (slotRes.rows[0].is_occupied) throw new Error('Selected slot is already occupied');
     } else {
-      // Find the first available slot
       const availableSlotQuery = `
         SELECT * FROM parking_slots 
         WHERE facility_id = $1 AND is_occupied = false 
@@ -40,40 +32,31 @@ exports.createBooking = async (driverId, facilityId, slotId, startTime, endTime,
       targetSlotId = slotRes.rows[0].id;
     }
 
-    // 3. Mark slot as occupied
-    const updateSlotQuery = `
-      UPDATE parking_slots 
-      SET is_occupied = true, vehicle_plate = $1, occupied_since = NOW()
-      WHERE id = $2
+    const conflictQuery = `
+      SELECT 1
+      FROM bookings
+      WHERE slot_id = $1
+        AND status IN ('pending', 'confirmed', 'active')
+        AND tstzrange(intended_arrival_time, end_time, '[)') && tstzrange($2::timestamptz, $3::timestamptz, '[)')
+      LIMIT 1
     `;
-    await client.query(updateSlotQuery, [vehiclePlate || null, targetSlotId]);
+    const conflictRes = await client.query(conflictQuery, [targetSlotId, intendedArrivalTime, endTime]);
+    if (conflictRes.rowCount > 0) {
+      throw new Error('Selected slot is already booked for that date and time');
+    }
 
-    // 4. Decrement available slots on facility
-    const updateFacilityQuery = `
-      UPDATE parking_facilities 
-      SET available_slots = available_slots - 1 
-      WHERE id = $1
-    `;
-    await client.query(updateFacilityQuery, [facilityId]);
-
-    // Booking status is pending immediately upon booking, awaiting payment.
     const bookingQuery = `
-      INSERT INTO bookings (driver_id, slot_id, facility_id, start_time, end_time, status, total_amount)
-      VALUES ($1, $2, $3, $4, $5, 'pending', $6)
+      INSERT INTO bookings (
+        driver_id, slot_id, facility_id, start_time, intended_arrival_time, end_time,
+        status, total_amount, paid_duration_minutes, vehicle_plate
+      )
+      VALUES ($1, $2, $3, $4, $4, $5, 'pending', $6, $7, $8)
       RETURNING *
     `;
-    const bookingValues = [driverId, targetSlotId, facilityId, startTime, endTime, totalAmount];
+    const bookingValues = [driverId, targetSlotId, facilityId, intendedArrivalTime, endTime, totalAmount, paidDurationMinutes, vehiclePlate || null];
     const { rows: bookingRows } = await client.query(bookingQuery, bookingValues);
 
     await client.query('COMMIT');
-    
-    try {
-      const io = require('../../utils/socket').getIO();
-      io.to(`facility_${facilityId}`).emit('slot_updated', { id: targetSlotId, is_occupied: true });
-      io.to(`facility_${facilityId}`).emit('facility_updated', { facilityId, modifier: -1 });
-    } catch (err) {
-      // Socket might not be initialized yet
-    }
     
     return {
       booking: bookingRows[0],
@@ -205,6 +188,61 @@ exports.updateBookingStatus = async (bookingId, status) => {
   `;
   const { rows } = await db.query(query, [status, bookingId]);
   return rows[0] || null;
+};
+
+exports.checkInBooking = async (bookingId, slotId, facilityId, vehiclePlate, checkedInAt, endTime, holdingFeeAmount) => {
+  const client = await db.pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    const slotRes = await client.query(
+      `UPDATE parking_slots
+       SET is_occupied = true, vehicle_plate = $1, occupied_since = $2
+       WHERE id = $3 AND is_occupied = false
+       RETURNING *`,
+      [vehiclePlate || null, checkedInAt, slotId]
+    );
+
+    if (slotRes.rowCount === 0) {
+      throw new Error('Selected slot is already occupied');
+    }
+
+    await client.query(
+      `UPDATE parking_facilities
+       SET available_slots = GREATEST(available_slots - 1, 0)
+       WHERE id = $1`,
+      [facilityId]
+    );
+
+    const { rows } = await client.query(
+      `UPDATE bookings
+       SET status = 'active',
+           checked_in_at = $2,
+           start_time = $2,
+           end_time = $3,
+           holding_fee_amount = $4
+       WHERE id = $1
+       RETURNING *`,
+      [bookingId, checkedInAt, endTime, holdingFeeAmount]
+    );
+
+    await client.query('COMMIT');
+
+    try {
+      const io = require('../../utils/socket').getIO();
+      io.to(`facility_${facilityId}`).emit('slot_updated', { id: slotId, is_occupied: true, vehicle_plate: vehiclePlate });
+      io.to(`facility_${facilityId}`).emit('facility_updated', { facilityId, modifier: -1 });
+    } catch (err) {
+      // Socket might not be initialized yet
+    }
+
+    return rows[0];
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
 };
 
 /**

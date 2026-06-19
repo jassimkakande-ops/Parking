@@ -22,6 +22,9 @@ router.get(
 // GET /api/v1/facilities/:id
 router.get('/facilities/:id', parkingController.getFacilityDetails);
 
+// GET /api/v1/facilities/:id/availability
+router.get('/facilities/:id/availability', parkingController.getFacilityAvailability);
+
 // --- Protected Routes (Owners Only) ---
 
 // POST /api/v1/facilities

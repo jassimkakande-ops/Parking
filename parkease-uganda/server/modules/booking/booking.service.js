@@ -7,7 +7,7 @@ const { AppError } = require('../../middleware/errorHandler');
  */
 exports.createBooking = async (driverId, data) => {
   const { facility_id, slot_id, vehicle_plate } = data;
-  let { start_time, end_time } = data;
+  let { start_time, end_time, intended_arrival_time } = data;
 
   // 1. Validate facility exists
   const facility = await parkingRepository.findFacilityById(facility_id);
@@ -16,7 +16,10 @@ exports.createBooking = async (driverId, data) => {
   }
 
   // 2. Calculate time
-  const start = start_time ? new Date(start_time) : new Date();
+  const start = new Date(intended_arrival_time || start_time);
+  if (Number.isNaN(start.getTime())) {
+    throw new AppError('Arrival date and time is required', 400);
+  }
   let end;
   if (end_time) {
     end = new Date(end_time);
@@ -29,11 +32,10 @@ exports.createBooking = async (driverId, data) => {
     throw new AppError('End time must be after start time', 400);
   }
 
-  // 3. Calculate amount
   const durationHours = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60));
+  const paidDurationMinutes = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60));
   const totalAmount = durationHours * parseFloat(facility.hourly_rate);
 
-  // 4. Create booking (transaction handles slot assignment and decrement)
   try {
     const result = await bookingRepository.createBooking(
       driverId, 
@@ -42,12 +44,70 @@ exports.createBooking = async (driverId, data) => {
       start, 
       end, 
       totalAmount,
-      vehicle_plate
+      vehicle_plate,
+      paidDurationMinutes
     );
     
     return result;
   } catch (error) {
-    if (error.message.includes('No available slots') || error.message.includes('already occupied') || error.message.includes('Slot not found')) {
+    if (
+      error.message.includes('No available slots') ||
+      error.message.includes('already occupied') ||
+      error.message.includes('already booked') ||
+      error.message.includes('Slot not found')
+    ) {
+      throw new AppError(error.message, 400);
+    }
+    throw error;
+  }
+};
+
+exports.checkInBooking = async (bookingId, userId, userRole) => {
+  const booking = await bookingRepository.findBookingById(bookingId);
+  if (!booking) {
+    throw new AppError('Booking not found', 404);
+  }
+
+  if (userRole !== 'owner' && userRole !== 'admin') {
+    throw new AppError('Only owners can check in drivers', 403);
+  }
+
+  if (userRole === 'owner' && booking.owner_id !== userId) {
+    throw new AppError('You do not have permission to check in this booking', 403);
+  }
+
+  if (booking.status !== 'confirmed') {
+    throw new AppError(`Cannot check in booking with status: ${booking.status}`, 400);
+  }
+
+  const facility = await parkingRepository.findFacilityById(booking.facility_id);
+  const checkedInAt = new Date();
+  const paidMinutes = Number(booking.paid_duration_minutes || 60);
+  const endTime = new Date(checkedInAt.getTime() + paidMinutes * 60 * 1000);
+
+  const intendedArrival = new Date(booking.intended_arrival_time || booking.start_time);
+  const lateMs = checkedInAt.getTime() - intendedArrival.getTime();
+  const lateHours = lateMs > 0 ? Math.ceil(lateMs / (1000 * 60 * 60)) : 0;
+  const holdingFee = lateHours * parseFloat(facility.hourly_rate || 0);
+
+  try {
+    const checkedIn = await bookingRepository.checkInBooking(
+      bookingId,
+      booking.slot_id,
+      booking.facility_id,
+      booking.vehicle_plate,
+      checkedInAt,
+      endTime,
+      holdingFee
+    );
+
+    return {
+      booking: checkedIn,
+      holdingFee,
+      lateHours
+    };
+  } catch (error) {
+    if (error.message.includes('already occupied')) {
       throw new AppError(error.message, 400);
     }
     throw error;
@@ -111,6 +171,10 @@ exports.cancelBooking = async (bookingId, userId, userRole) => {
     throw new AppError('Booking is already cancelled', 400);
   }
 
+  if (booking.status === 'active' || booking.status === 'completed') {
+    throw new AppError('Only bookings that have not started can be cancelled', 400);
+  }
+
   // Authorization check
   if (userRole === 'driver' && booking.driver_id !== userId) {
     throw new AppError('You do not have permission to cancel this booking', 403);
@@ -138,8 +202,8 @@ exports.checkoutBooking = async (bookingId, userId, userRole, options = {}) => {
     throw new AppError(`Cannot checkout booking with status: ${booking.status}`, 400);
   }
 
-  if (userRole === 'driver' && booking.driver_id !== userId) {
-    throw new AppError('You do not have permission to checkout this booking', 403);
+  if (userRole === 'driver') {
+    throw new AppError('Only owners can checkout drivers', 403);
   }
   
   if (userRole === 'owner' && booking.owner_id !== userId) {
@@ -149,29 +213,35 @@ exports.checkoutBooking = async (bookingId, userId, userRole, options = {}) => {
   const now = new Date();
   const endTime = new Date(booking.end_time);
 
-  if (now <= endTime || options.force_cash) {
-    // If no overstay or owner forced cash payment, complete it now
+  const overstayMs = now.getTime() - endTime.getTime();
+  const overstayHours = overstayMs > 0 ? Math.ceil(overstayMs / (1000 * 60 * 60)) : 0;
+  
+  // Fetch facility rate
+  const facility = await parkingRepository.findFacilityById(booking.facility_id);
+  const hourlyRate = parseFloat(facility.hourly_rate);
+  const overstayFee = overstayHours * hourlyRate;
+  const holdingFee = parseFloat(booking.holding_fee_amount || 0);
+
+  const totalFeeDue = overstayFee + holdingFee;
+
+  if (totalFeeDue === 0 || options.force_cash) {
+    // If no fee due or owner forced cash payment, complete it now
     const completed = await bookingRepository.completeBooking(bookingId, booking.slot_id, booking.facility_id, now);
     return {
       booking: completed,
-      overstayFee: 0,
+      overstayFee,
+      holdingFee,
+      totalFeeDue: 0,
       forcedCash: options.force_cash || false
     };
   } else {
-    // Calculate overstay fee
-    const overstayMs = now.getTime() - endTime.getTime();
-    const overstayHours = Math.ceil(overstayMs / (1000 * 60 * 60));
-    
-    // Fetch facility rate
-    const facility = await parkingRepository.findFacilityById(booking.facility_id);
-    const hourlyRate = parseFloat(facility.hourly_rate);
-    const overstayFee = overstayHours * hourlyRate;
-
     // The booking is not completed yet. We return the fee required.
-    // The user must initiate an overstay payment.
+    // The user must initiate an overstay/holding payment.
     return {
       booking,
       overstayFee,
+      holdingFee,
+      totalFeeDue,
       overstayHours
     };
   }

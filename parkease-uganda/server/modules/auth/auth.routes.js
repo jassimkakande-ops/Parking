@@ -11,4 +11,10 @@ router.post('/register', validate(registerValidation), authController.register);
 // POST /api/v1/auth/login
 router.post('/login', validate(loginValidation), authController.login);
 
+// GET /api/v1/auth/public-config
+router.get('/public-config', authController.publicConfig);
+
+// POST /api/v1/auth/oauth-profile
+router.post('/oauth-profile', authController.oauthProfile);
+
 module.exports = router;

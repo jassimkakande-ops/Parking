@@ -7,9 +7,9 @@ import { AuthContext } from '../../context/AuthContext';
 import ParkingTicket from './ParkingTicket';
 
 // Custom Aerial Car SVG
-const AerialCar = ({ occupied }) => (
+const AerialCar = ({ occupied, selected }) => (
   <svg width="32" height="64" viewBox="0 0 32 64" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ opacity: occupied ? 1 : 0.2 }}>
-    <rect x="2" y="4" width="28" height="56" rx="8" fill={occupied ? "var(--primary)" : "var(--border-color)"} />
+    <rect x="2" y="4" width="28" height="56" rx="8" fill={occupied ? (selected ? "var(--primary)" : "var(--danger)") : "var(--border-color)"} />
     <rect x="4" y="14" width="24" height="12" rx="2" fill="rgba(255,255,255,0.3)" />
     <rect x="4" y="38" width="24" height="12" rx="2" fill="rgba(255,255,255,0.3)" />
     <rect x="0" y="10" width="4" height="12" rx="1" fill="#333" />
@@ -30,6 +30,7 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
   const [phone, setPhone] = useState(user?.phone_number || '');
   const [plate, setPlate] = useState('');
   const [duration, setDuration] = useState(1);
+  const [arrivalTime, setArrivalTime] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('mtn_momo');
   
   // Bank details state
@@ -48,42 +49,58 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
       setStep(1);
       setSelectedSlot(null);
       setError('');
-      fetchSlots();
+      const nextHour = new Date(Date.now() + 60 * 60 * 1000);
+      nextHour.setMinutes(0, 0, 0);
+      setArrivalTime(nextHour.toISOString().slice(0, 16));
+      setSlots([]); // clear slots
       
       const socket = io('http://localhost:5000');
       socket.emit('join_facility', facility.id);
       socket.on('slot_updated', (data) => {
+        // Only update current occupancy if we are looking at 'now', but safe to just update.
         setSlots(prev => prev.map(s => s.id === data.id ? { ...s, is_occupied: data.is_occupied } : s));
       });
       return () => socket.disconnect();
     }
   }, [isOpen, facility]);
 
-  const fetchSlots = async () => {
+  const fetchAvailableSlots = async () => {
+    if (!arrivalTime || duration < 1) return setError('Please specify arrival time and duration');
+    const start = new Date(arrivalTime);
+    if (Number.isNaN(start.getTime())) return setError('Invalid arrival time');
+    const end = new Date(start.getTime() + duration * 60 * 60 * 1000);
+
     try {
-      const res = await api.get(`/facilities/${facility.id}`);
-      const dbSlots = res.data.data.slots || [];
+      setLoading(true);
+      const res = await api.get(`/facilities/${facility.id}/availability?start=${start.toISOString()}&end=${end.toISOString()}`);
+      const dbSlots = res.data.data || [];
       const grid = Array.from({ length: facility.total_slots }).map((_, idx) => {
         const slotNumStr = (idx + 1).toString();
         const existing = dbSlots.find(s => s.slot_number === slotNumStr);
         return existing || { id: `temp-${idx}`, slot_number: slotNumStr, is_occupied: false };
       });
       setSlots(grid);
+      setError('');
+      setStep(2);
     } catch (err) {
-      setError('Failed to load slots');
+      setError('Failed to fetch availability');
+    } finally {
+      setLoading(false);
     }
   };
 
   const estimatedCost = duration * Number(facility?.hourly_rate || 0);
 
   const handleProceedToDetails = () => {
-    if (!selectedSlot) return setError('Please select an available slot');
+    if (!name || !phone || !plate || !arrivalTime || duration < 1) return setError('Please fill all required fields');
+    const arrival = new Date(arrivalTime);
+    if (Number.isNaN(arrival.getTime())) return setError('Please enter a valid arrival date and time');
     setError('');
-    setStep(2);
+    fetchAvailableSlots();
   };
 
   const handleProceedToPayment = () => {
-    if (!name || !phone || !plate || duration < 1) return setError('Please fill all required fields');
+    if (!selectedSlot) return setError('Please select an available slot');
     setError('');
     setStep(3);
   };
@@ -93,12 +110,13 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
     setError('');
     try {
       // 1. Create Booking
-      const startTime = new Date();
+      const startTime = new Date(arrivalTime);
       const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000);
       
       const bookingRes = await api.post('/bookings', {
         facility_id: facility.id,
         slot_id: selectedSlot.id.startsWith('temp') ? undefined : selectedSlot.id,
+        intended_arrival_time: startTime.toISOString(),
         start_time: startTime.toISOString(),
         end_time: endTime.toISOString(),
         vehicle_plate: plate
@@ -173,36 +191,7 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
 
         {step === 1 && (
           <div>
-            <h3>Step 1: Select a Parking Slot</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '16px', marginTop: '24px' }}>
-              {slots.map(slot => (
-                <div 
-                  key={slot.id}
-                  onClick={() => !slot.is_occupied && setSelectedSlot(slot)}
-                  style={{
-                    padding: '16px',
-                    borderRadius: '8px',
-                    border: selectedSlot?.id === slot.id ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                    background: slot.is_occupied ? 'var(--bg-color)' : (selectedSlot?.id === slot.id ? 'var(--primary-glow)' : 'transparent'),
-                    cursor: slot.is_occupied ? 'not-allowed' : 'pointer',
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
-                    opacity: slot.is_occupied ? 0.6 : 1
-                  }}
-                >
-                  <AerialCar occupied={slot.is_occupied || selectedSlot?.id === slot.id} />
-                  <span style={{ fontWeight: 'bold' }}>{slot.slot_number}</span>
-                </div>
-              ))}
-            </div>
-            <button className="btn-primary" style={{ width: '100%', marginTop: '32px' }} onClick={handleProceedToDetails} disabled={!selectedSlot}>
-              Continue to Details
-            </button>
-          </div>
-        )}
-
-        {step === 2 && (
-          <div>
-            <h3>Step 2: Enter Details</h3>
+            <h3>Step 1: Booking Details</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '24px' }}>
               <div>
                 <label>Full Name</label>
@@ -217,13 +206,48 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
                 <input type="text" className="input-field" value={plate} onChange={e => setPlate(e.target.value)} placeholder="e.g. UAA 123A" />
               </div>
               <div>
+                <label>Arrival Date & Time</label>
+                <input type="datetime-local" className="input-field" value={arrivalTime} onChange={e => setArrivalTime(e.target.value)} />
+              </div>
+              <div>
                 <label>Estimated Duration (Hours)</label>
                 <input type="number" min="1" className="input-field" value={duration} onChange={e => setDuration(parseInt(e.target.value) || 1)} />
               </div>
             </div>
             <div style={{ display: 'flex', gap: '16px', marginTop: '32px' }}>
+              <button className="btn-primary" style={{ width: '100%' }} onClick={handleProceedToDetails} disabled={loading}>
+                {loading ? 'Checking Availability...' : 'Find Available Slots'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div>
+            <h3>Step 2: Select a Parking Slot</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '16px', marginTop: '24px' }}>
+              {slots.map(slot => (
+                <div 
+                  key={slot.id}
+                  onClick={() => !slot.is_occupied && setSelectedSlot(slot)}
+                  style={{
+                    padding: '16px',
+                    borderRadius: '8px',
+                    border: selectedSlot?.id === slot.id ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                    background: slot.is_occupied ? 'var(--danger-bg)' : (selectedSlot?.id === slot.id ? 'var(--primary-glow)' : 'transparent'),
+                    cursor: slot.is_occupied ? 'not-allowed' : 'pointer',
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+                    opacity: slot.is_occupied ? 0.6 : 1
+                  }}
+                >
+                  <AerialCar occupied={slot.is_occupied || selectedSlot?.id === slot.id} selected={selectedSlot?.id === slot.id} />
+                  <span style={{ fontWeight: 'bold' }}>{slot.slot_number}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ display: 'flex', gap: '16px', marginTop: '32px' }}>
               <button className="btn-secondary" style={{ flex: 1 }} onClick={() => setStep(1)}>Back</button>
-              <button className="btn-primary" style={{ flex: 1 }} onClick={handleProceedToPayment}>Proceed to Payment</button>
+              <button className="btn-primary" style={{ flex: 1 }} onClick={handleProceedToPayment} disabled={!selectedSlot}>Proceed to Payment</button>
             </div>
           </div>
         )}
@@ -235,6 +259,10 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                 <span>Rate</span>
                 <span>{facility.hourly_rate} UGX / hr</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <span>Arrival</span>
+                <span>{arrivalTime ? new Date(arrivalTime).toLocaleString() : '-'}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                 <span>Duration</span>

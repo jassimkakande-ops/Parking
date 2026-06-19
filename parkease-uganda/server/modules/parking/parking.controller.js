@@ -48,6 +48,19 @@ exports.getFacilityDetails = async (req, res, next) => {
   }
 };
 
+exports.getFacilityAvailability = async (req, res, next) => {
+  try {
+    const { start, end } = req.query;
+    if (!start || !end) {
+      return res.status(400).json({ success: false, message: 'start and end times are required' });
+    }
+    const availability = await parkingService.getFacilityAvailability(req.params.id, start, end);
+    res.status(200).json(successResponse(availability));
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.getSlotsForOwner = async (req, res, next) => {
   try {
     const slots = await parkingService.getSlotsForOwner(req.params.id, req.user.id);

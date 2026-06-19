@@ -62,6 +62,22 @@ exports.cancelBooking = async (req, res, next) => {
   }
 };
 
+exports.checkInBooking = async (req, res, next) => {
+  try {
+    const bookingId = req.params.id;
+    const result = await bookingService.checkInBooking(bookingId, req.user.id, req.user.role);
+
+    let message = 'Driver checked in successfully.';
+    if (result.holdingFee > 0) {
+      message = `Driver checked in successfully. Holding fee due: ${result.holdingFee} UGX.`;
+    }
+
+    res.status(200).json(successResponse(result, message));
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.checkoutBooking = async (req, res, next) => {
   try {
     const bookingId = req.params.id;
@@ -74,8 +90,8 @@ exports.checkoutBooking = async (req, res, next) => {
     const result = await bookingService.checkoutBooking(bookingId, userId, userRole, options);
     
     let message = 'Checkout successful.';
-    if (result.overstayFee > 0) {
-      message = 'Checkout initiated. Please pay the overstay fee to complete.';
+    if (result.totalFeeDue > 0) {
+      message = `Checkout initiated. Please pay the total fee of ${result.totalFeeDue} UGX to complete.`;
     }
 
     res.status(200).json(successResponse(result, message));

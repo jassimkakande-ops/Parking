@@ -9,7 +9,7 @@ const AerialCarIcon = ({ size = 24, isOccupied = false }) => {
   const strokeColor = isOccupied ? '#fff' : 'var(--border-color)';
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="5" y="3" width="14" height="18" rx="3" stroke={strokeColor} strokeWidth="2" fill={isOccupied ? 'var(--primary)' : 'none'} />
+      <rect x="5" y="3" width="14" height="18" rx="3" stroke={strokeColor} strokeWidth="2" fill={isOccupied ? 'var(--danger)' : 'none'} />
       <path d="M7 6L17 6" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" />
       <path d="M7 16L17 16" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" />
       <rect x="7" y="8" width="10" height="6" rx="1" stroke={strokeColor} strokeWidth="1.5" fill={isOccupied ? '#fff' : 'none'} />
@@ -23,8 +23,8 @@ const AerialBikeIcon = ({ size = 24, isOccupied = false }) => {
   const strokeColor = isOccupied ? '#fff' : 'var(--border-color)';
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="6" r="2" stroke={strokeColor} strokeWidth="2" fill={isOccupied ? 'var(--primary)' : 'none'} />
-      <rect x="10" y="9" width="4" height="10" rx="2" stroke={strokeColor} strokeWidth="2" fill={isOccupied ? 'var(--primary)' : 'none'} />
+      <circle cx="12" cy="6" r="2" stroke={strokeColor} strokeWidth="2" fill={isOccupied ? 'var(--danger)' : 'none'} />
+      <rect x="10" y="9" width="4" height="10" rx="2" stroke={strokeColor} strokeWidth="2" fill={isOccupied ? 'var(--danger)' : 'none'} />
       <path d="M9 13H7" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
       <path d="M15 13H17" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
     </svg>
@@ -164,15 +164,15 @@ const AllotmentView = ({ facility }) => {
               alignItems: 'center',
               justifyContent: 'space-between',
               padding: '24px 32px',
-              border: slot.is_occupied ? '2px solid var(--primary)' : '2px dashed var(--border-color)',
+              border: slot.is_occupied ? '2px solid var(--danger)' : '2px dashed var(--border-color)',
               borderRadius: '12px',
-              background: slot.is_occupied ? 'var(--primary-light, rgba(52, 168, 83, 0.1))' : 'transparent',
+              background: slot.is_occupied ? 'var(--danger-bg)' : 'transparent',
               transition: 'all 0.2s ease',
               minHeight: '120px'
             }}
           >
             <div style={{
-              background: slot.is_occupied ? 'var(--primary)' : 'var(--bg-color)',
+              background: slot.is_occupied ? 'var(--danger)' : 'var(--bg-color)',
               color: slot.is_occupied ? '#fff' : 'var(--text-muted)',
               padding: '8px 16px',
               borderRadius: '6px',
@@ -183,7 +183,7 @@ const AllotmentView = ({ facility }) => {
               {slot.is_occupied ? (slot.vehicle_plate || 'OCC') : slot.slot_number}
             </div>
 
-            <div style={{ color: slot.is_occupied ? 'var(--primary)' : 'var(--border-color)' }}>
+            <div style={{ color: slot.is_occupied ? 'var(--danger)' : 'var(--border-color)' }}>
               {activeTab === 'bike' ? (
                 <AerialBikeIcon size={56} isOccupied={slot.is_occupied} />
               ) : (
