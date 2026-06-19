@@ -306,3 +306,18 @@ exports.addExtraSlot = async (facilityId, type = 'car') => {
     client.release();
   }
 };
+
+/**
+ * Gets analytics for an owner's facility
+ */
+exports.getFacilityOwnerAnalytics = async (facilityId) => {
+  const query = `
+    SELECT 
+      (SELECT total_slots - available_slots FROM parking_facilities WHERE id = $1) as occupied_slots,
+      (SELECT available_slots FROM parking_facilities WHERE id = $1) as free_slots,
+      (SELECT COUNT(DISTINCT slot_id) FROM bookings WHERE facility_id = $1 AND status IN ('pending', 'confirmed', 'active') AND end_time > NOW()) as booked_slots,
+      (SELECT COUNT(*) FROM bookings WHERE facility_id = $1 AND status = 'completed' AND DATE(end_time) = CURRENT_DATE) as checked_out_today
+  `;
+  const { rows } = await db.query(query, [facilityId]);
+  return rows[0];
+};

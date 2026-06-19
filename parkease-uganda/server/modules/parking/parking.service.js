@@ -91,3 +91,7 @@ exports.addExtraSlot = async (facilityId, ownerId, type = 'car') => {
   }
   return await parkingRepository.addExtraSlot(facilityId, type);
 };
+
+exports.getFacilityOwnerAnalytics = async (facilityId) => {
+  return await parkingRepository.getFacilityOwnerAnalytics(facilityId);
+};

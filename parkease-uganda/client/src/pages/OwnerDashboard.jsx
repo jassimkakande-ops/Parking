@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import api from '../utils/api';
 import { getMyFacilities } from '../api/parkingApi';
 import { AuthContext } from '../context/AuthContext';
 import { LayoutDashboard, Grip, Users, CreditCard, FileText, Settings, Plus, MapPin, Loader2, Moon, Sun } from 'lucide-react';
@@ -13,6 +14,7 @@ const OwnerDashboard = () => {
   const [selectedFacilityId, setSelectedFacilityId] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [analytics, setAnalytics] = useState(null);
 
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isAddFacilityOpen, setIsAddFacilityOpen] = useState(false);
@@ -40,6 +42,20 @@ const OwnerDashboard = () => {
   }, []);
 
   const selectedFacility = facilities.find(f => f.id === selectedFacilityId);
+
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      if (selectedFacilityId && activeTab === 'dashboard') {
+        try {
+          const res = await api.get(`/facilities/${selectedFacilityId}/analytics`);
+          setAnalytics(res.data.data);
+        } catch (err) {
+          console.error("Failed to fetch analytics", err);
+        }
+      }
+    };
+    fetchAnalytics();
+  }, [selectedFacilityId, activeTab]);
 
   const renderContent = () => {
     if (loading) {
@@ -70,7 +86,9 @@ const OwnerDashboard = () => {
         return (
           <div className="animate-fade-in" style={{ padding: '24px', background: 'var(--surface-color)', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
             <h2 style={{ marginBottom: '24px', fontSize: '1.5rem' }}>Dashboard Overview</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
+            
+            {/* General Overview */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px', marginBottom: '32px' }}>
               <div style={{ padding: '24px', background: 'var(--bg-color)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '8px', fontSize: '0.9rem' }}>Total Slots</p>
                 <h3 style={{ fontSize: '2rem' }}>{selectedFacility.total_slots}</h3>
@@ -84,6 +102,27 @@ const OwnerDashboard = () => {
               <div style={{ padding: '24px', background: 'var(--bg-color)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '8px', fontSize: '0.9rem' }}>Hourly Rate</p>
                 <h3 style={{ fontSize: '2rem' }}>{selectedFacility.hourly_rate} UGX</h3>
+              </div>
+            </div>
+
+            {/* Live Analytics */}
+            <h3 style={{ marginBottom: '16px', fontSize: '1.25rem', color: 'var(--text-main)' }}>Live Facility Analytics</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '24px' }}>
+              <div style={{ padding: '24px', background: 'var(--primary-glow)', borderRadius: '12px', border: '1px solid rgba(0, 102, 255, 0.2)' }}>
+                <p style={{ color: 'var(--primary)', marginBottom: '8px', fontSize: '0.9rem', fontWeight: 'bold' }}>Cars in Parking (Occupied)</p>
+                <h3 style={{ fontSize: '2rem', color: 'var(--primary)' }}>{analytics?.occupied_slots || 0}</h3>
+              </div>
+              <div style={{ padding: '24px', background: 'var(--success-bg)', borderRadius: '12px', border: '1px solid rgba(0, 200, 83, 0.2)' }}>
+                <p style={{ color: 'var(--success)', marginBottom: '8px', fontSize: '0.9rem', fontWeight: 'bold' }}>Free Slots Right Now</p>
+                <h3 style={{ fontSize: '2rem', color: 'var(--success)' }}>{analytics?.free_slots || 0}</h3>
+              </div>
+              <div style={{ padding: '24px', background: 'var(--warning-bg)', borderRadius: '12px', border: '1px solid rgba(255, 184, 0, 0.2)' }}>
+                <p style={{ color: 'var(--warning)', marginBottom: '8px', fontSize: '0.9rem', fontWeight: 'bold' }}>Upcoming Digital Bookings</p>
+                <h3 style={{ fontSize: '2rem', color: 'var(--warning)' }}>{analytics?.booked_slots || 0}</h3>
+              </div>
+              <div style={{ padding: '24px', background: 'var(--bg-color)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '8px', fontSize: '0.9rem', fontWeight: 'bold' }}>Cars Checked Out Today</p>
+                <h3 style={{ fontSize: '2rem', color: 'var(--text-main)' }}>{analytics?.checked_out_today || 0}</h3>
               </div>
             </div>
           </div>

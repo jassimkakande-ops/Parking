@@ -70,6 +70,14 @@ router.post(
   parkingController.addExtraSlot
 );
 
+// GET /api/v1/facilities/:id/analytics
+router.get(
+  '/facilities/:id/analytics',
+  authenticate,
+  authorize('owner', 'admin'),
+  parkingController.getFacilityOwnerAnalytics
+);
+
 module.exports = router;
 
 //This file contains parking routes.

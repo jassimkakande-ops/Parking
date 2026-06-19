@@ -85,8 +85,18 @@ exports.addExtraSlot = async (req, res, next) => {
     const facilityId = req.params.id;
     const ownerId = req.user.id;
     const { type } = req.body;
-    const slot = await parkingService.addExtraSlot(facilityId, ownerId, type);
-    res.status(201).json(successResponse(slot));
+    const slot = await parkingService.addExtraSlot(facilityId, type);
+    res.status(201).json(successResponse(slot, 'Extra slot added'));
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getFacilityOwnerAnalytics = async (req, res, next) => {
+  try {
+    const facilityId = req.params.id;
+    const analytics = await parkingService.getFacilityOwnerAnalytics(facilityId);
+    res.status(200).json(successResponse(analytics));
   } catch (error) {
     next(error);
   }
