@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
-import { LayoutDashboard, Users, Activity, FileText, Lock, MapPin, Download, Eye, EyeOff, Loader2, DollarSign, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, Activity, FileText, Lock, MapPin, Download, Eye, EyeOff, Loader2, DollarSign, Settings, Trash2 } from 'lucide-react';
 import AllotmentView from '../components/owner/AllotmentView';
 
 const exportToCSV = (filename, rows) => {
@@ -86,6 +86,28 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDeleteUser = async (userId) => {
+    if (window.confirm('Are you sure you want to permanently delete this user and all their data? This cannot be undone.')) {
+      try {
+        await api.delete(`/admin/users/${userId}`);
+        fetchData();
+      } catch (err) {
+        alert('Failed to delete user');
+      }
+    }
+  };
+
+  const handleUpdateRole = async (userId, newRole) => {
+    if (window.confirm(`Change role to ${newRole}?`)) {
+      try {
+        await api.patch(`/admin/users/${userId}/role`, { role: newRole });
+        fetchData();
+      } catch (err) {
+        alert('Failed to update user role');
+      }
+    }
+  };
+
   const visibleUsers = showInactiveUsers ? users : users.filter(u => u.is_active);
 
   const navItems = [
@@ -165,7 +187,24 @@ const AdminDashboard = () => {
                     <tr key={u.id} style={{ opacity: u.is_active ? 1 : 0.6 }}>
                       <td style={{ padding: '16px', borderBottom: '1px solid var(--border-color)' }}>{u.full_name}</td>
                       <td style={{ padding: '16px', borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>{u.email}</td>
-                      <td style={{ padding: '16px', borderBottom: '1px solid var(--border-color)', textTransform: 'capitalize' }}>{u.role}</td>
+                      <td style={{ padding: '16px', borderBottom: '1px solid var(--border-color)', textTransform: 'capitalize' }}>
+                        <select 
+                          value={u.role} 
+                          onChange={(e) => handleUpdateRole(u.id, e.target.value)}
+                          style={{
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                            border: '1px solid var(--border-color)',
+                            background: 'transparent',
+                            color: 'inherit',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <option value="driver">Driver</option>
+                          <option value="owner">Owner</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                      </td>
                       <td style={{ padding: '16px', borderBottom: '1px solid var(--border-color)' }}>
                         <span className={`badge ${u.is_active ? 'badge-success' : 'badge-danger'}`}>
                           {u.is_active ? 'Active' : 'Suspended'}
@@ -174,10 +213,17 @@ const AdminDashboard = () => {
                       <td style={{ padding: '16px', borderBottom: '1px solid var(--border-color)', textAlign: 'right' }}>
                         <button 
                           onClick={() => handleToggleUserStatus(u.id, u.is_active)}
-                          style={{ background: 'transparent', color: u.is_active ? 'var(--danger)' : 'var(--success)', cursor: 'pointer', border: 'none' }}
-                          title={u.is_active ? 'Deactivate User' : 'Activate User'}
+                          style={{ background: 'transparent', color: u.is_active ? 'var(--warning)' : 'var(--success)', cursor: 'pointer', border: 'none', marginRight: '16px' }}
+                          title={u.is_active ? 'Suspend User' : 'Activate User'}
                         >
                           <Lock size={18} />
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteUser(u.id)}
+                          style={{ background: 'transparent', color: 'var(--danger)', cursor: 'pointer', border: 'none' }}
+                          title="Delete User"
+                        >
+                          <Trash2 size={18} />
                         </button>
                       </td>
                     </tr>

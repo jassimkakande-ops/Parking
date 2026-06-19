@@ -23,6 +23,27 @@ exports.updateUserStatus = async (req, res, next) => {
   }
 };
 
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    await adminService.deleteUser(userId);
+    res.status(200).json(successResponse(null, 'User successfully deleted'));
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateUserRole = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const { role } = req.body;
+    const user = await adminService.updateUserRole(userId, role);
+    res.status(200).json(successResponse(user, `User role updated to ${role}`));
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.getOccupancyReport = async (req, res, next) => {
   try {
     const report = await adminService.getOccupancyReports();

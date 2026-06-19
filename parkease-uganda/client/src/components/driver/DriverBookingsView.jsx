@@ -139,7 +139,7 @@ const DriverBookingsView = () => {
                     Pay Now
                   </button>
                 )}
-                {(booking.status === 'pending' || booking.status === 'confirmed') && (
+                {(booking.status === 'pending' || booking.status === 'confirmed' || booking.status === 'timedout') && (
                   <button 
                     className="btn-secondary" 
                     style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', padding: '6px 12px' }}

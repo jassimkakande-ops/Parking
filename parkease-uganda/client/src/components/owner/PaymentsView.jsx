@@ -125,8 +125,8 @@ const PaymentsView = ({ facility }) => {
                     <td style={{ padding: '12px 16px' }}>{new Date(w.initiated_at).toLocaleDateString()}</td>
                     <td style={{ padding: '12px 16px', textTransform: 'capitalize' }}>{w.withdrawal_method.replace('_', ' ')}</td>
                     <td style={{ padding: '12px 16px', fontWeight: 'bold' }}>{w.amount} {w.currency}</td>
-                    <td style={{ padding: '12px 16px' }}>
-                      <span className={`badge ${w.status === 'completed' ? 'badge-success' : w.status === 'pending' ? 'badge-warning' : 'badge-danger'}`}>
+                    <td style={{ padding: '16px', borderBottom: '1px solid var(--border-color)' }}>
+                      <span className={`badge ${w.status === 'completed' ? 'badge-success' : w.status === 'pending' ? 'badge-warning' : w.status === 'timedout' ? 'badge-info' : 'badge-danger'}`}>
                         {w.status}
                       </span>
                     </td>
@@ -160,8 +160,8 @@ const PaymentsView = ({ facility }) => {
                   <td style={{ padding: '12px 16px' }}>{payment.driver_name} <br/><small style={{ color: 'var(--text-muted)' }}>{payment.phone_number}</small></td>
                   <td style={{ padding: '12px 16px' }}>{payment.slot_number || 'Auto'}</td>
                   <td style={{ padding: '12px 16px', fontWeight: 'bold' }}>{payment.amount} {payment.currency}</td>
-                  <td style={{ padding: '12px 16px' }}>
-                    <span className={`badge ${payment.status === 'completed' ? 'badge-success' : payment.status === 'pending' ? 'badge-warning' : 'badge-danger'}`}>
+                  <td style={{ padding: '16px', borderBottom: '1px solid var(--border-color)' }}>
+                    <span className={`badge ${payment.status === 'completed' ? 'badge-success' : payment.status === 'pending' ? 'badge-warning' : payment.status === 'timedout' ? 'badge-info' : 'badge-danger'}`}>
                       {payment.status}
                     </span>
                   </td>

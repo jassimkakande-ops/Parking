@@ -22,6 +22,10 @@
   --warning-bg: #fef3c7;
   --warning-text: #92400e;
 
+  --info: #3b82f6;
+  --info-bg: #dbeafe;
+  --info-text: #1e3a8a;
+
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.3);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
@@ -50,6 +54,10 @@
   --warning: #fbbf24;
   --warning-bg: rgba(245, 158, 11, 0.2);
   --warning-text: #fcd34d;
+
+  --info: #60a5fa;
+  --info-bg: rgba(59, 130, 246, 0.2);
+  --info-text: #93c5fd;
 
   --glass-bg: rgba(30, 41, 59, 0.7);
   --glass-border: rgba(255, 255, 255, 0.05);
@@ -169,6 +177,10 @@ button {
 .badge-danger {
   background-color: var(--danger-bg);
   color: var(--danger-text);
+}
+.badge-info {
+  background-color: var(--info-bg);
+  color: var(--info-text);
 }
 
 /* Animations */

@@ -12,6 +12,14 @@ const bookingRoutes = require('./modules/booking/booking.routes');
 const paymentRoutes = require('./modules/payments/payment.routes');
 const adminRoutes = require('./modules/admin/admin.routes');
 const withdrawalRoutes = require('./modules/withdrawals/withdrawal.routes');
+const paymentRepository = require('./modules/payments/payment.repository');
+
+// Background Tasks
+setInterval(() => {
+  paymentRepository.timeoutPendingPayments().catch(err => {
+    console.error('Failed to timeout pending payments:', err.message);
+  });
+}, 30000); // Check every 30 seconds
 
 // Global Middlewares
 app.use(helmet());

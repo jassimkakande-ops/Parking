@@ -23,6 +23,17 @@ router.patch(
   adminController.updateUserStatus
 );
 
+router.delete('/users/:id', adminController.deleteUser);
+
+router.patch(
+  '/users/:id/role',
+  [
+    body('role').isIn(['driver', 'owner', 'admin']).withMessage('Role must be driver, owner, or admin')
+  ],
+  validate,
+  adminController.updateUserRole
+);
+
 // Reports
 router.get('/reports/occupancy', adminController.getOccupancyReport);
 router.get('/reports/revenue', adminController.getRevenueReport);

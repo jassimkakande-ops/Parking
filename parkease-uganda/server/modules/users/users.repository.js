@@ -112,3 +112,30 @@ exports.findDriversByFacility = async (facilityId) => {
   const { rows } = await db.query(query, [facilityId]);
   return rows;
 };
+
+/**
+ * Hard deletes a user from the public.users table.
+ * Due to ON DELETE CASCADE constraints, this will also delete their facilities, bookings, slots, and payments.
+ * @param {string} id - The UUID of the user.
+ */
+exports.deleteUser = async (id) => {
+  const query = `DELETE FROM users WHERE id = $1`;
+  await db.query(query, [id]);
+};
+
+/**
+ * Updates a user's role.
+ * @param {string} id - The UUID of the user.
+ * @param {string} role - The new role (driver, owner, admin).
+ * @returns {Promise<object|null>} The updated user object.
+ */
+exports.updateUserRole = async (id, role) => {
+  const query = `
+    UPDATE users 
+    SET role = $1 
+    WHERE id = $2 
+    RETURNING id, full_name, email, phone_number, role, is_active
+  `;
+  const { rows } = await db.query(query, [role, id]);
+  return rows[0] || null;
+};

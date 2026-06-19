@@ -1,6 +1,12 @@
 const usersRepository = require('../users/users.repository');
 const adminRepository = require('./admin.repository');
 const { AppError } = require('../../middleware/errorHandler');
+const { createClient } = require('@supabase/supabase-js');
+
+let supabaseAdmin = null;
+if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  supabaseAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+}
 
 /**
  * Gets all registered users
@@ -22,6 +28,41 @@ exports.toggleUserStatus = async (userId, isActive) => {
   // (In a real app, you'd pass the requesterId down to check this, but for now we just toggle)
 
   const updatedUser = await usersRepository.updateUserStatus(userId, isActive);
+  return updatedUser;
+};
+
+/**
+ * Hard deletes a user from Supabase Auth and the database
+ */
+exports.deleteUser = async (userId) => {
+  const user = await usersRepository.findById(userId);
+  if (!user) throw new AppError('User not found', 404);
+
+  // Delete from Supabase Auth first
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin.auth.admin.deleteUser(userId);
+      if (error) {
+        console.error('Failed to delete from Supabase Auth:', error.message);
+      }
+    } catch (err) {
+      console.error('Supabase admin API error:', err);
+    }
+  }
+
+  // Delete from Postgres (cascades to all user data)
+  await usersRepository.deleteUser(userId);
+  return { success: true };
+};
+
+/**
+ * Updates a user's role
+ */
+exports.updateUserRole = async (userId, role) => {
+  const user = await usersRepository.findById(userId);
+  if (!user) throw new AppError('User not found', 404);
+
+  const updatedUser = await usersRepository.updateUserRole(userId, role);
   return updatedUser;
 };
 

@@ -66,3 +66,15 @@ exports.findPaymentsByDriverId = async (driverId) => {
   const { rows } = await db.query(query, [driverId]);
   return rows;
 };
+
+/**
+ * Automatically set pending payments older than 1 minute to 'timedout'
+ */
+exports.timeoutPendingPayments = async () => {
+  const query = `
+    UPDATE payments
+    SET status = 'timedout'
+    WHERE status = 'pending' AND initiated_at < NOW() - INTERVAL '1 minute'
+  `;
+  await db.query(query);
+};
