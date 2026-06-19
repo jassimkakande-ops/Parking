@@ -42,6 +42,7 @@ const UsersView = ({ facility }) => {
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Driver Name</th>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Email</th>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Phone Number</th>
+                <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Vehicle Plate</th>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Total Bookings</th>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Last Booking Date</th>
               </tr>
@@ -52,6 +53,12 @@ const UsersView = ({ facility }) => {
                   <td style={{ padding: '12px 16px', fontWeight: 'bold' }}>{driver.full_name}</td>
                   <td style={{ padding: '12px 16px' }}>{driver.email}</td>
                   <td style={{ padding: '12px 16px' }}>{driver.phone_number}</td>
+                  <td style={{ padding: '12px 16px' }}>
+                    {driver.vehicle_plate
+                      ? <span style={{ fontFamily: 'monospace', background: 'var(--bg-color)', border: '1px solid var(--border-color)', padding: '2px 8px', borderRadius: '4px', fontWeight: 'bold', letterSpacing: '1px' }}>{driver.vehicle_plate}</span>
+                      : <span style={{ color: 'var(--text-muted)' }}>—</span>
+                    }
+                  </td>
                   <td style={{ padding: '12px 16px' }}>
                     <span className="badge badge-success">{driver.total_bookings}</span>
                   </td>

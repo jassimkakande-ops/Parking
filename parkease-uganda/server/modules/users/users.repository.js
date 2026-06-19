@@ -102,7 +102,14 @@ exports.findDriversByFacility = async (facilityId) => {
       u.email, 
       u.phone_number, 
       COUNT(b.id) as total_bookings,
-      MAX(b.created_at) as last_booking_date
+      MAX(b.created_at) as last_booking_date,
+      (
+        SELECT b2.vehicle_plate 
+        FROM bookings b2 
+        WHERE b2.driver_id = u.id AND b2.facility_id = $1
+        ORDER BY b2.created_at DESC 
+        LIMIT 1
+      ) as vehicle_plate
     FROM users u
     JOIN bookings b ON u.id = b.driver_id
     WHERE b.facility_id = $1
