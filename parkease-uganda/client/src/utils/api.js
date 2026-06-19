@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+export const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 // Create an Axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api/v1',
+  baseURL: `${SOCKET_URL}/api/v1`,
 });
 
 // Add a request interceptor to inject the token

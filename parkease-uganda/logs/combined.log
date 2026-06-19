@@ -453,3 +453,10 @@
 {"timestamp":"2026-06-19T09:09:46.083Z","level":"info","message":"Client connected: jE4GnPYJ3vWc8UnaAAAF","module":"socket"}
 {"timestamp":"2026-06-19T09:11:23.288Z","level":"info","message":"Client disconnected: jE4GnPYJ3vWc8UnaAAAF","module":"socket"}
 {"timestamp":"2026-06-19T09:16:05.890Z","level":"info","message":"Client disconnected: K8gkAqVcDDL1rXJwAAAE","module":"socket"}
+{"timestamp":"2026-06-19T09:18:16.952Z","level":"info","message":"Client disconnected: qfIiptkKSJqpa6AmAAAD","module":"socket"}
+{"timestamp":"2026-06-19T09:36:29.489Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-19T09:36:29.524Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-19T09:37:43.357Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-19T09:37:43.373Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-19T09:38:08.249Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-19T09:38:08.269Z","level":"info","message":"Server is running on port 5000","module":"index"}

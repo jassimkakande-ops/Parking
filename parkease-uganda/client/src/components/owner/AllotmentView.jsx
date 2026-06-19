@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
-import api from '../../utils/api';
+import api, { SOCKET_URL } from '../../utils/api';
 import { addExtraSlot as addExtraSlotApi } from '../../api/parkingApi';
 import { Loader2, Plus } from 'lucide-react';
 
@@ -60,7 +60,7 @@ const AllotmentView = ({ facility }) => {
 
     fetchSlots();
 
-    const socket = io('http://localhost:5000');
+    const socket = io(SOCKET_URL);
     socket.emit('join_facility', facility.id);
 
     socket.on('slot_updated', (data) => {

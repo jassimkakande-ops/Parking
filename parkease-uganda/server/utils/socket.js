@@ -6,8 +6,8 @@ let io;
 exports.initSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: '*', // For development. Should be restricted in production.
-      methods: ['GET', 'POST']
+      origin: process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',') : '*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
     }
   });
 

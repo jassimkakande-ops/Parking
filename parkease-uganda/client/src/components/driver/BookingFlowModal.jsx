@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Car, CreditCard, Smartphone, CheckCircle } from 'lucide-react';
 import { io } from 'socket.io-client';
-import api from '../../utils/api';
+import api, { SOCKET_URL } from '../../utils/api';
 import { AuthContext } from '../../context/AuthContext';
 import ParkingTicket from './ParkingTicket';
 
@@ -54,7 +54,7 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
       setArrivalTime(nextHour.toISOString().slice(0, 16));
       setSlots([]); // clear slots
       
-      const socket = io('http://localhost:5000');
+      const socket = io(SOCKET_URL);
       socket.emit('join_facility', facility.id);
       socket.on('slot_updated', (data) => {
         // Only update current occupancy if we are looking at 'now', but safe to just update.

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import api from '../utils/api';
+import api, { SOCKET_URL } from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
 import { MapPin, Car, LayoutDashboard, FileText, CreditCard, User, LogOut } from 'lucide-react';
 import { io } from 'socket.io-client';
@@ -21,7 +21,7 @@ const DriverDashboard = () => {
   useEffect(() => {
     fetchFacilities();
     
-    const socket = io('http://localhost:5000');
+    const socket = io(SOCKET_URL);
     
     socket.on('connect', () => {
       console.log('Connected to real-time server');
@@ -47,7 +47,7 @@ const DriverDashboard = () => {
       const res = await api.get('/facilities?available=true');
       setFacilities(res.data.data);
       
-      const socket = io('http://localhost:5000');
+      const socket = io(SOCKET_URL);
       res.data.data.forEach(f => {
         socket.emit('join_facility', f.id);
       });
