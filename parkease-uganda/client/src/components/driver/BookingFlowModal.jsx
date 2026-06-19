@@ -19,7 +19,7 @@ const AerialCar = ({ occupied, selected }) => (
   </svg>
 );
 
-const BookingFlowModal = ({ isOpen, onClose, facility }) => {
+const BookingFlowModal = ({ isOpen, onClose, facility, preSelectedSlot }) => {
   const { user } = useContext(AuthContext);
   const [step, setStep] = useState(1); // 1: Slot Select, 2: Details, 3: Payment, 4: Success/Ticket
   const [slots, setSlots] = useState([]);
@@ -47,7 +47,8 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
   useEffect(() => {
     if (isOpen && facility) {
       setStep(1);
-      setSelectedSlot(null);
+      // If a slot was pre-selected from the map, remember it
+      setSelectedSlot(preSelectedSlot || null);
       setError('');
       const nextHour = new Date(Date.now() + 60 * 60 * 1000);
       nextHour.setMinutes(0, 0, 0);
@@ -62,7 +63,7 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
       });
       return () => socket.disconnect();
     }
-  }, [isOpen, facility]);
+  }, [isOpen, facility, preSelectedSlot]);
 
   const fetchAvailableSlots = async () => {
     if (!arrivalTime || duration < 1) return setError('Please specify arrival time and duration');
@@ -80,7 +81,19 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
         return existing || { id: `temp-${idx}`, slot_number: slotNumStr, is_occupied: false };
       });
       setSlots(grid);
-      setError('');
+
+      // If a slot was pre-selected from the map, keep it selected if it's still free
+      if (preSelectedSlot) {
+        const matchInGrid = grid.find(s => s.id === preSelectedSlot.id || s.slot_number === preSelectedSlot.slot_number);
+        if (matchInGrid && !matchInGrid.is_occupied) {
+          setSelectedSlot(matchInGrid);
+        } else if (matchInGrid && matchInGrid.is_occupied) {
+          setSelectedSlot(null);
+          setError(`Slot ${preSelectedSlot.slot_number} is already taken at this time. Please pick another slot or change the time.`);
+        }
+      }
+
+      setError(prev => prev.includes('Slot') ? prev : '');
       setStep(2);
     } catch (err) {
       setError('Failed to fetch availability');
@@ -225,6 +238,11 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
         {step === 2 && (
           <div>
             <h3>Step 2: Select a Parking Slot</h3>
+            {preSelectedSlot && selectedSlot && (
+              <div style={{ background: 'var(--primary-glow)', border: '1px solid var(--primary)', borderRadius: '8px', padding: '10px 14px', marginTop: '16px', fontSize: '0.9rem' }}>
+                ✅ <strong>{selectedSlot.slot_number}</strong> pre-selected from slot map. You can change it below.
+              </div>
+            )}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '16px', marginTop: '24px' }}>
               {slots.map(slot => (
                 <div 
@@ -241,7 +259,8 @@ const BookingFlowModal = ({ isOpen, onClose, facility }) => {
                   }}
                 >
                   <AerialCar occupied={slot.is_occupied || selectedSlot?.id === slot.id} selected={selectedSlot?.id === slot.id} />
-                  <span style={{ fontWeight: 'bold' }}>{slot.slot_number}</span>
+                  <span style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>{slot.slot_number}</span>
+                  {slot.is_occupied && <span style={{ fontSize: '0.65rem', color: 'var(--danger)' }}>Taken</span>}
                 </div>
               ))}
             </div>

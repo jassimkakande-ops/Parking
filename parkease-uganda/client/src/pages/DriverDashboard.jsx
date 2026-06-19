@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import api, { SOCKET_URL } from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
-import { MapPin, Car, LayoutDashboard, FileText, CreditCard, User, LogOut } from 'lucide-react';
+import { MapPin, Car, LayoutDashboard, FileText, CreditCard, User, LogOut, Grid, X } from 'lucide-react';
 import { io } from 'socket.io-client';
 import LocationActions from '../components/LocationActions';
 import BookingFlowModal from '../components/driver/BookingFlowModal';
 import DriverBookingsView from '../components/driver/DriverBookingsView';
 import DriverPaymentsView from '../components/driver/DriverPaymentsView';
 import ProfileView from '../components/driver/ProfileView';
+import AllotmentView from '../components/owner/AllotmentView';
 
 const DriverDashboard = () => {
   const [facilities, setFacilities] = useState([]);
@@ -17,6 +18,8 @@ const DriverDashboard = () => {
 
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedFacilityForBooking, setSelectedFacilityForBooking] = useState(null);
+  const [slotMapFacility, setSlotMapFacility] = useState(null); // facility whose slot map is open
+  const [preSelectedSlot, setPreSelectedSlot] = useState(null); // slot chosen from map popup
 
   useEffect(() => {
     fetchFacilities();
@@ -109,6 +112,14 @@ const DriverDashboard = () => {
                   <Car size={18} />
                   Book Now
                 </button>
+                <button
+                  className="btn-secondary"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px' }}
+                  onClick={() => setSlotMapFacility(facility)}
+                  title="View slot map"
+                >
+                  <Grid size={16} /> View Slots
+                </button>
                 <LocationActions lat={facility.latitude} lng={facility.longitude} name={facility.name} compact />
               </div>
             </div>
@@ -199,12 +210,69 @@ const DriverDashboard = () => {
         {renderContent()}
       </div>
 
+      {/* Slot Map Modal */}
+      {slotMapFacility && (
+        <div style={{
+          position: 'fixed', inset: 0,
+          background: 'rgba(0,0,0,0.6)',
+          zIndex: 9997,
+          display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+          overflowY: 'auto',
+          padding: '40px 16px'
+        }}>
+          <div style={{
+            width: '100%', maxWidth: '800px',
+            background: 'var(--surface-color)',
+            borderRadius: '16px',
+            overflow: 'hidden',
+            border: '1px solid var(--border-color)'
+          }}>
+            {/* Modal Header */}
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '20px 24px',
+              borderBottom: '1px solid var(--border-color)'
+            }}>
+              <div>
+                <h3 style={{ margin: 0 }}>{slotMapFacility.name} — Slot Map</h3>
+                <p style={{ margin: '4px 0 0', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                  Click a slot to see its booking schedule
+                </p>
+              </div>
+              <button
+                onClick={() => setSlotMapFacility(null)}
+                style={{
+                  background: 'var(--danger-bg)', border: '1px solid var(--danger)',
+                  borderRadius: '50%', width: '32px', height: '32px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', color: 'var(--danger)'
+                }}
+              >
+                <X size={16} />
+              </button>
+            </div>
+            {/* AllotmentView with booking callback */}
+            <div style={{ padding: '0' }}>
+              <AllotmentView
+                facility={slotMapFacility}
+                onBookSlot={(slot) => {
+                  setPreSelectedSlot(slot);
+                  setSelectedFacilityForBooking(slotMapFacility);
+                  setSlotMapFacility(null);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Booking Flow Modal */}
       {selectedFacilityForBooking && (
         <BookingFlowModal 
           isOpen={true} 
-          onClose={() => setSelectedFacilityForBooking(null)} 
-          facility={selectedFacilityForBooking} 
+          onClose={() => { setSelectedFacilityForBooking(null); setPreSelectedSlot(null); }} 
+          facility={selectedFacilityForBooking}
+          preSelectedSlot={preSelectedSlot}
         />
       )}
     </div>

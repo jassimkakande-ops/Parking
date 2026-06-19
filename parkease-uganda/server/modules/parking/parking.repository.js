@@ -123,14 +123,37 @@ exports.findFacilityById = async (facilityId) => {
 };
 
 /**
- * Gets all slots for a specific facility.
+ * Gets all slots for a specific facility, including upcoming and active booking windows.
+ * Each slot now has an `active_bookings` array with { id, start_time, end_time, vehicle_plate, status }.
  */
 exports.getFacilitySlots = async (facilityId) => {
   const query = `
-    SELECT id, slot_number, is_occupied, vehicle_plate, occupied_since 
-    FROM parking_slots 
-    WHERE facility_id = $1 
-    ORDER BY slot_number
+    SELECT 
+      s.id, 
+      s.slot_number, 
+      s.is_occupied, 
+      s.vehicle_plate, 
+      s.occupied_since,
+      COALESCE(
+        JSON_AGG(
+          JSON_BUILD_OBJECT(
+            'id', b.id,
+            'start_time', b.intended_arrival_time,
+            'end_time', b.end_time,
+            'vehicle_plate', b.vehicle_plate,
+            'status', b.status
+          ) ORDER BY b.intended_arrival_time ASC
+        ) FILTER (WHERE b.id IS NOT NULL),
+        '[]'
+      ) AS active_bookings
+    FROM parking_slots s
+    LEFT JOIN bookings b 
+      ON b.slot_id = s.id 
+      AND b.status IN ('pending', 'confirmed', 'active')
+      AND b.end_time > NOW()
+    WHERE s.facility_id = $1
+    GROUP BY s.id, s.slot_number, s.is_occupied, s.vehicle_plate, s.occupied_since
+    ORDER BY s.slot_number
   `;
   const { rows } = await db.query(query, [facilityId]);
   return rows;
