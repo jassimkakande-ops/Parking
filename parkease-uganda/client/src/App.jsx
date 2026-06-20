@@ -11,6 +11,7 @@ import OwnerDashboard from './pages/OwnerDashboard';
 import ManageFacility from './pages/ManageFacility';
 import AdminDashboard from './pages/AdminDashboard';
 import Home from './pages/Home';
+import Search from './pages/Search';
 import { AuthContext } from './context/AuthContext';
 
 function App() {
@@ -21,7 +22,8 @@ function App() {
       <div className="app-container">
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={user ? <Navigate to={`/${user.role}`} replace /> : <Home />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/login" element={user ? <Navigate to={`/${user.role}`} replace /> : <Login />} />
           <Route path="/signup" element={user ? <Navigate to={`/${user.role}`} replace /> : <Signup />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
