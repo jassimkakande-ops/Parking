@@ -10,6 +10,7 @@ import DriverDashboard from './pages/DriverDashboard';
 import OwnerDashboard from './pages/OwnerDashboard';
 import ManageFacility from './pages/ManageFacility';
 import AdminDashboard from './pages/AdminDashboard';
+import Home from './pages/Home';
 import { AuthContext } from './context/AuthContext';
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
       <div className="app-container">
         <Navbar />
         <Routes>
-          <Route path="/" element={<Navigate to={user ? `/${user.role}` : "/login"} replace />} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={user ? <Navigate to={`/${user.role}`} replace /> : <Login />} />
           <Route path="/signup" element={user ? <Navigate to={`/${user.role}`} replace /> : <Signup />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
