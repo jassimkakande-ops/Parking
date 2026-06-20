@@ -12,6 +12,7 @@ const bookingRoutes = require('./modules/booking/booking.routes');
 const paymentRoutes = require('./modules/payments/payment.routes');
 const adminRoutes = require('./modules/admin/admin.routes');
 const withdrawalRoutes = require('./modules/withdrawals/withdrawal.routes');
+const contactRoutes = require('./modules/contact/contact.routes');
 const paymentRepository = require('./modules/payments/payment.repository');
 
 // Background Tasks
@@ -42,6 +43,7 @@ app.use('/api/v1/bookings', bookingRoutes);
 app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/withdrawals', withdrawalRoutes);
+app.use('/api/v1/contact', contactRoutes);
 
 // 404 handler for undefined routes
 app.use('*', (req, res, next) => {

@@ -35,6 +35,11 @@ const Search = () => {
 
   const [searchInputValue, setSearchInputValue] = useState(location.state?.name || "Kampala, Uganda");
 
+  // Search state passed from Home
+  const parkingType = location.state?.parkingType || 'hourly';
+  const initialStartTime = location.state?.startTime || '';
+  const initialEndTime = location.state?.endTime || '';
+
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -125,9 +130,6 @@ const Search = () => {
     }
   };
 
-  // Optional: Filter facilities by distance to mapCenter (simplified: just showing all for now, as Uganda is small, but panning map to search)
-  // For a production app, you'd calculate haversine distance here and filter `facilities` to those within 10km.
-  
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 60px)' }}>
       {/* Top Search Bar */}
@@ -159,7 +161,12 @@ const Search = () => {
             />
           )}
         </div>
-        <button className="btn-primary">Update Search</button>
+        
+        {parkingType === 'monthly' && (
+          <div style={{ background: 'var(--primary-glow)', color: 'var(--primary)', padding: '8px 16px', borderRadius: '8px', fontWeight: 'bold' }}>
+            Monthly Parking Search
+          </div>
+        )}
       </div>
 
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
@@ -332,6 +339,9 @@ const Search = () => {
           onClose={() => { setSelectedFacilityForBooking(null); setPreSelectedSlot(null); }} 
           facility={selectedFacilityForBooking}
           preSelectedSlot={preSelectedSlot}
+          initialStartTime={initialStartTime}
+          initialEndTime={initialEndTime}
+          parkingType={parkingType}
         />
       )}
     </div>

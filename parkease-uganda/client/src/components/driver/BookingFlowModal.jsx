@@ -19,7 +19,7 @@ const AerialCar = ({ occupied, selected }) => (
   </svg>
 );
 
-const BookingFlowModal = ({ isOpen, onClose, facility, preSelectedSlot }) => {
+const BookingFlowModal = ({ isOpen, onClose, facility, preSelectedSlot, initialStartTime, initialEndTime, parkingType }) => {
   const { user } = useContext(AuthContext);
   const [step, setStep] = useState(1); // 1: Slot Select, 2: Details, 3: Payment, 4: Success/Ticket
   const [slots, setSlots] = useState([]);
@@ -47,23 +47,41 @@ const BookingFlowModal = ({ isOpen, onClose, facility, preSelectedSlot }) => {
   useEffect(() => {
     if (isOpen && facility) {
       setStep(1);
-      // If a slot was pre-selected from the map, remember it
       setSelectedSlot(preSelectedSlot || null);
       setError('');
-      const nextHour = new Date(Date.now() + 60 * 60 * 1000);
-      nextHour.setMinutes(0, 0, 0);
-      setArrivalTime(nextHour.toISOString().slice(0, 16));
+      
+      let start = '';
+      let calculatedDuration = 1;
+
+      if (parkingType === 'monthly') {
+        const nextHour = new Date(Date.now() + 60 * 60 * 1000);
+        nextHour.setMinutes(0, 0, 0);
+        start = nextHour.toISOString().slice(0, 16);
+        calculatedDuration = 720; // 30 days in hours
+      } else if (initialStartTime && initialEndTime) {
+        start = initialStartTime;
+        const startD = new Date(initialStartTime);
+        const endD = new Date(initialEndTime);
+        const diffHours = Math.max(1, Math.ceil((endD.getTime() - startD.getTime()) / (1000 * 60 * 60)));
+        calculatedDuration = diffHours;
+      } else {
+        const nextHour = new Date(Date.now() + 60 * 60 * 1000);
+        nextHour.setMinutes(0, 0, 0);
+        start = nextHour.toISOString().slice(0, 16);
+      }
+
+      setArrivalTime(start);
+      setDuration(calculatedDuration);
       setSlots([]); // clear slots
       
       const socket = io(SOCKET_URL);
       socket.emit('join_facility', facility.id);
       socket.on('slot_updated', (data) => {
-        // Only update current occupancy if we are looking at 'now', but safe to just update.
         setSlots(prev => prev.map(s => s.id === data.id ? { ...s, is_occupied: data.is_occupied } : s));
       });
       return () => socket.disconnect();
     }
-  }, [isOpen, facility, preSelectedSlot]);
+  }, [isOpen, facility, preSelectedSlot, initialStartTime, initialEndTime, parkingType]);
 
   const fetchAvailableSlots = async () => {
     if (!arrivalTime || duration < 1) return setError('Please specify arrival time and duration');
@@ -206,6 +224,12 @@ const BookingFlowModal = ({ isOpen, onClose, facility, preSelectedSlot }) => {
           <div>
             <h3>Step 1: Booking Details</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '24px' }}>
+              {parkingType === 'monthly' && (
+                <div style={{ background: 'var(--primary-glow)', color: 'var(--primary)', padding: '12px', borderRadius: '8px', border: '1px solid var(--primary)' }}>
+                  <strong>Monthly Booking</strong><br/>
+                  Duration is pre-set to 30 Days (720 Hours) based on your search.
+                </div>
+              )}
               <div>
                 <label>Full Name</label>
                 <input type="text" className="input-field" value={name} onChange={e => setName(e.target.value)} />
