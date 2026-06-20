@@ -1,42 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api, { SOCKET_URL } from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
 import { MapPin, Car, Grid, Search as SearchIcon } from 'lucide-react';
 import { io } from 'socket.io-client';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
-import L from 'leaflet';
+import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF, Autocomplete } from '@react-google-maps/api';
 import BookingFlowModal from '../components/driver/BookingFlowModal';
 import AllotmentView from '../components/owner/AllotmentView';
 
-// Fix for default marker icons in React-Leaflet
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+const libraries = ['places'];
+const containerStyle = {
+  width: '100%',
+  height: '100%'
+};
 
-let DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
-L.Marker.prototype.options.icon = DefaultIcon;
-
-// Forces Leaflet to recalculate its size
-function InvalidateMapSize() {
-  const map = useMapEvents({});
-  useEffect(() => {
-    const interval = setInterval(() => {
-      map.invalidateSize();
-    }, 50);
-    setTimeout(() => {
-      clearInterval(interval);
-      map.invalidateSize();
-      window.dispatchEvent(new Event('resize'));
-    }, 600);
-    return () => clearInterval(interval);
-  }, [map]);
-  return null;
-}
+// Default center to Kampala if no search state is provided
+const defaultCenter = { lat: 0.3476, lng: 32.5825 };
 
 const Search = () => {
   const [facilities, setFacilities] = useState([]);
@@ -45,6 +24,26 @@ const Search = () => {
   
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // If user searched from Home, use those coordinates to center the map
+  const [mapCenter, setMapCenter] = useState(
+    location.state?.lat && location.state?.lng 
+      ? { lat: location.state.lat, lng: location.state.lng } 
+      : defaultCenter
+  );
+
+  const [searchInputValue, setSearchInputValue] = useState(location.state?.name || "Kampala, Uganda");
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries
+  });
+
+  const [map, setMap] = useState(null);
+  const [autocomplete, setAutocomplete] = useState(null);
+  const [activeMarker, setActiveMarker] = useState(null);
 
   const [selectedFacilityForBooking, setSelectedFacilityForBooking] = useState(null);
   const [slotMapFacility, setSlotMapFacility] = useState(null);
@@ -99,21 +98,66 @@ const Search = () => {
     setSelectedFacilityForBooking(facility);
   };
 
-  // Center map on Kampala by default
-  const defaultCenter = [0.3476, 32.5825];
+  const onLoadMap = useCallback(function callback(map) {
+    setMap(map);
+  }, []);
 
+  const onUnmountMap = useCallback(function callback() {
+    setMap(null);
+  }, []);
+
+  const onLoadAutocomplete = (autoC) => setAutocomplete(autoC);
+
+  const onPlaceChanged = () => {
+    if (autocomplete !== null) {
+      const place = autocomplete.getPlace();
+      if (place.geometry && place.geometry.location) {
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        setMapCenter({ lat, lng });
+        setSearchInputValue(place.formatted_address || place.name);
+        
+        if (map) {
+          map.panTo({ lat, lng });
+          map.setZoom(14);
+        }
+      }
+    }
+  };
+
+  // Optional: Filter facilities by distance to mapCenter (simplified: just showing all for now, as Uganda is small, but panning map to search)
+  // For a production app, you'd calculate haversine distance here and filter `facilities` to those within 10km.
+  
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 60px)' }}>
       {/* Top Search Bar */}
       <div style={{ padding: '16px 24px', background: 'var(--surface-color)', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '16px', zIndex: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '8px 16px', background: 'var(--bg-color)', flex: 1, maxWidth: '600px' }}>
           <SearchIcon size={20} color="var(--primary)" style={{ marginRight: '12px' }} />
-          <input 
-            type="text" 
-            placeholder="Where are you going?" 
-            style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1rem', color: 'var(--text-main)' }} 
-            defaultValue="Kampala, Uganda"
-          />
+          {isLoaded ? (
+            <div style={{ flex: 1 }}>
+              <Autocomplete
+                onLoad={onLoadAutocomplete}
+                onPlaceChanged={onPlaceChanged}
+                options={{ componentRestrictions: { country: 'ug' } }}
+              >
+                <input 
+                  type="text" 
+                  placeholder="Where are you going?" 
+                  style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1rem', color: 'var(--text-main)' }} 
+                  value={searchInputValue}
+                  onChange={(e) => setSearchInputValue(e.target.value)}
+                />
+              </Autocomplete>
+            </div>
+          ) : (
+            <input 
+              type="text" 
+              placeholder="Loading search..." 
+              disabled
+              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1.1rem', color: 'var(--text-main)' }} 
+            />
+          )}
         </div>
         <button className="btn-primary">Update Search</button>
       </div>
@@ -131,7 +175,12 @@ const Search = () => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {facilities.map(facility => (
-                <div key={facility.id} className="glass-panel" style={{ padding: '16px' }}>
+                <div key={facility.id} className="glass-panel" style={{ padding: '16px', cursor: 'pointer' }} onClick={() => {
+                  if (map && facility.latitude && facility.longitude) {
+                    map.panTo({ lat: parseFloat(facility.latitude), lng: parseFloat(facility.longitude) });
+                    map.setZoom(16);
+                  }
+                }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                     <div>
                       <h3 style={{ fontSize: '1.1rem', marginBottom: '4px' }}>{facility.name}</h3>
@@ -155,7 +204,7 @@ const Search = () => {
                     <button 
                       className="btn-primary" 
                       style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '10px' }}
-                      onClick={() => handleBookNow(facility)}
+                      onClick={(e) => { e.stopPropagation(); handleBookNow(facility); }}
                       disabled={facility.available_slots <= 0}
                     >
                       <Car size={16} />
@@ -164,7 +213,7 @@ const Search = () => {
                     <button
                       className="btn-secondary"
                       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '10px 14px' }}
-                      onClick={() => setSlotMapFacility(facility)}
+                      onClick={(e) => { e.stopPropagation(); setSlotMapFacility(facility); }}
                       title="View slot map"
                     >
                       <Grid size={16} /> Slots
@@ -181,30 +230,44 @@ const Search = () => {
 
         {/* Right Side: Map */}
         <div style={{ flex: 1, position: 'relative' }}>
-          <MapContainer
-            center={facilities.length > 0 ? [facilities[0].latitude, facilities[0].longitude] : defaultCenter}
-            zoom={13}
-            style={{ height: '100%', width: '100%', zIndex: 1 }}
-          >
-            <InvalidateMapSize />
-            <TileLayer
-              attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
-              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-            />
-            {facilities.map(f => (
-              f.latitude && f.longitude && (
-                <Marker key={f.id} position={[f.latitude, f.longitude]}>
-                  <Popup>
-                    <div style={{ textAlign: 'center' }}>
-                      <strong style={{ display: 'block', marginBottom: '4px' }}>{f.name}</strong>
-                      <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{Number(f.hourly_rate).toLocaleString()} UGX/hr</span><br/>
-                      <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{f.available_slots} slots available</span>
-                    </div>
-                  </Popup>
-                </Marker>
-              )
-            ))}
-          </MapContainer>
+          {isLoaded ? (
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={mapCenter}
+              zoom={13}
+              onLoad={onLoadMap}
+              onUnmount={onUnmountMap}
+              options={{
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false,
+              }}
+            >
+              {facilities.map(f => (
+                f.latitude && f.longitude && (
+                  <MarkerF 
+                    key={f.id} 
+                    position={{ lat: parseFloat(f.latitude), lng: parseFloat(f.longitude) }}
+                    onClick={() => setActiveMarker(f.id)}
+                  >
+                    {activeMarker === f.id ? (
+                      <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
+                        <div style={{ textAlign: 'center', padding: '4px', minWidth: '120px' }}>
+                          <strong style={{ display: 'block', marginBottom: '4px', color: '#000' }}>{f.name}</strong>
+                          <span style={{ color: '#2563eb', fontWeight: 'bold' }}>{Number(f.hourly_rate).toLocaleString()} UGX/hr</span><br/>
+                          <span style={{ fontSize: '0.8rem', color: '#666' }}>{f.available_slots} slots available</span>
+                        </div>
+                      </InfoWindowF>
+                    ) : null}
+                  </MarkerF>
+                )
+              ))}
+            </GoogleMap>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#f0f0f0' }}>
+              Loading Google Maps...
+            </div>
+          )}
         </div>
 
       </div>

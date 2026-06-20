@@ -1,11 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Calendar } from 'lucide-react';
+import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
+
+const libraries = ['places'];
 
 const Home = () => {
   const navigate = useNavigate();
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries
+  });
 
-  const handleSearch = () => {
+  const [autocomplete, setAutocomplete] = useState(null);
+
+  const onLoad = (autoC) => setAutocomplete(autoC);
+
+  const onPlaceChanged = () => {
+    if (autocomplete !== null) {
+      const place = autocomplete.getPlace();
+      if (place.geometry && place.geometry.location) {
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        // Navigate to search with coordinates
+        navigate('/search', { state: { lat, lng, name: place.formatted_address || place.name } });
+      } else {
+        navigate('/search');
+      }
+    } else {
+      console.log('Autocomplete is not loaded yet!');
+    }
+  };
+
+  const handleSearchClick = () => {
+    // If they just clicked search without picking from autocomplete
     navigate('/search');
   };
 
@@ -39,11 +68,28 @@ const Home = () => {
             {/* Search Input */}
             <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '12px 16px', background: 'var(--bg-color)' }}>
               <Search size={20} color="var(--primary)" style={{ marginRight: '12px' }} />
-              <input 
-                type="text" 
-                placeholder="Where are you going?" 
-                style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1.1rem', color: 'var(--text-main)' }} 
-              />
+              {isLoaded ? (
+                <div style={{ flex: 1 }}>
+                  <Autocomplete
+                    onLoad={onLoad}
+                    onPlaceChanged={onPlaceChanged}
+                    options={{ componentRestrictions: { country: 'ug' } }}
+                  >
+                    <input 
+                      type="text" 
+                      placeholder="Where are you going?" 
+                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1.1rem', color: 'var(--text-main)' }} 
+                    />
+                  </Autocomplete>
+                </div>
+              ) : (
+                <input 
+                  type="text" 
+                  placeholder="Loading search..." 
+                  disabled
+                  style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1.1rem', color: 'var(--text-main)' }} 
+                />
+              )}
             </div>
 
             {/* Time Pickers (Mocked for visual similarity) */}
@@ -63,7 +109,7 @@ const Home = () => {
               </div>
             </div>
 
-            <button className="btn-primary" onClick={handleSearch} style={{ padding: '16px', fontSize: '1.1rem', fontWeight: 'bold' }}>
+            <button className="btn-primary" onClick={handleSearchClick} style={{ padding: '16px', fontSize: '1.1rem', fontWeight: 'bold' }}>
               Find Parking Spots
             </button>
           </div>
@@ -137,11 +183,11 @@ const Home = () => {
               Enjoy the convenience of booking a parking spot at the venue ahead of time, ensuring you have a space when you arrive for games, concerts, and more.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '32px' }}>
-              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearch(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Namboole Stadium Parking</a>
-              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearch(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Lugogo Arena Parking</a>
-              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearch(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Serena Hotel Events Parking</a>
+              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearchClick(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Namboole Stadium Parking</a>
+              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearchClick(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Lugogo Arena Parking</a>
+              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearchClick(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Serena Hotel Events Parking</a>
             </div>
-            <button className="btn-primary" onClick={handleSearch} style={{ padding: '12px 24px' }}>View All Stadiums</button>
+            <button className="btn-primary" onClick={handleSearchClick} style={{ padding: '12px 24px' }}>View All Stadiums</button>
           </div>
         </div>
       </div>
@@ -155,11 +201,11 @@ const Home = () => {
               Search for secure monthly parking facilities that make it easy to park near your home or office.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '32px' }}>
-              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearch(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Kampala Monthly Parking</a>
-              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearch(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Entebbe Monthly Parking</a>
-              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearch(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Jinja Monthly Parking</a>
+              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearchClick(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Kampala Monthly Parking</a>
+              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearchClick(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Entebbe Monthly Parking</a>
+              <a href="/search" onClick={(e) => { e.preventDefault(); handleSearchClick(); }} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>Book Jinja Monthly Parking</a>
             </div>
-            <button className="btn-primary" onClick={handleSearch} style={{ padding: '12px 24px' }}>View All Cities</button>
+            <button className="btn-primary" onClick={handleSearchClick} style={{ padding: '12px 24px' }}>View All Cities</button>
           </div>
           <div style={{ flex: '1 1 400px' }}>
             <img 

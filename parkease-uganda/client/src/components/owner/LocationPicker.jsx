@@ -1,91 +1,92 @@
-import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
-import L from 'leaflet';
+import React, { useCallback, useState } from 'react';
+import { GoogleMap, useJsApiLoader, MarkerF } from '@react-google-maps/api';
 
-// Fix for default marker icons in React-Leaflet
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+const containerStyle = {
+  width: '100%',
+  height: '300px'
+};
 
-let DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
-L.Marker.prototype.options.icon = DefaultIcon;
-
-// Forces Leaflet to recalculate its size after the CSS fadeIn animation
-function InvalidateMapSize() {
-  const map = useMapEvents({});
-  useEffect(() => {
-    const interval = setInterval(() => {
-      map.invalidateSize();
-    }, 50);
-    setTimeout(() => {
-      clearInterval(interval);
-      map.invalidateSize();
-      window.dispatchEvent(new Event('resize'));
-    }, 600);
-    return () => clearInterval(interval);
-  }, [map]);
-  return null;
-}
-
-// Handles map click and triggers reverse geocoding
-function MapClickHandler({ setPosition, onLocationSelect }) {
-  useMapEvents({
-    async click(e) {
-      const { lat, lng } = e.latlng;
-      setPosition({ lat, lng });
-
-      // Reverse geocode using Photon (Komoot) to get address details from coordinates
-      try {
-        const res = await fetch(
-          `https://photon.komoot.io/reverse?lon=${lng}&lat=${lat}&limit=1`
-        );
-        if (!res.ok) throw new Error('Reverse geocode failed');
-        const data = await res.json();
-
-        if (data.features && data.features.length > 0) {
-          const props = data.features[0].properties;
-          // Photon response fields: city, county, state, street, housenumber, postcode, country
-          const district = props.city || props.county || props.state || '';
-          const street = props.street || '';
-          const houseNumber = props.housenumber ? ` ${props.housenumber}` : '';
-          const address = street ? `${street}${houseNumber}` : '';
-
-          if (onLocationSelect) {
-            onLocationSelect({ district, address });
-          }
-        }
-      } catch {
-        // Reverse geocode failed silently — user can still type fields manually
-        console.warn('Reverse geocode unavailable — fill address fields manually.');
-      }
-    },
-  });
-  return null;
-}
+const defaultCenter = {
+  lat: 0.3476,
+  lng: 32.5825
+};
 
 const LocationPicker = ({ position, setPosition, onLocationSelect }) => {
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries: ['places']
+  });
+
+  const [map, setMap] = useState(null);
+
+  const onLoad = useCallback(function callback(map) {
+    setMap(map);
+  }, []);
+
+  const onUnmount = useCallback(function callback(map) {
+    setMap(null);
+  }, []);
+
+  const handleMapClick = async (e) => {
+    const lat = e.latLng.lat();
+    const lng = e.latLng.lng();
+    setPosition({ lat, lng });
+
+    // Reverse geocode using Google Geocoding API
+    try {
+      const geocoder = new window.google.maps.Geocoder();
+      const response = await geocoder.geocode({ location: { lat, lng } });
+      
+      if (response.results && response.results[0]) {
+        const addressComponents = response.results[0].address_components;
+        
+        let district = '';
+        let street = '';
+        
+        addressComponents.forEach(component => {
+          if (component.types.includes('locality') || component.types.includes('administrative_area_level_2')) {
+            district = component.long_name;
+          }
+          if (component.types.includes('route')) {
+            street = component.long_name;
+          }
+        });
+
+        if (onLocationSelect) {
+          onLocationSelect({ 
+            district: district, 
+            address: response.results[0].formatted_address 
+          });
+        }
+      }
+    } catch (err) {
+      console.error('Google reverse geocode failed:', err);
+    }
+  };
+
+  if (!isLoaded) return <div>Loading Map...</div>;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       <div style={{ width: '100%', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
-        <MapContainer
-          center={[0.3476, 32.5825]}
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={position?.lat ? position : defaultCenter}
           zoom={13}
-          style={{ height: '300px', width: '100%', zIndex: 1 }}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+          onClick={handleMapClick}
+          options={{
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false
+          }}
         >
-          <InvalidateMapSize />
-          <TileLayer
-            attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-          />
-          <MapClickHandler setPosition={setPosition} onLocationSelect={onLocationSelect} />
-          {position.lat && position.lng && (
-            <Marker position={[position.lat, position.lng]} />
+          {position?.lat && position?.lng && (
+            <MarkerF position={position} />
           )}
-        </MapContainer>
+        </GoogleMap>
       </div>
       <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
         📍 Click anywhere on the map to drop a pin. The <strong>District</strong> and <strong>Street Address</strong> fields will be filled in automatically.
