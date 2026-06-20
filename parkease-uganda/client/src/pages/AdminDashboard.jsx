@@ -274,8 +274,8 @@ const AdminDashboard = () => {
                 </button>
               </div>
             </div>
-            <div className="glass-panel" style={{ padding: '0', overflow: 'hidden' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <div className="glass-panel" style={{ padding: '0', overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '800px' }}>
                 <thead style={{ background: 'rgba(0,0,0,0.02)' }}>
                   <tr>
                     <th style={{ padding: '16px', borderBottom: '1px solid var(--border-color)' }}>Name</th>
@@ -349,8 +349,8 @@ const AdminDashboard = () => {
                 <Download size={18} /> Export CSV
               </button>
             </div>
-            <div className="glass-panel" style={{ padding: '0', overflow: 'hidden' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <div className="glass-panel" style={{ padding: '0', overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
                 <thead style={{ background: 'rgba(0,0,0,0.02)' }}>
                   <tr>
                     <th style={{ padding: '16px', borderBottom: '1px solid var(--border-color)' }}>Time</th>

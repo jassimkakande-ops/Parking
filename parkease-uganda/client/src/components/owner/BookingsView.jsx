@@ -69,7 +69,7 @@ const BookingsView = ({ facility }) => {
         <p style={{ color: 'var(--text-muted)' }}>No bookings found for this facility.</p>
       ) : (
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '1000px' }}>
             <thead>
               <tr style={{ borderBottom: '2px solid var(--border-color)' }}>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Driver</th>

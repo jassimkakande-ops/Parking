@@ -36,7 +36,7 @@ const UsersView = ({ facility }) => {
         <p style={{ color: 'var(--text-muted)' }}>No drivers have booked this facility yet.</p>
       ) : (
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '800px' }}>
             <thead>
               <tr style={{ borderBottom: '2px solid var(--border-color)' }}>
                 <th style={{ padding: '12px 16px', color: 'var(--text-muted)', fontWeight: '600' }}>Driver Name</th>
