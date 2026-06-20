@@ -21,14 +21,14 @@ const Home = () => {
   });
 
   const [autocomplete, setAutocomplete] = useState(null);
-  
+
   // Search State
   const [parkingType, setParkingType] = useState('hourly'); // 'hourly' or 'monthly'
-  
+
   const now = new Date();
   const nextHour = new Date(now.getTime() + 60 * 60 * 1000);
   nextHour.setMinutes(0, 0, 0);
-  
+
   const laterHour = new Date(nextHour.getTime() + 2 * 60 * 60 * 1000);
 
   const [startTime, setStartTime] = useState(getLocalISO(nextHour));
@@ -42,15 +42,15 @@ const Home = () => {
   const onLoad = (autoC) => setAutocomplete(autoC);
 
   const performSearch = (lat, lng, name) => {
-    navigate('/search', { 
-      state: { 
-        lat, 
-        lng, 
+    navigate('/search', {
+      state: {
+        lat,
+        lng,
         name,
         parkingType,
         startTime: parkingType === 'hourly' ? startTime : null,
         endTime: parkingType === 'hourly' ? endTime : null
-      } 
+      }
     });
   };
 
@@ -59,8 +59,8 @@ const Home = () => {
       const place = autocomplete.getPlace();
       if (place.geometry && place.geometry.location) {
         performSearch(
-          place.geometry.location.lat(), 
-          place.geometry.location.lng(), 
+          place.geometry.location.lat(),
+          place.geometry.location.lng(),
           place.formatted_address || place.name
         );
       } else {
@@ -93,13 +93,13 @@ const Home = () => {
     <div className="home-container" style={{ background: 'var(--bg-color)', color: 'var(--text-main)', minHeight: '100vh' }}>
       {/* 1. Hero Section */}
       <div style={{ padding: '60px 20px', maxWidth: '1200px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '40px', flexWrap: 'wrap' }}>
-        
+
         {/* Left: Search Box */}
         <div style={{ flex: '1 1 500px' }}>
           <h1 style={{ fontSize: '3.5rem', fontWeight: '800', marginBottom: '24px', lineHeight: '1.2' }}>
             Parking made easy, wherever you go
           </h1>
-          
+
           <div style={{
             background: 'var(--surface-color)',
             padding: '24px',
@@ -112,13 +112,13 @@ const Home = () => {
           }}>
             {/* Tabs */}
             <div style={{ display: 'flex', background: 'var(--bg-color)', borderRadius: '8px', padding: '4px' }}>
-              <button 
+              <button
                 onClick={() => setParkingType('hourly')}
                 style={{ flex: 1, padding: '12px', background: parkingType === 'hourly' ? 'var(--surface-color)' : 'transparent', borderRadius: '6px', border: 'none', fontWeight: 'bold', boxShadow: parkingType === 'hourly' ? '0 2px 4px rgba(0,0,0,0.05)' : 'none', color: parkingType === 'hourly' ? 'var(--text-main)' : 'var(--text-muted)' }}
               >
                 Hourly/Daily
               </button>
-              <button 
+              <button
                 onClick={() => setParkingType('monthly')}
                 style={{ flex: 1, padding: '12px', background: parkingType === 'monthly' ? 'var(--surface-color)' : 'transparent', borderRadius: '6px', border: 'none', fontWeight: 'bold', boxShadow: parkingType === 'monthly' ? '0 2px 4px rgba(0,0,0,0.05)' : 'none', color: parkingType === 'monthly' ? 'var(--text-main)' : 'var(--text-muted)' }}
               >
@@ -136,19 +136,19 @@ const Home = () => {
                     onPlaceChanged={onPlaceChanged}
                     options={{ componentRestrictions: { country: 'ug' } }}
                   >
-                    <input 
-                      type="text" 
-                      placeholder="Where are you going?" 
-                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1.1rem', color: 'var(--text-main)' }} 
+                    <input
+                      type="text"
+                      placeholder="Where are you going?"
+                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1.1rem', color: 'var(--text-main)' }}
                     />
                   </Autocomplete>
                 </div>
               ) : (
-                <input 
-                  type="text" 
-                  placeholder="Loading search..." 
+                <input
+                  type="text"
+                  placeholder="Loading search..."
                   disabled
-                  style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1.1rem', color: 'var(--text-main)' }} 
+                  style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1.1rem', color: 'var(--text-main)' }}
                 />
               )}
             </div>
@@ -160,8 +160,8 @@ const Home = () => {
                   <label style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>Start Time</label>
                   <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '12px 16px', background: 'var(--bg-color)' }}>
                     <Calendar size={18} color="var(--text-muted)" style={{ marginRight: '8px' }} />
-                    <input 
-                      type="datetime-local" 
+                    <input
+                      type="datetime-local"
                       value={startTime}
                       onChange={(e) => setStartTime(e.target.value)}
                       style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '0.9rem', color: 'var(--text-main)', fontFamily: 'inherit' }}
@@ -172,8 +172,8 @@ const Home = () => {
                   <label style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>End Time</label>
                   <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '12px 16px', background: 'var(--bg-color)' }}>
                     <Calendar size={18} color="var(--text-muted)" style={{ marginRight: '8px' }} />
-                    <input 
-                      type="datetime-local" 
+                    <input
+                      type="datetime-local"
                       value={endTime}
                       onChange={(e) => setEndTime(e.target.value)}
                       style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '0.9rem', color: 'var(--text-main)', fontFamily: 'inherit' }}
@@ -183,7 +183,7 @@ const Home = () => {
               </div>
             ) : (
               <div style={{ padding: '16px', background: 'var(--primary-glow)', borderRadius: '8px', border: '1px solid var(--primary)', color: 'var(--primary)', textAlign: 'center' }}>
-                <strong>Looking for long-term parking?</strong><br/>
+                <strong>Looking for long-term parking?</strong><br />
                 We'll show you facilities that offer monthly passes.
               </div>
             )}
@@ -196,10 +196,10 @@ const Home = () => {
 
         {/* Right: Hero Image */}
         <div style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
-          <img 
-            src="https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&w=600&q=80" 
-            alt="Woman walking in parking lot" 
-            style={{ width: '100%', maxWidth: '600px', borderRadius: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }} 
+          <img
+            src="https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&w=600&q=80"
+            alt="Woman walking in parking lot"
+            style={{ width: '100%', maxWidth: '600px', borderRadius: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
           />
         </div>
       </div>
@@ -250,10 +250,10 @@ const Home = () => {
       <div style={{ padding: '80px 20px', maxWidth: '1000px', margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '40px', flexWrap: 'wrap', background: 'var(--surface-color)', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
           <div style={{ flex: '1 1 400px' }}>
-            <img 
-              src="https://images.unsplash.com/photo-1459865264687-595d652de67e?auto=format&fit=crop&w=800&q=80" 
-              alt="Stadium Event" 
-              style={{ width: '100%', height: '100%', objectFit: 'cover', minHeight: '350px' }} 
+            <img
+              src="https://images.unsplash.com/photo-1459865264687-595d652de67e?auto=format&fit=crop&w=800&q=80"
+              alt="Stadium Event"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', minHeight: '350px' }}
             />
           </div>
           <div style={{ flex: '1 1 400px', padding: '40px' }}>
@@ -287,10 +287,10 @@ const Home = () => {
             <button className="btn-primary" onClick={() => { setParkingType('monthly'); performSearch(); }} style={{ padding: '12px 24px' }}>View All Cities</button>
           </div>
           <div style={{ flex: '1 1 400px' }}>
-            <img 
-              src="https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=800&q=80" 
-              alt="Monthly Parking Garage" 
-              style={{ width: '100%', height: '100%', objectFit: 'cover', minHeight: '350px' }} 
+            <img
+              src="https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=800&q=80"
+              alt="Monthly Parking Garage"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', minHeight: '350px' }}
             />
           </div>
         </div>
@@ -301,12 +301,12 @@ const Home = () => {
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '24px' }}>About ParkEase Uganda</h2>
           <p style={{ fontSize: '1.2rem', lineHeight: '1.8', color: 'var(--text-muted)', marginBottom: '24px' }}>
-            ParkEase Uganda was founded with a simple mission: to eliminate the stress of parking in our rapidly growing cities. 
+            ParkEase Uganda was founded with a simple mission: to eliminate the stress of parking in our rapidly growing cities.
             We believe that finding a secure parking spot shouldn't be the hardest part of your journey.
           </p>
           <p style={{ fontSize: '1.1rem', lineHeight: '1.8', color: 'var(--text-muted)' }}>
-            By partnering with hundreds of secure parking facilities across Kampala, Entebbe, and Jinja, we provide an intuitive platform 
-            that allows you to search, compare, and instantly book your spot using mobile money or card. Whether you're commuting to work, 
+            By partnering with hundreds of secure parking facilities across Kampala, Entebbe, and Jinja, we provide an intuitive platform
+            that allows you to search, compare, and instantly book your spot using mobile money or card. Whether you're commuting to work,
             attending a major event, or looking for secure overnight parking, ParkEase is your trusted partner on the road.
           </p>
         </div>
@@ -317,13 +317,13 @@ const Home = () => {
         <div style={{ maxWidth: '600px', margin: '0 auto', background: 'var(--surface-color)', padding: '40px', borderRadius: '24px', boxShadow: '0 10px 40px rgba(0,0,0,0.05)' }}>
           <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '8px', textAlign: 'center' }}>Contact Us</h2>
           <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '32px' }}>Have questions? We'd love to hear from you.</p>
-          
+
           {contactStatus === 'success' && (
             <div style={{ padding: '16px', background: 'var(--success-bg)', color: 'var(--success)', borderRadius: '8px', marginBottom: '24px', textAlign: 'center', fontWeight: 'bold' }}>
               Message sent successfully! We'll get back to you soon.
             </div>
           )}
-          
+
           {contactStatus === 'error' && (
             <div style={{ padding: '16px', background: 'var(--danger-bg)', color: 'var(--danger)', borderRadius: '8px', marginBottom: '24px', textAlign: 'center', fontWeight: 'bold' }}>
               Failed to send message. Please try again later.
@@ -333,33 +333,33 @@ const Home = () => {
           <form onSubmit={handleContactSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Your Name</label>
-              <input 
-                type="text" 
-                required 
-                className="input-field" 
+              <input
+                type="text"
+                required
+                className="input-field"
                 value={contactForm.name}
-                onChange={e => setContactForm({...contactForm, name: e.target.value})}
+                onChange={e => setContactForm({ ...contactForm, name: e.target.value })}
               />
             </div>
             <div>
               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Email Address</label>
-              <input 
-                type="email" 
-                required 
-                className="input-field" 
+              <input
+                type="email"
+                required
+                className="input-field"
                 value={contactForm.email}
-                onChange={e => setContactForm({...contactForm, email: e.target.value})}
+                onChange={e => setContactForm({ ...contactForm, email: e.target.value })}
               />
             </div>
             <div>
               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Message</label>
-              <textarea 
-                required 
-                rows="5" 
-                className="input-field" 
+              <textarea
+                required
+                rows="5"
+                className="input-field"
                 style={{ resize: 'vertical' }}
                 value={contactForm.message}
-                onChange={e => setContactForm({...contactForm, message: e.target.value})}
+                onChange={e => setContactForm({ ...contactForm, message: e.target.value })}
               />
             </div>
             <button type="submit" className="btn-primary" disabled={isSending} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '16px', fontSize: '1.1rem' }}>
@@ -389,7 +389,7 @@ const Home = () => {
                 <a href="#" style={{ color: '#fff', background: 'rgba(255,255,255,0.1)', padding: '10px', borderRadius: '50%', display: 'flex' }}><MessageCircle size={20} /></a>
               </div>
             </div>
-            
+
             <div style={{ flex: '1 1 150px' }}>
               <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '20px' }}>Company</h4>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -407,7 +407,7 @@ const Home = () => {
                 <li><a href="#" style={{ color: '#9ca3af', textDecoration: 'none' }}>Cancellation Policy</a></li>
               </ul>
             </div>
-            
+
             <div style={{ flex: '1 1 150px' }}>
               <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '20px' }}>Legal</h4>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -416,10 +416,10 @@ const Home = () => {
               </ul>
             </div>
           </div>
-          
+
           <div style={{ borderTop: '1px solid #374151', paddingTop: '30px', textAlign: 'center', color: '#6b7280', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
             <span>© 2026 ParkEase Uganda. All rights reserved.</span>
-            <span>Designed with ❤️ in Kampala</span>
+            <span>Designed with in Kampala</span>
           </div>
         </div>
       </footer>
