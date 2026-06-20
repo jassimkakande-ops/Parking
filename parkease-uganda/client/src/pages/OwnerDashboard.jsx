@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import api from '../utils/api';
 import { getMyFacilities } from '../api/parkingApi';
 import { AuthContext } from '../context/AuthContext';
-import { LayoutDashboard, Grip, Users, CreditCard, FileText, Settings, Plus, MapPin, Loader2, Moon, Sun } from 'lucide-react';
+import { LayoutDashboard, Grip, Users, CreditCard, FileText, Settings, Plus, MapPin, Loader2, Moon, Sun, Menu } from 'lucide-react';
 import AllotmentView from '../components/owner/AllotmentView';
 import PaymentsView from '../components/owner/PaymentsView';
 import BookingsView from '../components/owner/BookingsView';
@@ -18,6 +18,7 @@ const OwnerDashboard = () => {
 
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isAddFacilityOpen, setIsAddFacilityOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const { user, theme, toggleTheme } = useContext(AuthContext);
 
@@ -155,19 +156,15 @@ const OwnerDashboard = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - 74px)', width: '100vw', overflow: 'hidden', background: 'var(--bg-color)' }}>
+    <div className="dashboard-layout">
+      {/* Sidebar Overlay for mobile */}
+      <div 
+        className={`sidebar-overlay ${isSidebarOpen ? 'open' : ''}`} 
+        onClick={() => setIsSidebarOpen(false)}
+      ></div>
+
       {/* Sidebar */}
-      <div style={{
-        width: '260px',
-        background: 'var(--surface-color)',
-        color: 'var(--text-main)',
-        borderRight: '1px solid var(--border-color)',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '24px 0',
-        flexShrink: 0,
-        zIndex: 10
-      }}>
+      <div className={`dashboard-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         {/* Logo/Brand */}
         <div style={{ padding: '0 24px', marginBottom: '48px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ background: '#FFB800', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1A1C23', fontWeight: '900', fontSize: '1.5rem' }}>
@@ -181,7 +178,7 @@ const OwnerDashboard = () => {
           {navItems.map(item => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => { setActiveTab(item.id); setIsSidebarOpen(false); }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '16px',
                 padding: '12px 16px',
@@ -211,7 +208,7 @@ const OwnerDashboard = () => {
         {/* Settings at bottom */}
         <div style={{ padding: '0 16px', marginTop: 'auto' }}>
           <button
-            onClick={() => setActiveTab('settings')}
+            onClick={() => { setActiveTab('settings'); setIsSidebarOpen(false); }}
             style={{
               display: 'flex', alignItems: 'center', gap: '16px',
               padding: '12px 16px',
@@ -234,8 +231,16 @@ const OwnerDashboard = () => {
       </div>
 
       {/* Main Content Area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        {/* Top Header */}
+      <div className="dashboard-main">
+        {/* Mobile Header (only visible on mobile via CSS) */}
+        <div className="mobile-header">
+          <button className="mobile-toggle-btn" onClick={() => setIsSidebarOpen(true)}>
+            <Menu size={24} />
+          </button>
+          <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Owner Portal</h2>
+        </div>
+
+        {/* Top Header (facility selector) */}
         <header style={{
           height: '80px',
           borderBottom: '1px solid var(--border-color)',
@@ -244,7 +249,8 @@ const OwnerDashboard = () => {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0 32px',
-          flexShrink: 0
+          flexShrink: 0,
+          flexWrap: 'wrap'
         }}>
           {/* Left: Facility Selector */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -289,7 +295,7 @@ const OwnerDashboard = () => {
         </header>
 
         {/* Page Content */}
-        <main style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
+        <main className="dashboard-content-area" style={{ padding: '32px' }}>
           {error && (
             <div style={{ background: 'var(--danger-bg)', color: 'var(--danger-text)', padding: '12px', borderRadius: '8px', marginBottom: '24px' }}>
               {error}

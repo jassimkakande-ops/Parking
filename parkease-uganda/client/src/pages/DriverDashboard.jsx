@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import api, { SOCKET_URL } from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
-import { MapPin, Car, LayoutDashboard, FileText, CreditCard, User, LogOut, Grid, X } from 'lucide-react';
+import { MapPin, Car, LayoutDashboard, FileText, CreditCard, User, LogOut, Grid, X, Menu } from 'lucide-react';
 import { io } from 'socket.io-client';
 import LocationActions from '../components/LocationActions';
 import BookingFlowModal from '../components/driver/BookingFlowModal';
@@ -20,6 +20,7 @@ const DriverDashboard = () => {
   const [selectedFacilityForBooking, setSelectedFacilityForBooking] = useState(null);
   const [slotMapFacility, setSlotMapFacility] = useState(null); // facility whose slot map is open
   const [preSelectedSlot, setPreSelectedSlot] = useState(null); // slot chosen from map popup
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     fetchFacilities();
@@ -133,19 +134,15 @@ const DriverDashboard = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - 74px)', width: '100vw', overflow: 'hidden', background: 'var(--bg-color)' }}>
+    <div className="dashboard-layout">
+      {/* Sidebar Overlay for mobile */}
+      <div 
+        className={`sidebar-overlay ${isSidebarOpen ? 'open' : ''}`} 
+        onClick={() => setIsSidebarOpen(false)}
+      ></div>
+
       {/* Sidebar */}
-      <div style={{ 
-        width: '260px', 
-        background: 'var(--surface-color)', 
-        color: 'var(--text-main)',
-        borderRight: '1px solid var(--border-color)',
-        display: 'flex', 
-        flexDirection: 'column',
-        padding: '24px 0',
-        flexShrink: 0,
-        zIndex: 10
-      }}>
+      <div className={`dashboard-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         {/* Logo/Brand */}
         <div style={{ padding: '0 24px', marginBottom: '48px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ background: '#FFB800', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1A1C23', fontWeight: '900', fontSize: '1.5rem' }}>
@@ -159,7 +156,7 @@ const DriverDashboard = () => {
           {navItems.map(item => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => { setActiveTab(item.id); setIsSidebarOpen(false); }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '16px',
                 padding: '12px 16px',
@@ -206,8 +203,16 @@ const DriverDashboard = () => {
       </div>
 
       {/* Main Content Area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-        {renderContent()}
+      <div className="dashboard-main">
+        <div className="mobile-header">
+          <button className="mobile-toggle-btn" onClick={() => setIsSidebarOpen(true)}>
+            <Menu size={24} />
+          </button>
+          <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Driver Portal</h2>
+        </div>
+        <main className="dashboard-content-area" style={{ padding: 0 }}>
+          {renderContent()}
+        </main>
       </div>
 
       {/* Slot Map Modal */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
-import { LayoutDashboard, Users, Activity, FileText, Lock, MapPin, Download, Eye, EyeOff, Loader2, DollarSign, Settings, Trash2 } from 'lucide-react';
+import { LayoutDashboard, Users, Activity, FileText, Lock, MapPin, Download, Eye, EyeOff, Loader2, DollarSign, Settings, Trash2, Menu } from 'lucide-react';
 import AllotmentView from '../components/owner/AllotmentView';
 
 const exportToCSV = (filename, rows) => {
@@ -46,6 +46,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showInactiveUsers, setShowInactiveUsers] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -437,19 +438,15 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - 74px)', width: '100vw', overflow: 'hidden', background: 'var(--bg-color)' }}>
+    <div className="dashboard-layout">
+      {/* Sidebar Overlay for mobile */}
+      <div 
+        className={`sidebar-overlay ${isSidebarOpen ? 'open' : ''}`} 
+        onClick={() => setIsSidebarOpen(false)}
+      ></div>
+
       {/* Sidebar */}
-      <div style={{ 
-        width: '260px', 
-        background: 'var(--surface-color)', 
-        color: 'var(--text-main)',
-        borderRight: '1px solid var(--border-color)',
-        display: 'flex', 
-        flexDirection: 'column',
-        padding: '24px 0',
-        flexShrink: 0,
-        zIndex: 10
-      }}>
+      <div className={`dashboard-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         {/* Logo/Brand */}
         <div style={{ padding: '0 24px', marginBottom: '48px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ background: '#FFB800', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1A1C23', fontWeight: '900', fontSize: '1.5rem' }}>
@@ -463,7 +460,7 @@ const AdminDashboard = () => {
           {navItems.map(item => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => { setActiveTab(item.id); setIsSidebarOpen(false); }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '16px',
                 padding: '12px 16px',
@@ -486,8 +483,14 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main Content Area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <main style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
+      <div className="dashboard-main">
+        <div className="mobile-header">
+          <button className="mobile-toggle-btn" onClick={() => setIsSidebarOpen(true)}>
+            <Menu size={24} />
+          </button>
+          <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Admin Portal</h2>
+        </div>
+        <main className="dashboard-content-area">
           {renderContent()}
         </main>
       </div>
