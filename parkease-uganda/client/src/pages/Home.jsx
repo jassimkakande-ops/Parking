@@ -419,7 +419,7 @@ const Home = () => {
 
           <div style={{ borderTop: '1px solid #374151', paddingTop: '30px', textAlign: 'center', color: '#6b7280', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
             <span>© 2026 ParkEase Uganda. All rights reserved.</span>
-            <span>Designed with in Kampala</span>
+            <span>Parking at your own terms </span>
           </div>
         </div>
       </footer>
