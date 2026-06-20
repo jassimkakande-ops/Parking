@@ -231,7 +231,7 @@ const Home = () => {
         <div style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap', gap: '40px', maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
           <div>
             <div style={{ fontSize: '3rem', fontWeight: 'bold' }}>4.8 <span style={{ color: '#F59E0B', fontSize: '2rem' }}>★★★★★</span></div>
-            <p style={{ color: 'var(--text-main)', fontWeight: '500', marginTop: '8px' }}>We have a 4.8 in the App Store</p>
+            <p style={{ color: 'var(--text-main)', fontWeight: '500', marginTop: '8px' }}>A fivestar parking experience</p>
           </div>
           <div>
             <div style={{ fontSize: '3rem', fontWeight: 'bold' }}>100+</div>
