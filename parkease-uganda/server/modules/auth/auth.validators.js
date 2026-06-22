@@ -19,7 +19,7 @@ exports.registerValidation = [
     .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long.'),
   body('role')
     .optional()
-    .isIn(['driver', 'owner']).withMessage('Role must be either driver or owner.')
+    .isIn(['driver', 'owner', 'attendant']).withMessage('Role must be either driver, owner, or attendant.')
 ];
 
 exports.loginValidation = [

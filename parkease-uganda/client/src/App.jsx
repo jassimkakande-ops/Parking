@@ -10,6 +10,7 @@ import DriverDashboard from './pages/DriverDashboard';
 import OwnerDashboard from './pages/OwnerDashboard';
 import ManageFacility from './pages/ManageFacility';
 import AdminDashboard from './pages/AdminDashboard';
+import TenantDashboard from './pages/TenantDashboard';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import { AuthContext } from './context/AuthContext';
@@ -40,6 +41,10 @@ function App() {
 
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
             <Route path="/admin" element={<AdminDashboard />} />
+          </Route>
+
+          <Route element={<ProtectedRoute allowedRoles={['attendant']} />}>
+            <Route path="/attendant" element={<TenantDashboard />} />
           </Route>
           
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import api from '../utils/api';
 import { getMyFacilities } from '../api/parkingApi';
 import { AuthContext } from '../context/AuthContext';
-import { LayoutDashboard, Grip, Users, CreditCard, FileText, Settings, Plus, MapPin, Loader2, Moon, Sun, Menu } from 'lucide-react';
+import { LayoutDashboard, Grip, Users, CreditCard, FileText, Settings, Plus, MapPin, Loader2, Moon, Sun, Menu, UserCheck } from 'lucide-react';
 import AllotmentView from '../components/owner/AllotmentView';
 import PaymentsView from '../components/owner/PaymentsView';
 import BookingsView from '../components/owner/BookingsView';
 import UsersView from '../components/owner/UsersView';
+import AttendantsView from '../components/owner/AttendantsView';
 import AddFacilityModal from '../components/owner/AddFacilityModal';
 
 const OwnerDashboard = () => {
@@ -136,6 +137,8 @@ const OwnerDashboard = () => {
         return <BookingsView facility={selectedFacility} />;
       case 'users':
         return <UsersView facility={selectedFacility} />;
+      case 'attendants':
+        return <AttendantsView facility={selectedFacility} />;
       case 'settings':
         return (
           <div className="animate-fade-in" style={{ padding: '48px', textAlign: 'center', background: 'var(--surface-color)', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
@@ -151,6 +154,7 @@ const OwnerDashboard = () => {
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
     { id: 'allotment', label: 'Arrangement', icon: <Grip size={20} /> },
     { id: 'users', label: 'Users', icon: <Users size={20} /> },
+    { id: 'attendants', label: 'Attendants', icon: <UserCheck size={20} /> },
     { id: 'payments', label: 'Payments', icon: <CreditCard size={20} /> },
     { id: 'report', label: 'Report', icon: <FileText size={20} /> },
   ];

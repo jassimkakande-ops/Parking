@@ -321,3 +321,59 @@ exports.getFacilityOwnerAnalytics = async (facilityId) => {
   const { rows } = await db.query(query, [facilityId]);
   return rows[0];
 };
+
+/**
+ * Checks if an attendant is assigned to a specific facility
+ */
+exports.isAttendantAssignedToFacility = async (attendantId, facilityId) => {
+  const query = `SELECT id FROM facility_attendants WHERE attendant_id = $1 AND facility_id = $2`;
+  const { rows } = await db.query(query, [attendantId, facilityId]);
+  return rows.length > 0;
+};
+
+/**
+ * Gets the facility ID an attendant is assigned to
+ */
+exports.getAttendantFacilityId = async (attendantId) => {
+  const query = `SELECT facility_id FROM facility_attendants WHERE attendant_id = $1`;
+  const { rows } = await db.query(query, [attendantId]);
+  return rows[0]?.facility_id || null;
+};
+
+/**
+ * Assigns an attendant to a facility
+ */
+exports.assignAttendant = async (facilityId, attendantId, ownerId) => {
+  const query = `
+    INSERT INTO facility_attendants (facility_id, attendant_id, assigned_by)
+    VALUES ($1, $2, $3)
+    ON CONFLICT (attendant_id) 
+    DO UPDATE SET facility_id = $1, assigned_by = $3
+    RETURNING *
+  `;
+  const { rows } = await db.query(query, [facilityId, attendantId, ownerId]);
+  return rows[0];
+};
+
+/**
+ * Gets attendants for a facility
+ */
+exports.getFacilityAttendants = async (facilityId) => {
+  const query = `
+    SELECT u.id, u.full_name, u.email, u.phone_number, fa.created_at as assigned_at
+    FROM facility_attendants fa
+    JOIN users u ON fa.attendant_id = u.id
+    WHERE fa.facility_id = $1
+  `;
+  const { rows } = await db.query(query, [facilityId]);
+  return rows;
+};
+
+/**
+ * Removes an attendant from a facility
+ */
+exports.removeAttendant = async (facilityId, attendantId) => {
+  const query = `DELETE FROM facility_attendants WHERE facility_id = $1 AND attendant_id = $2 RETURNING *`;
+  const { rows } = await db.query(query, [facilityId, attendantId]);
+  return rows[0];
+};

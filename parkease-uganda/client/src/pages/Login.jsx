@@ -25,6 +25,7 @@ const Login = () => {
       const user = await login(email, password);
       if (user.role === 'admin') navigate('/admin');
       else if (user.role === 'owner') navigate('/owner');
+      else if (user.role === 'attendant') navigate('/attendant');
       else navigate('/driver');
     } catch (err) {
       setError(typeof err === 'string' ? err : 'Login failed');

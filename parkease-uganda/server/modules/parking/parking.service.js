@@ -59,8 +59,8 @@ exports.getSlotsForOwner = async (facilityId, ownerId) => {
   return await parkingRepository.getFacilitySlots(facilityId);
 };
 
-exports.updateSlotStatus = async (slotId, isOccupied, vehiclePlate, ownerId) => {
-  // 1. Verify slot exists and belongs to owner
+exports.updateSlotStatus = async (slotId, isOccupied, vehiclePlate, userId, userRole) => {
+  // 1. Verify slot exists
   const slot = await parkingRepository.findSlotById(slotId);
   if (!slot) {
     const err = new Error('Slot not found.');
@@ -70,11 +70,28 @@ exports.updateSlotStatus = async (slotId, isOccupied, vehiclePlate, ownerId) => 
   }
 
   const facility = await parkingRepository.findFacilityById(slot.facility_id);
-  if (!facility || facility.owner_id !== ownerId) {
+  if (!facility) {
+    const err = new Error('Facility not found.');
+    err.statusCode = 404;
+    err.isOperational = true;
+    throw err;
+  }
+
+  if (userRole === 'owner' && facility.owner_id !== userId) {
     const err = new Error('Access denied to update this slot.');
     err.statusCode = 403;
     err.isOperational = true;
     throw err;
+  }
+
+  if (userRole === 'attendant') {
+    const isAssigned = await parkingRepository.isAttendantAssignedToFacility(userId, facility.id);
+    if (!isAssigned) {
+      const err = new Error('You are not assigned to manage this facility.');
+      err.statusCode = 403;
+      err.isOperational = true;
+      throw err;
+    }
   }
 
   // 2. Perform the update
@@ -94,4 +111,55 @@ exports.addExtraSlot = async (facilityId, ownerId, type = 'car') => {
 
 exports.getFacilityOwnerAnalytics = async (facilityId) => {
   return await parkingRepository.getFacilityOwnerAnalytics(facilityId);
+};
+
+exports.addAttendantToFacility = async (facilityId, ownerId, email) => {
+  const facility = await parkingRepository.findFacilityById(facilityId);
+  if (!facility || facility.owner_id !== ownerId) {
+    const err = new Error('Facility not found or access denied.');
+    err.statusCode = 403;
+    err.isOperational = true;
+    throw err;
+  }
+  const usersRepository = require('../users/users.repository');
+  const user = await usersRepository.findByEmail(email);
+  if (!user) {
+    const err = new Error('User with this email not found.');
+    err.statusCode = 404;
+    err.isOperational = true;
+    throw err;
+  }
+  // Change their role to attendant if they are a driver
+  if (user.role === 'driver') {
+    await usersRepository.updateUserRole(user.id, 'attendant');
+  } else if (user.role !== 'attendant' && user.role !== 'owner' && user.role !== 'admin') {
+    const err = new Error(`Cannot assign user with role ${user.role} as attendant.`);
+    err.statusCode = 400;
+    err.isOperational = true;
+    throw err;
+  }
+
+  return await parkingRepository.assignAttendant(facilityId, user.id, ownerId);
+};
+
+exports.getFacilityAttendants = async (facilityId, ownerId) => {
+  const facility = await parkingRepository.findFacilityById(facilityId);
+  if (!facility || facility.owner_id !== ownerId) {
+    const err = new Error('Facility not found or access denied.');
+    err.statusCode = 403;
+    err.isOperational = true;
+    throw err;
+  }
+  return await parkingRepository.getFacilityAttendants(facilityId);
+};
+
+exports.removeAttendant = async (facilityId, ownerId, attendantId) => {
+  const facility = await parkingRepository.findFacilityById(facilityId);
+  if (!facility || facility.owner_id !== ownerId) {
+    const err = new Error('Facility not found or access denied.');
+    err.statusCode = 403;
+    err.isOperational = true;
+    throw err;
+  }
+  return await parkingRepository.removeAttendant(facilityId, attendantId);
 };

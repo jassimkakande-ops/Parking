@@ -460,3 +460,32 @@
 {"timestamp":"2026-06-19T09:37:43.373Z","level":"info","message":"Server is running on port 5000","module":"index"}
 {"timestamp":"2026-06-19T09:38:08.249Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
 {"timestamp":"2026-06-19T09:38:08.269Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-22T11:41:34.135Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-22T11:41:34.151Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-22T11:41:59.272Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-22T11:41:59.290Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-22T11:45:36.411Z","level":"error","message":"You are not assigned to any facility.","module":"errorHandler","userId":"ec0cb7e6-03d0-4f5b-a6fd-740302bb9883","stack":"Error: You are not assigned to any facility.\n    at exports.getDashboardAnalytics (D:\\Parking\\parkease-uganda\\server\\modules\\attendants\\attendants.service.js:9:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.getDashboardAnalytics (D:\\Parking\\parkease-uganda\\server\\modules\\attendants\\attendants.controller.js:6:23)","path":"/api/v1/attendants/dashboard","method":"GET"}
+{"timestamp":"2026-06-22T11:47:42.576Z","level":"error","message":"You are not assigned to any facility.","module":"errorHandler","userId":"ec0cb7e6-03d0-4f5b-a6fd-740302bb9883","stack":"Error: You are not assigned to any facility.\n    at exports.getDashboardAnalytics (D:\\Parking\\parkease-uganda\\server\\modules\\attendants\\attendants.service.js:9:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.getDashboardAnalytics (D:\\Parking\\parkease-uganda\\server\\modules\\attendants\\attendants.controller.js:6:23)","path":"/api/v1/attendants/dashboard","method":"GET"}
+{"timestamp":"2026-06-22T11:50:05.747Z","level":"error","message":"You are not assigned to any facility.","module":"errorHandler","userId":"ec0cb7e6-03d0-4f5b-a6fd-740302bb9883","stack":"Error: You are not assigned to any facility.\n    at exports.getDashboardAnalytics (D:\\Parking\\parkease-uganda\\server\\modules\\attendants\\attendants.service.js:9:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async exports.getDashboardAnalytics (D:\\Parking\\parkease-uganda\\server\\modules\\attendants\\attendants.controller.js:6:23)","path":"/api/v1/attendants/dashboard","method":"GET"}
+{"timestamp":"2026-06-22T11:50:44.666Z","level":"info","message":"Client connected: v1tT3S4NwFoJ7KpXAAAB","module":"socket"}
+{"timestamp":"2026-06-22T11:50:45.639Z","level":"info","message":"Client connected: Qz0ICiWUZkYDKPxMAAAD","module":"socket"}
+{"timestamp":"2026-06-22T11:50:45.650Z","level":"info","message":"Socket Qz0ICiWUZkYDKPxMAAAD joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-22T11:50:45.654Z","level":"info","message":"Socket Qz0ICiWUZkYDKPxMAAAD joined facility_4806a5e9-17fb-4ef0-b1a4-8fdae909bbbb","module":"socket"}
+{"timestamp":"2026-06-22T11:52:41.257Z","level":"info","message":"Client disconnected: v1tT3S4NwFoJ7KpXAAAB","module":"socket"}
+{"timestamp":"2026-06-22T11:53:58.999Z","level":"info","message":"Client connected: VYI5LVWW46fS8fSAAAAF","module":"socket"}
+{"timestamp":"2026-06-22T11:53:59.059Z","level":"info","message":"Socket VYI5LVWW46fS8fSAAAAF joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-22T11:54:07.976Z","level":"info","message":"Client disconnected: VYI5LVWW46fS8fSAAAAF","module":"socket"}
+{"timestamp":"2026-06-22T11:54:26.710Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-22T11:54:26.737Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-22T11:54:26.838Z","level":"info","message":"Client connected: H_fkFQfsEPxpUeGbAAAB","module":"socket"}
+{"timestamp":"2026-06-22T11:54:34.102Z","level":"info","message":"Client connected: 67RiwZwP07jDBZXAAAAD","module":"socket"}
+{"timestamp":"2026-06-22T11:54:34.143Z","level":"info","message":"Socket 67RiwZwP07jDBZXAAAAD joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-22T11:55:18.671Z","level":"info","message":"Client disconnected: H_fkFQfsEPxpUeGbAAAB","module":"socket"}
+{"timestamp":"2026-06-22T11:55:35.613Z","level":"info","message":"Client disconnected: 67RiwZwP07jDBZXAAAAD","module":"socket"}
+{"timestamp":"2026-06-22T11:55:41.668Z","level":"info","message":"Client connected: W6W_p9WhxjApx84VAAAF","module":"socket"}
+{"timestamp":"2026-06-22T11:55:41.677Z","level":"info","message":"Socket W6W_p9WhxjApx84VAAAF joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-22T11:55:43.096Z","level":"info","message":"Client disconnected: W6W_p9WhxjApx84VAAAF","module":"socket"}
+{"timestamp":"2026-06-22T11:58:21.063Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-22T11:58:21.077Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-22T12:30:00.558Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-22T12:30:00.595Z","level":"info","message":"Server is running on port 5000","module":"index"}

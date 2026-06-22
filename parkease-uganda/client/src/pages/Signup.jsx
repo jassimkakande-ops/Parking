@@ -31,11 +31,11 @@ const Signup = () => {
     }
 
     setLoading(true);
-    
     try {
       const user = await register(formData);
       if (user.role === 'admin') navigate('/admin');
       else if (user.role === 'owner') navigate('/owner');
+      else if (user.role === 'attendant') navigate('/attendant');
       else navigate('/driver');
     } catch (err) {
       setError(typeof err === 'string' ? err : 'Registration failed');
@@ -168,6 +168,7 @@ const Signup = () => {
             >
               <option value="driver">Driver</option>
               <option value="owner">Owner</option>
+              <option value="attendant">Attendant</option>
             </select>
           </div>
           <button type="submit" className="btn-primary" style={{ marginTop: '8px' }} disabled={loading}>

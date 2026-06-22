@@ -68,12 +68,15 @@ exports.checkInBooking = async (bookingId, userId, userRole) => {
     throw new AppError('Booking not found', 404);
   }
 
-  if (userRole !== 'owner' && userRole !== 'admin') {
-    throw new AppError('Only owners can check in drivers', 403);
-  }
-
-  if (userRole === 'owner' && booking.owner_id !== userId) {
+  if (userRole === 'attendant') {
+    const isAssigned = await parkingRepository.isAttendantAssignedToFacility(userId, booking.facility_id);
+    if (!isAssigned) {
+      throw new AppError('You are not assigned to this facility', 403);
+    }
+  } else if (userRole === 'owner' && booking.owner_id !== userId) {
     throw new AppError('You do not have permission to check in this booking', 403);
+  } else if (userRole !== 'owner' && userRole !== 'admin') {
+    throw new AppError('Only owners, admins, and attendants can check in drivers', 403);
   }
 
   if (booking.status !== 'confirmed') {
@@ -202,12 +205,15 @@ exports.checkoutBooking = async (bookingId, userId, userRole, options = {}) => {
     throw new AppError(`Cannot checkout booking with status: ${booking.status}`, 400);
   }
 
-  if (userRole === 'driver') {
-    throw new AppError('Only owners can checkout drivers', 403);
-  }
-  
-  if (userRole === 'owner' && booking.owner_id !== userId) {
+  if (userRole === 'attendant') {
+    const isAssigned = await parkingRepository.isAttendantAssignedToFacility(userId, booking.facility_id);
+    if (!isAssigned) {
+      throw new AppError('You are not assigned to this facility', 403);
+    }
+  } else if (userRole === 'owner' && booking.owner_id !== userId) {
     throw new AppError('You do not have permission to checkout this booking in your facility', 403);
+  } else if (userRole === 'driver') {
+    throw new AppError('Only owners, admins, and attendants can checkout drivers', 403);
   }
 
   const now = new Date();

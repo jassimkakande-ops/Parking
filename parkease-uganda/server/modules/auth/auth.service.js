@@ -117,7 +117,7 @@ exports.getOrCreateOAuthProfile = async (accessToken, role = 'driver') => {
       full_name: fullName,
       email: user.email,
       phone_number: user.phone || null,
-      role: role === 'owner' ? 'owner' : 'driver'
+      role: ['owner', 'attendant'].includes(role) ? role : 'driver'
     });
   }
 

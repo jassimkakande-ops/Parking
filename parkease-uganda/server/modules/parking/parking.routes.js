@@ -57,7 +57,7 @@ router.get(
 router.patch(
   '/slots/:id',
   authenticate,
-  authorize('owner', 'admin'), // Also 'attendant' could be added here in the future
+  authorize('owner', 'admin', 'attendant'),
   validate(updateSlotValidation),
   parkingController.updateSlotStatus
 );
@@ -78,6 +78,30 @@ router.get(
   parkingController.getFacilityOwnerAnalytics
 );
 
-module.exports = router;
+// --- Attendant Management (Owners Only) ---
 
-//This file contains parking routes.
+// POST /api/v1/facilities/:id/attendants
+router.post(
+  '/facilities/:id/attendants',
+  authenticate,
+  authorize('owner', 'admin'),
+  parkingController.addAttendant
+);
+
+// GET /api/v1/facilities/:id/attendants
+router.get(
+  '/facilities/:id/attendants',
+  authenticate,
+  authorize('owner', 'admin'),
+  parkingController.getAttendants
+);
+
+// DELETE /api/v1/facilities/:id/attendants/:attendantId
+router.delete(
+  '/facilities/:id/attendants/:attendantId',
+  authenticate,
+  authorize('owner', 'admin'),
+  parkingController.removeAttendant
+);
+
+module.exports = router;
