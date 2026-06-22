@@ -489,3 +489,16 @@
 {"timestamp":"2026-06-22T11:58:21.077Z","level":"info","message":"Server is running on port 5000","module":"index"}
 {"timestamp":"2026-06-22T12:30:00.558Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
 {"timestamp":"2026-06-22T12:30:00.595Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-22T12:30:18.761Z","level":"info","message":"Successfully connected to the PostgreSQL database","module":"db"}
+{"timestamp":"2026-06-22T12:30:18.779Z","level":"info","message":"Server is running on port 5000","module":"index"}
+{"timestamp":"2026-06-22T12:30:52.066Z","level":"info","message":"Client connected: XirVvcBpI_I5qcKcAAAC","module":"socket"}
+{"timestamp":"2026-06-22T12:30:52.082Z","level":"info","message":"Client disconnected: XirVvcBpI_I5qcKcAAAC","module":"socket"}
+{"timestamp":"2026-06-22T12:30:54.456Z","level":"info","message":"Client connected: ykRGeJYtiHr5zVAJAAAE","module":"socket"}
+{"timestamp":"2026-06-22T12:30:54.471Z","level":"info","message":"Socket ykRGeJYtiHr5zVAJAAAE joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-22T12:30:55.292Z","level":"info","message":"Client connected: ovItyZv-C1uha1ZyAAAG","module":"socket"}
+{"timestamp":"2026-06-22T12:30:55.355Z","level":"info","message":"Socket ovItyZv-C1uha1ZyAAAG joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-22T12:31:05.435Z","level":"info","message":"Client disconnected: ykRGeJYtiHr5zVAJAAAE","module":"socket"}
+{"timestamp":"2026-06-22T12:31:08.700Z","level":"info","message":"Client connected: wPD73VrHrrGd7zEaAAAI","module":"socket"}
+{"timestamp":"2026-06-22T12:31:08.708Z","level":"info","message":"Socket wPD73VrHrrGd7zEaAAAI joined facility_7c117aae-016c-412b-8d24-fb025800d0f0","module":"socket"}
+{"timestamp":"2026-06-22T12:33:12.407Z","level":"info","message":"Client disconnected: ovItyZv-C1uha1ZyAAAG","module":"socket"}
+{"timestamp":"2026-06-22T12:33:12.838Z","level":"info","message":"Client disconnected: wPD73VrHrrGd7zEaAAAI","module":"socket"}
